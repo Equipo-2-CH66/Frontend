@@ -27,29 +27,46 @@
    ══════════════════════════════════════════════════════════════════ */
 :root {
   /* Paleta de colores */
-  --color-primary:       #D45F1A;   /* Terracota principal — botones CTA, acentos */
-  --color-primary-dark:  #B84E12;   /* Terracota oscuro — hover de botones */
-  --color-primary-light: #FDE8D0;   /* Terracota claro — badges, chips */
-  --color-bg:            #FFF8EF;   /* Crema — fondo general */
-  --color-bg-card:       #FFF0E0;   /* Crema oscuro — tarjetas */
-  --color-dark:          #2C1A0E;   /* Café oscuro — texto principal */
-  --color-dark-mid:      #3B1F08;   /* Café medio — navbar oscuro, stats */
-  --color-muted:         #7A4A26;   /* Café suave — texto secundario */
-  --color-accent:        #FFD9A8;   /* Ámbar — números sobre fondos oscuros */
-  --color-border:        #E8D8C0;   /* Beige — bordes suaves */
-  --color-footer-text:   #BF8A5A;   /* Café claro — footer y stat labels */
+  --color-primary: #D45F1A;
+  /* Terracota principal — botones CTA, acentos */
+  --color-primary-dark: #B84E12;
+  /* Terracota oscuro — hover de botones */
+  --color-primary-light: #FDE8D0;
+  /* Terracota claro — badges, chips */
+  --color-bg: #FFF8EF;
+  /* Crema — fondo general */
+  --color-bg-card: #FFF0E0;
+  /* Crema oscuro — tarjetas */
+  --color-dark: #2C1A0E;
+  /* Café oscuro — texto principal */
+  --color-dark-mid: #3B1F08;
+  /* Café medio — navbar oscuro, stats */
+  --color-muted: #7A4A26;
+  /* Café suave — texto secundario */
+  --color-accent: #FFD9A8;
+  /* Ámbar — números sobre fondos oscuros */
+  --color-border: #E8D8C0;
+  /* Beige — bordes suaves */
+  --color-footer-text: #BF8A5A;
+  /* Café claro — footer y stat labels */
 
   /* Tipografía */
-  --font-display: 'Fraunces', serif;   /* Títulos y display */
-  --font-body:    'DM Sans', sans-serif; /* Cuerpo e interfaz */
+  --font-display: 'Fraunces', serif;
+  /* Títulos y display */
+  --font-body: 'DM Sans', sans-serif;
+  /* Cuerpo e interfaz */
 
   /* Radios de borde */
-  --radius-pill: 100px;   /* Botones y badges redondeados */
-  --radius-card: 16px;    /* Tarjetas de categoría y producto */
-  --radius-sm:   8px;     /* Elementos pequeños */
+  --radius-pill: 100px;
+  /* Botones y badges redondeados */
+  --radius-card: 16px;
+  /* Tarjetas de categoría y producto */
+  --radius-sm: 8px;
+  /* Elementos pequeños */
 
   /* Espaciado de página */
-  --page-padding: 48px;   /* Padding horizontal en desktop */
+  --page-padding: 48px;
+  /* Padding horizontal en desktop */
 }
 
 
@@ -57,14 +74,18 @@
    2. RESET Y BASE
    Normaliza el comportamiento del navegador.
    ══════════════════════════════════════════════════════════════════ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;  /* El padding no suma al ancho del elemento */
+  box-sizing: border-box;
+  /* El padding no suma al ancho del elemento */
 }
 
 html {
-  scroll-behavior: smooth;  /* Scroll suave para links con ancla (#) */
+  scroll-behavior: smooth;
+  /* Scroll suave para links con ancla (#) */
 }
 
 body {
@@ -72,13 +93,14 @@ body {
   background: var(--color-bg);
   color: var(--color-dark);
   line-height: 1.6;
-  overflow-x: hidden; /* Evita scroll horizontal en mobile */
+  overflow-x: hidden;
+  /* Evita scroll horizontal en mobile */
 }
 
 img {
-  max-width: 100%;
-  display: block;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 a {
@@ -100,7 +122,8 @@ nav {
   border-bottom: 1.5px solid var(--color-border);
   position: sticky;
   top: 0;
-  z-index: 1000;  /* Siempre encima del resto del contenido */
+  z-index: 1000;
+  /* Siempre encima del resto del contenido */
   transition: transform 0.3s ease;
 }
 
@@ -125,12 +148,13 @@ nav {
   align-items: center;
   justify-content: center;
   font-size: px;
-  flex-shrink: 0; /* No se encoge en mobile */
+  flex-shrink: 0;
+  /* No se encoge en mobile */
 }
 
 .logo-icon img {
-  width: 100px;  
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -152,7 +176,8 @@ nav {
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--color-primary);  /* Color activo = terracota */
+  color: var(--color-primary);
+  /* Color activo = terracota */
 }
 
 /* Botón CTA del navbar ("Pedir ahora") */
@@ -169,7 +194,8 @@ nav {
 
 /* ── Menú hamburguesa (solo visible en mobile) ────────────────── */
 .hamburger {
-  display: none;          /* Oculto en desktop */
+  display: none;
+  /* Oculto en desktop */
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -191,9 +217,11 @@ nav {
 .hamburger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
+
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
@@ -272,7 +300,8 @@ nav {
    ══════════════════════════════════════════════════════════════════ */
 .hero {
   display: grid;
-  grid-template-columns: 1fr 1fr;  /* 2 columnas iguales */
+  grid-template-columns: 1fr 1fr;
+  /* 2 columnas iguales */
   min-height: 520px;
   padding: 0 var(--page-padding);
   align-items: center;
@@ -345,7 +374,8 @@ h1 span {
   display: flex;
   gap: 14px;
   align-items: center;
-  flex-wrap: wrap; /* Se envuelven en mobile */
+  flex-wrap: wrap;
+  /* Se envuelven en mobile */
 }
 
 /* ── Ilustración del anaquel ──────────────────────────────────── */
@@ -374,9 +404,17 @@ h1 span {
   left: 10px;
 }
 
-.shelf-plank.p1 { bottom: 0; }
-.shelf-plank.p2 { bottom: 140px; }
-.shelf-plank.p3 { bottom: 280px; }
+.shelf-plank.p1 {
+  bottom: 0;
+}
+
+.shelf-plank.p2 {
+  bottom: 140px;
+}
+
+.shelf-plank.p3 {
+  bottom: 280px;
+}
 
 /* Contenedor de cada producto (lata + etiqueta) */
 .prod {
@@ -400,12 +438,29 @@ h1 span {
 }
 
 /* Colores de las latas */
-.can.red    { background: #E84040; }
-.can.green  { background: #4CAF72; }
-.can.yellow { background: #F2C94C; }
-.can.blue   { background: #4A8FD4; }
-.can.orange { background: #F07A30; }
-.can.brown  { background: #8D5524; }
+.can.red {
+  background: #E84040;
+}
+
+.can.green {
+  background: #4CAF72;
+}
+
+.can.yellow {
+  background: #F2C94C;
+}
+
+.can.blue {
+  background: #4A8FD4;
+}
+
+.can.orange {
+  background: #F07A30;
+}
+
+.can.brown {
+  background: #8D5524;
+}
 
 /* Etiqueta de texto bajo la lata */
 .can-label {
@@ -428,7 +483,8 @@ h1 span {
   position: relative;
   overflow: hidden;
 
-  display: flex;                 /* 🔥 clave */
+  display: flex;
+  /* 🔥 clave */
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
@@ -455,7 +511,8 @@ h1 span {
 }
 
 .page-hero img {
-  flex: 1;                       /* ocupa la otra mitad */
+  flex: 1;
+  /* ocupa la otra mitad */
   max-width: 550px;
   width: 100%;
   height: auto;
@@ -509,14 +566,16 @@ h1 span {
   justify-content: center;
   background: var(--color-dark-mid);
   padding: 28px var(--page-padding);
-  flex-wrap: wrap; /* Se envuelve en mobile */
+  flex-wrap: wrap;
+  /* Se envuelve en mobile */
   gap: 0;
 }
 
 /* Cada métrica */
 .stat {
   flex: 1;
-  min-width: 140px; /* Ancho mínimo para que no se aprieten */
+  min-width: 140px;
+  /* Ancho mínimo para que no se aprieten */
   text-align: center;
   padding: 12px 24px;
   border-right: 1px solid rgba(255, 200, 140, 0.18);
@@ -627,7 +686,8 @@ h1 span {
   overflow: hidden;
   position: relative;
   gap: 24px;
-  flex-wrap: wrap; /* Se adapta en mobile */
+  flex-wrap: wrap;
+  /* Se adapta en mobile */
 }
 
 /* Ícono decorativo de fondo */
@@ -722,7 +782,8 @@ footer {
 }
 
 .search-bar:focus-within {
-  border-color: var(--color-primary); /* Se resalta al escribir */
+  border-color: var(--color-primary);
+  /* Se resalta al escribir */
 }
 
 .search-icon {
@@ -843,12 +904,13 @@ footer {
 .prod-img-wrap {
   background: var(--color-bg);
   border-radius: var(--radius-sm);
-  height: 100px;
+  height: 120px;
+  /* puedes ajustar */
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  font-size: 48px;
+  overflow: hidden;
+  /* 🔥 importante */
 }
 
 /* Badge de oferta (esquina superior derecha del ícono) */
@@ -866,7 +928,8 @@ footer {
 
 /* Información textual del producto */
 .prod-info {
-  flex: 1;  /* Ocupa el espacio disponible para empujar el botón abajo */
+  flex: 1;
+  /* Ocupa el espacio disponible para empujar el botón abajo */
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1011,8 +1074,15 @@ footer {
 
 /* Animación de entrada del carrito flotante */
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 
@@ -1334,15 +1404,18 @@ footer {
 @media (max-width: 900px) {
 
   :root {
-    --page-padding: 28px; /* Menos padding en tablet */
+    --page-padding: 28px;
+    /* Menos padding en tablet */
   }
 
   /* Navbar: ocultar links, mostrar hamburguesa */
   .nav-links {
-    display: none;              /* Ocultos por defecto */
+    display: none;
+    /* Ocultos por defecto */
     flex-direction: column;
     position: absolute;
-    top: 100%;                  /* Justo debajo del navbar */
+    top: 100%;
+    /* Justo debajo del navbar */
     left: 0;
     right: 0;
     background: var(--color-bg);
@@ -1358,7 +1431,8 @@ footer {
   }
 
   .hamburger {
-    display: flex; /* Visible en tablet/mobile */
+    display: flex;
+    /* Visible en tablet/mobile */
   }
 
   /* Hero: apilar en una columna */
@@ -1419,7 +1493,8 @@ footer {
 @media (max-width: 600px) {
 
   :root {
-    --page-padding: 16px; /* Mínimo padding en mobile */
+    --page-padding: 16px;
+    /* Mínimo padding en mobile */
   }
 
   /* Logo: texto más pequeño */
@@ -1433,7 +1508,8 @@ footer {
   }
 
   /* Título más pequeño */
-  h1, .page-title {
+  h1,
+  .page-title {
     font-size: 32px;
   }
 
@@ -1546,4 +1622,13 @@ footer {
     padding: 10px 14px;
     font-size: 13px;
   }
+}
+
+.valor-card img {
+  width: 100%;
+  height: 180px;
+  /* 🔥 mismo tamaño para todas */
+  object-fit: cover;
+  /* recorta sin deformar */
+  border-radius: 12px;
 }
