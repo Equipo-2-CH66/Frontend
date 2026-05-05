@@ -101,6 +101,9 @@ img {
   max-width: 100%;
   display: block;
   border-radius: 12px;
+  max-width: 100%;
+  display: block;
+  border-radius: 12px;
 }
 
 a {
@@ -905,9 +908,12 @@ footer {
   background: var(--color-bg);
   border-radius: var(--radius-sm);
   height: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  font-size: 48px;
   position: relative;
   font-size: 48px;
 }
