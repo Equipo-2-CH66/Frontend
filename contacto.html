@@ -1,0 +1,114 @@
+<section class="about-contacto">
+    <div class="contacto-inner">
+
+      <!-- Columna izquierda: datos de contacto -->
+      <div class="contacto-info">
+        <div class="section-label">Contacto</div>
+        <h2 class="section-title" style="margin-bottom: 24px;">Visítanos o<br><span style="color: var(--color-primary)">llámanos</span></h2>
+
+        <!-- Lista de datos de contacto -->
+        <div class="contacto-lista">
+          <div class="contacto-item">
+            <span class="contacto-icono">📍</span>
+            <div>
+              <strong>Dirección</strong>
+              <!-- MODIFICAR: pon tu dirección real aquí -->
+              <p>Calle Hidalgo #42, Col. Centro,<br>Ciudad de México, CDMX</p>
+            </div>
+          </div>
+          <div class="contacto-item">
+            <span class="contacto-icono">📞</span>
+            <div>
+              <strong>Teléfono</strong>
+              <!-- MODIFICAR: pon tu número real aquí -->
+              <p><a href="tel:+525512345678">55 1234 5678</a></p>
+            </div>
+          </div>
+          <div class="contacto-item">
+            <span class="contacto-icono">💬</span>
+            <div>
+              <strong>WhatsApp</strong>
+              <!-- MODIFICAR: pon tu número de WhatsApp -->
+              <p><a href="https://wa.me/525512345678" target="_blank">Escríbenos al 55 31 30 52 77</a></p>
+            </div>
+          </div>
+          <div class="contacto-item">
+            <span class="contacto-icono">🕐</span>
+            <div>
+              <strong>Horario</strong>
+              <!-- MODIFICAR: pon tus horarios reales -->
+              <p>Lunes a Domingo: 8:30 am – 10:30 pm</p>
+             
+            </div>
+          </div>
+        </div>
+        <div class="mapa-wrap">
+        <!--
+          REEMPLAZAR este div por un iframe de Google Maps:
+          1. Ve a Google Maps y busca tu ubicación
+          2. Haz clic en "Compartir" → "Insertar un mapa"
+          3. Copia el <iframe> y pégalo aquí en lugar del div.mapa-placeholder
+        -->
+        <div class="mapa-placeholder">
+          <span>🗺️</span>
+          <p>Inserta aquí tu mapa de Google Maps</p>
+          <small>Compartir → Insertar un mapa → Copiar iframe</small>
+        </div>
+      </div>
+      </div>
+
+      <!-- Columna derecha: mapa placeholder -->
+              <!-- Columna derecha: formulario de contacto con Formspree.
+             reveal-right → entra desde la derecha al hacer scroll. -->
+        <form class="contact-form reveal-right" id="contactForm"
+              action="https://formspree.io/f/xojyovle"
+              method="POST">
+
+          <!-- Fila de dos campos en desktop, uno encima del otro en móvil. -->
+          <div class="form-row">
+
+            <!-- Campo Nombre:
+                 · label for="nombre" → al clicar el label se activa el input
+                 · id="nombre"        → conecta el label con el input
+                 · name="nombre"      → clave del campo en el email de Formspree
+                 · required           → campo obligatorio -->
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+            </div>
+
+            <!-- Campo Email:
+                 · type="email" → el navegador valida el formato automáticamente -->
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+            </div>
+          </div><!-- /form-row -->
+
+          <!-- Campo Asunto: ancho completo del formulario -->
+          <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input type="text" id="asunto" name="asunto" placeholder="¿En qué te podemos ayudar?" required />
+          </div>
+
+          <!-- Campo Mensaje: textarea de 5 filas de altura inicial -->
+          <div class="form-group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escríbenos..." required></textarea>
+          </div>
+
+          <!-- Botón de envío: app.js lo deshabilita durante el envío
+               para evitar múltiples envíos accidentales. -->
+          <button type="submit" class="btn btn-primary btn-full">Enviar Mensaje</button>
+
+          <!-- Mensaje de éxito: oculto por defecto (CSS: display:none).
+               app.js agrega .show después de un envío exitoso a Formspree.
+               Se oculta automáticamente después de 5 segundos. -->
+          <div class="form-success" id="formSuccess">
+            ✅ ¡Mensaje enviado! Te contactaremos pronto.
+          </div>
+
+        </form><!-- /contact-form -->
+
+    </div>
+  </section>
