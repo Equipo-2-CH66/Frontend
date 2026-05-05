@@ -473,3 +473,10 @@ function revisarFiltroURL() {
     }, 300);
   }
 }
+
+fetch('contacto.html')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('contacto-container').innerHTML = data;
+  })
+  .catch(err => console.error(err));
