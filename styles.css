@@ -101,9 +101,6 @@ img {
   max-width: 100%;
   display: block;
   border-radius: 12px;
-  max-width: 100%;
-  display: block;
-  border-radius: 12px;
 }
 
 a {
@@ -171,7 +168,7 @@ nav {
 .nav-links a {
   text-decoration: none;
   color: var(--color-muted);
-  font-size: 22px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.02em;
   transition: color 0.2s;
@@ -908,12 +905,9 @@ footer {
   background: var(--color-bg);
   border-radius: var(--radius-sm);
   height: 100px;
-  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  font-size: 48px;
   position: relative;
   font-size: 48px;
 }
