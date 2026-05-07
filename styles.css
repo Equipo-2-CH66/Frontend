@@ -888,6 +888,10 @@ footer {
   gap: 12px;
   border: 1.5px solid transparent;
   transition: border-color 0.2s, transform 0.2s, opacity 0.3s;
+  
+}
+.product-card img{
+  height: 100px;
 }
 
 .product-card:hover {
