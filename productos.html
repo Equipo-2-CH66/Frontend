@@ -98,6 +98,9 @@
       <button class="filter-btn" data-filter="panaderia">🍞 Panadería</button>
       <button class="filter-btn" data-filter="especias">🌶️ Especias</button>
       <button class="filter-btn" data-filter="botanas">🍬 Botanas</button>
+      <button class="filter-btn" data-filter="abarrotes">🏪 Abarrotes</button>
+      <button class="filter-btn" data-filter="higiene_personal">🪥 Higiene personal</button>
+
       <!-- Filtro especial: muestra solo productos con data-oferta="true" -->
       <button class="filter-btn filter-oferta" data-filter="ofertas">🏷️ Ofertas</button>
     </div>
@@ -571,6 +574,63 @@
           + Agregar
         </button>
       </div>
+
+      <!-- ══ ABARROTES ════════════════════════════════════════════ -->
+
+      <!-- Producto: Agua embotellada -->
+      <div class="product-card" data-cat="bebidas" >
+        <div class="prod-img-wrap">
+          <span><img src="imagenes-bebidas/AguaEmbotellada.png" alt=""></span>
+          <span class="prod-badge">-15%</span>
+        </div>
+        <div class="prod-info">
+          <p class="prod-cat-tag">Bebidas</p>
+          <h3 class="prod-name">Agua skarch 500mL</h3>
+          <p class="prod-desc">Agua purificada sin gas, presentación individual.</p>
+          <div class="prod-prices">
+            <span class="prod-price">$12.00</span>
+          </div>
+        </div>
+        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Agua skarch 500mL')">
+          + Agregar
+        </button>
+      </div>
+
+      <!-- Producto: Refresco de cola -->
+      <div class="product-card" data-cat="bebidas">
+        <div class="prod-img-wrap">
+          <span><img src="imagenes-bebidas/cocaLata.png" alt=""></span>
+        </div>
+        <div class="prod-info">
+          <p class="prod-cat-tag">Bebidas</p>
+          <h3 class="prod-name">Coca-Cola lata 600 mL</h3>
+          <p class="prod-desc">Refresco de cola clásico, presentación en lata.</p>
+          <div class="prod-prices">
+            <span class="prod-price">$18.00</span>
+          </div>
+        </div>
+        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Coca-Cola lata')">
+          + Agregar
+        </button>
+      </div>
+      <!-- Producto: Refresco de cola -->
+      <div class="product-card" data-cat="bebidas">
+        <div class="prod-img-wrap">
+          <span><img src="imagenes-bebidas/cocaLata.png" alt=""></span>
+        </div>
+        <div class="prod-info">
+          <p class="prod-cat-tag">Bebidas</p>
+          <h3 class="prod-name">Coca-Cola lata 600 mL</h3>
+          <p class="prod-desc">Refresco de cola clásico, presentación en lata.</p>
+          <div class="prod-prices">
+            <span class="prod-price">$18.00</span>
+          </div>
+        </div>
+        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Coca-Cola lata')">
+          + Agregar
+        </button>
+      </div>
+
 
       <!--
         ══════════════════════════════════════════════════════════
