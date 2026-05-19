@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abarrotes Almiux — Panel de Administración</title>
+
+  <!--
+    ╔════════════════════════════════════════════════════════════╗
+    ║  admin.html — Panel de administrador                       ║
+    ║                                                            ║
+    ║  OBJETIVO:                                                 ║
+    ║  Formulario para crear un nuevo producto. Valida los       ║
+    ║  campos y genera un objeto JSON listo para usar.           ║
+    ║                                                            ║
+    ║  ESTRUCTURA:                                               ║
+    ║  · Navbar (sin el link "Pedir ahora", es panel interno)    ║
+    ║  · Hero de sección                                         ║
+    ║  · Formulario de creación de producto                      ║
+    ║  · Panel de previsualización del JSON generado             ║
+    ║  · Footer                                                  ║
+    ╚════════════════════════════════════════════════════════════╝
+  -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       NAVBAR
+       · Igual al de las otras páginas
+       · No tiene el botón "Pedir ahora" (es panel interno)
+  ══════════════════════════════════════════════════════════════ -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <img src="./images/Almiux_Logo_Sin_Fondo.png" alt="Logo Abarrotes Almiux">
+      </div>
+      <span>Abarrotes Almiux</span>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="index.html#ofertas">Ofertas</a>
+      <!-- Indicador de que estamos en el panel admin -->
+      <a href="admin.html" class="active" style="pointer-events:none">🔧 Admin</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       HERO DE SECCIÓN
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <span class="badge">🔧 Panel de administración</span>
+      <h1 class="page-title">Agregar <span>producto</span></h1>
+      <p class="page-sub">
+        Completa el formulario para registrar un nuevo producto
+        en el catálogo de Abarrotes Almiux.
+      </p>
+    </div>
+  </section>
+
+
+
+
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       CONTENIDO PRINCIPAL: Formulario + Panel de resultado
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="admin-layout">
+
+    <!-- ── COLUMNA IZQUIERDA: Formulario ──────────────────────── -->
+    <div class="form-card">
+      <p class="form-card-title">Datos del producto</p>
+      <p class="form-card-sub">Los campos marcados con <span style="color:var(--color-primary)">*</span> son obligatorios.</p>
+
+      <!-- Alerta de error general (se muestra si hay campos inválidos) -->
+      <div class="alerta error-global" id="alertaError">
+        ⚠️ Por favor corrige los errores marcados antes de continuar.
+      </div>
+
+      <!-- Alerta de éxito -->
+      <div class="alerta exito" id="alertaExito">
+        ✅ ¡Producto creado exitosamente! El objeto JSON fue generado.
+      </div>
+
+    </div><!-- /form-card -->
+ 
+    <!-- ── Columna derecha: Preview + JSON ──────────────────── -->
+    <div class="resultado-card">
+      <p class="resultado-card-title">Previsualización</p>
+      <p class="resultado-card-sub">Así se verá el producto en el catálogo</p>
+ 
+      <!-- Preview visual — actualizada por Yaris (JS) -->
+      <div class="preview-product-card" id="previewCard">
+        <p class="preview-placeholder">Llena el formulario para ver la previsualización aquí.</p>
+      </div>
+ 
+      <!-- JSON generado — llenado por Noé (JS) -->
+      <p class="resultado-card-title" style="font-size:16px; margin-bottom:4px;">Objeto JSON generado</p>
+      <p class="resultado-card-sub" style="margin-bottom:12px;">Este es el objeto con los datos del producto</p>
+ 
+      <div class="json-block" id="jsonBlock">
+        <span class="json-placeholder">// El JSON aparecerá aquí al crear el producto</span>
+      </div>
+ 
+      <!-- Botón copiar — función copiarJSON() hecha por Noé -->
+      <button class="btn-copy" id="btnCopy" style="display:none" onclick="copiarJSON()">
+        📋 Copiar JSON
+      </button>
+ 
+    </div><!-- /resultado-card -->
+ 
+  </div><!-- /admin-layout -->
+ 
+  <!-- ══════════════════════════════════════════════════════════
+       FOOTER — Tarea de KALEB
+  ══════════════════════════════════════════════════════════ -->
+  <footer>
+    <a href="index.html" class="footer-logo">🏪 Abarrotes Almiux</a>
+    <div class="footer-links">
+      <a href="#">Aviso de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+      <a href="nosotros.html">Contacto</a>
+      <a href="admin.html">Panel admin</a>
+    </div>
+    <div>© 2026 · Hecho en México con ❤️</div>
+  </footer>
+ 
+  <!-- JS del proyecto (navbar, hamburguesa, etc.) -->
+  <script src="main.js"></script>
+ 
+  
+  <script>
+ 
+  
+ 
+  </script>
+ 
+</body>
+</html>

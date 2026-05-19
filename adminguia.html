@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abarrotes Almiux — Panel de Administración</title>
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  admin.html — Panel de administrador                       ║
+    ║                                                            ║
+    ║  OBJETIVO:                                                 ║
+    ║  Formulario para crear un nuevo producto. Valida los       ║
+    ║  campos y genera un objeto JSON listo para usar.           ║
+    ║                                                            ║
+    ║  ESTRUCTURA:                                               ║
+    ║  · Navbar (sin el link "Pedir ahora", es panel interno)    ║
+    ║  · Hero de sección                                         ║
+    ║  · Formulario de creación de producto                      ║
+    ║  · Panel de previsualización del JSON generado             ║
+    ║  · Footer                                                  ║
+    ╚══════════════════════════════════════════════════════════════╝
+  -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ══════════════════════════════════════════════════════════════
+       ESTILOS EXCLUSIVOS DE admin.html
+       Siguen las variables CSS del proyecto (styles.css).
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── Contenedor principal del formulario ────────────────────── */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px var(--page-padding) 80px;
+    }
+
+    /* ── Tarjeta del formulario ─────────────────────────────────── */
+    .form-card {
+      background: #fff;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 36px;
+    }
+
+    .form-card-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 6px;
+    }
+
+    .form-card-sub {
+      font-size: 14px;
+      color: var(--color-muted);
+      margin-bottom: 32px;
+    }
+
+    /* ── Grupos de campo ────────────────────────────────────────── */
+    .admin-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .admin-form-group label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-dark);
+      letter-spacing: 0.03em;
+    }
+
+    .admin-form-group label .req {
+      color: var(--color-primary);
+      margin-left: 2px;
+    }
+
+    /* Inputs, selects y textarea */
+    .admin-form-group input,
+    .admin-form-group select,
+    .admin-form-group textarea {
+      padding: 12px 14px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-dark);
+      background: var(--color-bg);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .admin-form-group input:focus,
+    .admin-form-group select:focus,
+    .admin-form-group textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+
+    /* Estado de error */
+    .admin-form-group input.error,
+    .admin-form-group select.error,
+    .admin-form-group textarea.error {
+      border-color: #D63B3B;
+      box-shadow: 0 0 0 3px rgba(214, 59, 59, 0.12);
+    }
+
+    /* Mensaje de error bajo el campo */
+    .field-error {
+      font-size: 12px;
+      color: #D63B3B;
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .field-error.visible {
+      display: flex;
+    }
+
+    /* ── Fila de 2 campos lado a lado ───────────────────────────── */
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ── Checkbox de oferta ─────────────────────────────────────── */
+    .oferta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .oferta-wrap:has(input:checked) {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .oferta-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .oferta-wrap span {
+      font-size: 14px;
+      color: var(--color-dark);
+      font-weight: 500;
+    }
+
+    /* Campo de descuento (oculto hasta marcar oferta) */
+    #descuentoGroup {
+      display: none;
+    }
+
+    #descuentoGroup.visible {
+      display: flex;
+    }
+
+    /* ── Selector de emoji ──────────────────────────────────────── */
+    .emoji-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .emoji-btn {
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+
+    .emoji-btn:hover {
+      border-color: var(--color-primary);
+      transform: scale(1.1);
+    }
+
+    .emoji-btn.selected {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    /* ── Botón de envío ─────────────────────────────────────────── */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--color-primary);
+      color: var(--color-bg);
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-reset {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      color: var(--color-muted);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-reset:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* ── Panel de resultado (JSON) ──────────────────────────────── */
+    .resultado-card {
+      background: var(--color-dark-mid);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      position: sticky;
+      top: 100px;
+      /* Se queda visible al hacer scroll */
+    }
+
+    .resultado-card-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-accent);
+      margin-bottom: 6px;
+    }
+
+    .resultado-card-sub {
+      font-size: 13px;
+      color: var(--color-footer-text);
+      margin-bottom: 24px;
+    }
+
+    /* Preview visual de la tarjeta de producto */
+    .preview-product-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 200, 140, 0.2);
+      border-radius: var(--radius-card);
+      padding: 20px;
+      margin-bottom: 24px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .preview-emoji {
+      font-size: 48px;
+      flex-shrink: 0;
+    }
+
+    .preview-info {
+      flex: 1;
+    }
+
+    .preview-cat {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .preview-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: #fff;
+      margin: 4px 0;
+    }
+
+    .preview-desc {
+      font-size: 13px;
+      color: var(--color-footer-text);
+      margin-bottom: 8px;
+    }
+
+    .preview-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    .preview-original {
+      font-size: 13px;
+      color: var(--color-footer-text);
+      text-decoration: line-through;
+      margin-left: 6px;
+    }
+
+    .preview-badge {
+      display: inline-block;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      margin-left: 8px;
+    }
+
+    .preview-placeholder {
+      color: var(--color-footer-text);
+      font-size: 14px;
+      font-style: italic;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* Bloque del JSON generado */
+    .json-block {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #FFD9A8;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+      min-height: 80px;
+    }
+
+    .json-placeholder {
+      color: var(--color-footer-text);
+      font-style: italic;
+    }
+
+    /* Botón de copiar JSON */
+    .btn-copy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-accent);
+      border: 1px solid rgba(255, 200, 140, 0.2);
+      border-radius: var(--radius-pill);
+      padding: 8px 18px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    /* ── Alerta de éxito ────────────────────────────────────────── */
+    .alerta {
+      display: none;
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alerta.exito {
+      background: #EDFBF0;
+      border: 1.5px solid #4CAF72;
+      color: #2A7A4A;
+    }
+
+    .alerta.error-global {
+      background: #FFF0F0;
+      border: 1.5px solid #D63B3B;
+      color: #A02020;
+    }
+
+    .alerta.visible {
+      display: flex;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .resultado-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .form-card,
+      .resultado-card {
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       NAVBAR
+       · Igual al de las otras páginas
+       · No tiene el botón "Pedir ahora" (es panel interno)
+  ══════════════════════════════════════════════════════════════ -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <img src="./images/Almiux_Logo_Sin_Fondo.png" alt="Logo Abarrotes Almiux">
+      </div>
+      <span>Abarrotes Almiux</span>
+    </a>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="index.html#ofertas">Ofertas</a>
+      <!-- Indicador de que estamos en el panel admin -->
+      <a href="admin.html" class="active" style="pointer-events:none">🔧 Admin</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       HERO DE SECCIÓN
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <span class="badge">🔧 Panel de administración</span>
+      <h1 class="page-title">Agregar <span>producto</span></h1>
+      <p class="page-sub">
+        Completa el formulario para registrar un nuevo producto
+        en el catálogo de Abarrotes Almiux.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       CONTENIDO PRINCIPAL: Formulario + Panel de resultado
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="admin-layout">
+
+    <!-- ── COLUMNA IZQUIERDA: Formulario ──────────────────────── -->
+    <div class="form-card">
+      <p class="form-card-title">Datos del producto</p>
+      <p class="form-card-sub">Los campos marcados con <span style="color:var(--color-primary)">*</span> son obligatorios.</p>
+
+      <!-- Alerta de error general (se muestra si hay campos inválidos) -->
+      <div class="alerta error-global" id="alertaError">
+        ⚠️ Por favor corrige los errores marcados antes de continuar.
+      </div>
+
+      <!-- Alerta de éxito -->
+      <div class="alerta exito" id="alertaExito">
+        ✅ ¡Producto creado exitosamente! El objeto JSON fue generado.
+      </div>
+
+      <form id="adminForm" novalidate>
+
+        <!-- Nombre del producto -->
+        <div class="admin-form-group">
+          <label for="nombre">Nombre del producto <span class="req">*</span></label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Ej: Leche entera Lala 1L"
+            maxlength="80"
+            autocomplete="off"
+          >
+          <span class="field-error" id="errorNombre">⚠ El nombre es obligatorio.</span>
+        </div>
+
+        <!-- Descripción -->
+        <div class="admin-form-group">
+          <label for="descripcion">Descripción <span class="req">*</span></label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            rows="3"
+            placeholder="Describe brevemente el producto..."
+            maxlength="200"
+          ></textarea>
+          <span class="field-error" id="errorDescripcion">⚠ La descripción es obligatoria.</span>
+        </div>
+
+        <!-- Categoría y emoji en la misma fila -->
+        <div class="form-row-2">
+
+          <!-- Categoría -->
+          <div class="admin-form-group">
+            <label for="categoria">Categoría <span class="req">*</span></label>
+            <select id="categoria" name="categoria">
+              <option value="">-- Selecciona --</option>
+              <option value="lacteos">🥛 Lácteos y huevo</option>
+              <option value="bebidas">🥤 Bebidas</option>
+              <option value="enlatados">🫙 Enlatados y conservas</option>
+              <option value="carnes">🥩 Carnes y embutidos</option>
+              <option value="limpieza">🧴 Limpieza y hogar</option>
+              <option value="panaderia">🍞 Panadería</option>
+              <option value="especias">🌶️ Chiles y especias</option>
+              <option value="botanas">🍬 Dulces y botanas</option>
+              <option value="abarrotes">🏪 Abarrotes</option>
+              <option value="higiene_personal">🪥 Higiene personal</option>
+            </select>
+            <span class="field-error" id="errorCategoria">⚠ Selecciona una categoría.</span>
+          </div>
+
+          <!-- Precio -->
+          <div class="admin-form-group">
+            <label for="precio">Precio (MXN) <span class="req">*</span></label>
+            <input
+              type="number"
+              id="precio"
+              name="precio"
+              placeholder="0.00"
+              min="0.01"
+              step="0.01"
+            >
+            <span class="field-error" id="errorPrecio">⚠ Ingresa un precio válido mayor a $0.</span>
+          </div>
+
+        </div><!-- /form-row-2 -->
+
+        <!-- ¿Está en oferta? -->
+        <div class="admin-form-group">
+          <label>¿Está en oferta?</label>
+          <label class="oferta-wrap">
+            <input type="checkbox" id="enOferta" name="enOferta">
+            <span>Sí, este producto tiene descuento</span>
+          </label>
+        </div>
+
+        <!-- Porcentaje de descuento (visible solo si hay oferta) -->
+        <div class="admin-form-group" id="descuentoGroup">
+          <label for="descuento">Porcentaje de descuento <span class="req">*</span></label>
+          <input
+            type="number"
+            id="descuento"
+            name="descuento"
+            placeholder="Ej: 20  (para 20%)"
+            min="1"
+            max="99"
+            step="1"
+          >
+          <span class="field-error" id="errorDescuento">⚠ Ingresa un descuento entre 1% y 99%.</span>
+        </div>
+
+        <!-- Selector de ícono (emoji) -->
+        <div class="admin-form-group">
+          <label>Ícono del producto <span class="req">*</span></label>
+          <div class="emoji-grid" id="emojiGrid">
+            <!-- Los emojis se generan por JS -->
+          </div>
+          <!-- Input oculto que guarda el emoji seleccionado -->
+          <input type="hidden" id="icono" name="icono" value="">
+          <span class="field-error" id="errorIcono">⚠ Selecciona un ícono para el producto.</span>
+        </div>
+
+        <!-- Botones -->
+        <button type="submit" class="btn-submit">🚀 Crear producto</button>
+        <button type="button" class="btn-reset" id="btnReset">↺ Limpiar formulario</button>
+
+      </form>
+    </div><!-- /form-card -->
+
+    <!-- ── COLUMNA DERECHA: Preview + JSON ──────────────────────── -->
+    <div class="resultado-card">
+      <p class="resultado-card-title">Previsualización</p>
+      <p class="resultado-card-sub">Así se verá el producto en el catálogo</p>
+
+      <!-- Preview visual de la tarjeta -->
+      <div class="preview-product-card" id="previewCard">
+        <p class="preview-placeholder">Llena el formulario para ver la previsualización aquí.</p>
+      </div>
+
+      <!-- JSON generado -->
+      <p class="resultado-card-title" style="font-size:16px; margin-bottom: 4px;">Objeto JSON generado</p>
+      <p class="resultado-card-sub" style="margin-bottom: 12px;">Este es el objeto con los datos del producto</p>
+
+      <div class="json-block" id="jsonBlock">
+        <span class="json-placeholder">// El JSON aparecerá aquí al crear el producto</span>
+      </div>
+
+      <button class="btn-copy" id="btnCopy" style="display:none" onclick="copiarJSON()">
+        📋 Copiar JSON
+      </button>
+
+    </div><!-- /resultado-card -->
+
+  </div><!-- /admin-layout -->
+
+  <!-- Footer -->
+  <footer>
+    <a href="index.html" class="footer-logo">🏪 Abarrotes Almiux</a>
+    <div class="footer-links">
+      <a href="#">Aviso de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+      <a href="nosotros.html">Contacto</a>
+    </div>
+    <div>© 2026 · Hecho en México con ❤️</div>
+  </footer>
+
+  <script src="main.js"></script>
+
+  <script>
+    /* ════════════════════════════════════════════════════════════════
+       ADMIN.JS — lógica del formulario de creación de producto
+       (incluido aquí para mantener el archivo autónomo)
+
+       SECCIONES:
+         1. Emojis disponibles (se renderizan en el selector)
+         2. Renderizar selector de emojis
+         3. Mostrar / ocultar campo de descuento
+         4. Previsualización en tiempo real
+         5. Validación de campos
+         6. Manejo del submit: validar → crear objeto JSON
+         7. Limpiar formulario
+         8. Copiar JSON al portapapeles
+    ════════════════════════════════════════════════════════════════ */
+
+    /* ── 1. Emojis disponibles ───────────────────────────────────── */
+    const EMOJIS = [
+      '🥛','🧀','🥚','🧈',          // Lácteos
+      '🥤','🧃','☕','🍵','💧',       // Bebidas
+      '🫙','🥫','🍅','🫒',           // Enlatados
+      '🥩','🌭','🥓','🍗',           // Carnes
+      '🧴','🧹','🧺','🪣',           // Limpieza
+      '🍞','🥐','🧁','🍰',           // Panadería
+      '🌶️','🧄','🧅','🫚',           // Especias
+      '🍬','🍫','🍭','🍿',           // Botanas
+      '🌾','🍚','🫘','🥣',           // Abarrotes
+      '🪥','🧼','🚿','🪒',           // Higiene
+    ];
+
+    /* ── 2. Renderizar el selector de emojis ─────────────────────── */
+    function renderizarEmojis() {
+      const grid = document.getElementById('emojiGrid');
+      grid.innerHTML = '';
+
+      EMOJIS.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'emoji-btn';
+        btn.textContent = emoji;
+        btn.setAttribute('aria-label', `Seleccionar ícono ${emoji}`);
+
+        btn.addEventListener('click', () => {
+          // Quitar selección anterior
+          document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+          // Marcar el actual
+          btn.classList.add('selected');
+          // Guardar en el input oculto
+          document.getElementById('icono').value = emoji;
+          // Limpiar error si lo había
+          limpiarError('icono');
+          // Actualizar preview
+          actualizarPreview();
+        });
+
+        grid.appendChild(btn);
+      });
+    }
+
+    /* ── 3. Mostrar / ocultar campo de descuento ─────────────────── */
+    const checkOferta  = document.getElementById('enOferta');
+    const grupoDesc    = document.getElementById('descuentoGroup');
+    const inputDesc    = document.getElementById('descuento');
+
+    checkOferta.addEventListener('change', () => {
+      if (checkOferta.checked) {
+        grupoDesc.classList.add('visible');
+      } else {
+        grupoDesc.classList.remove('visible');
+        inputDesc.value = '';
+        limpiarError('descuento');
+      }
+      actualizarPreview();
+    });
+
+    /* ── 4. Previsualización en tiempo real ──────────────────────── */
+
+    // Escuchar cambios en todos los campos del formulario
+    ['nombre', 'descripcion', 'categoria', 'precio', 'descuento'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', actualizarPreview);
+      if (el) el.addEventListener('change', actualizarPreview);
+    });
+
+    function actualizarPreview() {
+      const nombre     = document.getElementById('nombre').value.trim();
+      const descripcion = document.getElementById('descripcion').value.trim();
+      const categoria  = document.getElementById('categoria').value;
+      const precio     = parseFloat(document.getElementById('precio').value);
+      const enOferta   = document.getElementById('enOferta').checked;
+      const descuento  = parseInt(document.getElementById('descuento').value);
+      const icono      = document.getElementById('icono').value || '📦';
+
+      const card = document.getElementById('previewCard');
+
+      // Mapeo categoría → etiqueta legible
+      const etiquetas = {
+        lacteos: 'Lácteos', bebidas: 'Bebidas', enlatados: 'Enlatados',
+        carnes: 'Carnes', limpieza: 'Limpieza', panaderia: 'Panadería',
+        especias: 'Especias', botanas: 'Botanas', abarrotes: 'Abarrotes',
+        higiene_personal: 'Higiene personal'
+      };
+
+      // Si no hay nada aún, mostrar placeholder
+      if (!nombre && !precio) {
+        card.innerHTML = '<p class="preview-placeholder">Llena el formulario para ver la previsualización aquí.</p>';
+        return;
+      }
+
+      // Calcular precio con descuento
+      const precioMostrar = isNaN(precio) ? '—' : `$${precio.toFixed(2)}`;
+      const precioOriginal = (enOferta && !isNaN(precio) && !isNaN(descuento))
+        ? `$${precio.toFixed(2)}`
+        : '';
+      const precioConDesc = (enOferta && !isNaN(precio) && !isNaN(descuento))
+        ? `$${(precio - precio * descuento / 100).toFixed(2)}`
+        : precioMostrar;
+
+      card.innerHTML = `
+        <div class="preview-emoji">${icono}</div>
+        <div class="preview-info">
+          <p class="preview-cat">${etiquetas[categoria] || 'Categoría'}</p>
+          <p class="preview-name">${nombre || 'Nombre del producto'}</p>
+          <p class="preview-desc">${descripcion || 'Descripción del producto...'}</p>
+          <div>
+            <span class="preview-price">${precioConDesc}</span>
+            ${precioOriginal ? `<span class="preview-original">${precioOriginal}</span>` : ''}
+            ${(enOferta && !isNaN(descuento)) ? `<span class="preview-badge">-${descuento}%</span>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    /* ── 5. Validación de campos ─────────────────────────────────── */
+
+    /**
+     * Muestra el mensaje de error de un campo.
+     * @param {string} campo - ID del campo (sin "error" prefix)
+     */
+    function mostrarError(campo) {
+      const input = document.getElementById(campo);
+      const error = document.getElementById(`error${campo.charAt(0).toUpperCase() + campo.slice(1)}`);
+      if (input)  input.classList.add('error');
+      if (error)  error.classList.add('visible');
+    }
+
+    /**
+     * Quita el mensaje de error de un campo.
+     */
+    function limpiarError(campo) {
+      const input = document.getElementById(campo);
+      const errorId = `error${campo.charAt(0).toUpperCase() + campo.slice(1)}`;
+      const error = document.getElementById(errorId);
+      if (input)  input.classList.remove('error');
+      if (error)  error.classList.remove('visible');
+    }
+
+    // Limpiar error al escribir en cada campo
+    ['nombre', 'descripcion', 'categoria', 'precio', 'descuento'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input',  () => limpiarError(id));
+      if (el) el.addEventListener('change', () => limpiarError(id));
+    });
+
+    /**
+     * Valida todos los campos del formulario.
+     * @returns {boolean} true si todo está bien, false si hay errores.
+     */
+    function validarFormulario() {
+      let valido = true;
+
+      // Nombre: no vacío
+      const nombre = document.getElementById('nombre').value.trim();
+      if (!nombre) {
+        mostrarError('nombre');
+        valido = false;
+      }
+
+      // Descripción: no vacía
+      const descripcion = document.getElementById('descripcion').value.trim();
+      if (!descripcion) {
+        mostrarError('descripcion');
+        valido = false;
+      }
+
+      // Categoría: debe estar seleccionada
+      const categoria = document.getElementById('categoria').value;
+      if (!categoria) {
+        mostrarError('categoria');
+        valido = false;
+      }
+
+      // Precio: número mayor a 0
+      const precio = parseFloat(document.getElementById('precio').value);
+      if (isNaN(precio) || precio <= 0) {
+        mostrarError('precio');
+        valido = false;
+      }
+
+      // Descuento: requerido solo si hay oferta
+      const enOferta = document.getElementById('enOferta').checked;
+      if (enOferta) {
+        const descuento = parseInt(document.getElementById('descuento').value);
+        if (isNaN(descuento) || descuento < 1 || descuento > 99) {
+          mostrarError('descuento');
+          valido = false;
+        }
+      }
+
+      // Ícono: debe haberse seleccionado uno
+      const icono = document.getElementById('icono').value;
+      if (!icono) {
+        mostrarError('icono');
+        valido = false;
+      }
+
+      return valido;
+    }
+
+    /* ── 6. Submit: validar → crear objeto JSON ──────────────────── */
+
+    // Variable global donde se guarda el último JSON creado
+    let ultimoProductoJSON = null;
+
+    document.getElementById('adminForm').addEventListener('submit', (e) => {
+      e.preventDefault(); // Evitar envío real del formulario
+
+      // Ocultar alertas anteriores
+      document.getElementById('alertaError').classList.remove('visible');
+      document.getElementById('alertaExito').classList.remove('visible');
+
+      // Validar
+      const esValido = validarFormulario();
+
+      if (!esValido) {
+        // Mostrar alerta de error general
+        document.getElementById('alertaError').classList.add('visible');
+        // Scroll suave al inicio del formulario para ver el error
+        document.getElementById('adminForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      // ── Construir el objeto JSON ──────────────────────────────
+      const enOferta  = document.getElementById('enOferta').checked;
+      const precio    = parseFloat(document.getElementById('precio').value);
+      const descuento = enOferta ? parseInt(document.getElementById('descuento').value) : null;
+
+      const producto = {
+        id:            `prod_${Date.now()}`,       // ID único basado en timestamp
+        nombre:        document.getElementById('nombre').value.trim(),
+        descripcion:   document.getElementById('descripcion').value.trim(),
+        categoria:     document.getElementById('categoria').value,
+        icono:         document.getElementById('icono').value,
+        precio:        precio,
+        enOferta:      enOferta,
+        descuento:     descuento,
+        precioFinal:   enOferta ? parseFloat((precio - precio * descuento / 100).toFixed(2)) : precio,
+        fechaCreacion: new Date().toLocaleDateString('es-MX', {
+          year: 'numeric', month: '2-digit', day: '2-digit'
+        }),
+      };
+
+      // Guardar referencia global
+      ultimoProductoJSON = producto;
+
+      // ── Mostrar el JSON en el panel ───────────────────────────
+      const jsonFormateado = JSON.stringify(producto, null, 2);
+      document.getElementById('jsonBlock').textContent = jsonFormateado;
+      document.getElementById('btnCopy').style.display = 'flex';
+
+      // Mostrar alerta de éxito
+      document.getElementById('alertaExito').classList.add('visible');
+
+      // Scroll al panel de resultado (en mobile están apilados)
+      document.getElementById('jsonBlock').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      console.log('✅ Producto creado:', producto);
+    });
+
+    /* ── 7. Limpiar formulario ───────────────────────────────────── */
+    document.getElementById('btnReset').addEventListener('click', () => {
+      document.getElementById('adminForm').reset();
+
+      // Limpiar errores visuales
+      document.querySelectorAll('.admin-form-group input, .admin-form-group select, .admin-form-group textarea')
+        .forEach(el => el.classList.remove('error'));
+      document.querySelectorAll('.field-error')
+        .forEach(el => el.classList.remove('visible'));
+
+      // Limpiar emoji seleccionado
+      document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('icono').value = '';
+
+      // Ocultar campo de descuento
+      document.getElementById('descuentoGroup').classList.remove('visible');
+
+      // Ocultar alertas
+      document.getElementById('alertaError').classList.remove('visible');
+      document.getElementById('alertaExito').classList.remove('visible');
+
+      // Resetear panel JSON
+      document.getElementById('jsonBlock').innerHTML = '<span class="json-placeholder">// El JSON aparecerá aquí al crear el producto</span>';
+      document.getElementById('btnCopy').style.display = 'none';
+
+      // Resetear preview
+      document.getElementById('previewCard').innerHTML = '<p class="preview-placeholder">Llena el formulario para ver la previsualización aquí.</p>';
+
+      ultimoProductoJSON = null;
+    });
+
+    /* ── 8. Copiar JSON al portapapeles ──────────────────────────── */
+    function copiarJSON() {
+      if (!ultimoProductoJSON) return;
+
+      const texto = JSON.stringify(ultimoProductoJSON, null, 2);
+
+      navigator.clipboard.writeText(texto).then(() => {
+        const btn = document.getElementById('btnCopy');
+        const original = btn.textContent;
+        btn.textContent = '✅ ¡Copiado!';
+        setTimeout(() => { btn.textContent = original; }, 2000);
+      }).catch(() => {
+        alert('No se pudo copiar automáticamente. Selecciona el texto del JSON y cópialo manualmente.');
+      });
+    }
+
+    /* ── Inicialización ──────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderizarEmojis();
+    });
+
+    // También renderizar si el DOM ya está listo cuando llega este script
+    if (document.readyState !== 'loading') {
+      renderizarEmojis();
+    }
+
+  </script>
+
+</body>
+</html>

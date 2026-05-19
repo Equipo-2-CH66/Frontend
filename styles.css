@@ -25,7 +25,9 @@
    Variables CSS globales — cambia aquí y el cambio se aplica en
    TODO el sitio automáticamente.
    ══════════════════════════════════════════════════════════════════ */
-:root {
+
+
+  :root {
   /* Paleta de colores */
   --color-primary: #D45F1A;
   /* Terracota principal — botones CTA, acentos */
@@ -1724,4 +1726,5 @@ footer {
   display: block;
   animation: fadeInUp .3s ease;
 }
+
 
