@@ -26,103 +26,84 @@
 // ══════════════════════════════════════════════════════════════════
 // PUNTO DE ENTRADA — se ejecuta cuando el HTML termina de cargar
 // ══════════════════════════════════════════════════════════════════
-
-const PRODUCTOS = [
+const PRODUCTOS=[
   {
-    nombre: 'Hola mundo', precio: 42.00, cat: 'lacteos', catLabel: 'Lácteos', desc: 'Yogurt cremoso sin azúcar añadida, rico en proteínas.', icono: '🍦',
-
+    
   },
-];
 
+]
 function renderizarProductos() {
   const grid = document.getElementById('productsGrid');
-
   if (!grid) return;
 
-  // Limpiar tarjetas existentes
-  // grid.innerHTML = '';
+  // Limpiar tarjetas existentes (por si se llama varias veces)
+  //grid.innerHTML = '';
 
   PRODUCTOS.forEach(p => {
-
-    // Construir imagen o ícono
+    // Construir la imagen/ícono del producto
     const imgHTML = p.imagen
-      ? `<img src="${p.imagen}" alt="${p.nombre}">`
-      : `<span class="prod-icon">${p.icono}</span>`;
+      ? ⁠ <img src="${p.imagen}" alt="${p.nombre}"> ⁠
+      : ⁠ <span class="prod-icon">${p.icono}</span> ⁠;
 
-    // Badge de oferta
+    // Badge de oferta (solo si existe)
     const badgeHTML = p.badge
-      ? `<span class="prod-badge">${p.badge}</span>`
+      ? ⁠ <span class="prod-badge">${p.badge}</span> ⁠
       : '';
 
-    // Precio original tachado
+    // Precio original tachado (solo si hay oferta)
     const precioOrigHTML = p.precioOriginal
-      ? `<span class="prod-original">$${p.precioOriginal.toFixed(2)}</span>`
+      ? ⁠ <span class="prod-original">$${p.precioOriginal.toFixed(2)}</span> ⁠
       : '';
 
-    // Crear tarjeta
+    // data-oferta para el filtro de ofertas
+    const dataOferta = p.oferta ? 'data-oferta="true"' : '';
+
+    // Construir la tarjeta completa
     const card = document.createElement('div');
-
     card.className = 'product-card';
-
     card.dataset.cat = p.cat;
-
-    if (p.oferta) {
-      card.dataset.oferta = 'true';
-    }
+    if (p.oferta) card.dataset.oferta = 'true';
 
     card.innerHTML = `
       <div class="prod-img-wrap">
         ${imgHTML}
         ${badgeHTML}
       </div>
-
       <div class="prod-info">
         <p class="prod-cat-tag">${p.catLabel}</p>
-
         <h3 class="prod-name">${p.nombre}</h3>
-
         <p class="prod-desc">${p.desc}</p>
-
         <div class="prod-prices">
           <span class="prod-price">$${p.precio.toFixed(2)}</span>
           ${precioOrigHTML}
         </div>
       </div>
-
-      <button 
-        class="btn-agregar"
-        onclick="agregarAlCarrito(this, '${p.nombre}')"
-      >
+      <button class="btn-agregar" onclick="agregarAlCarrito(this, '${p.nombre}')">
         + Agregar
       </button>
     `;
 
     grid.appendChild(card);
   });
-}
 
-
-
-
-
-
-
-
+// NUEVO — REEMPLAZAR CON ESTO:
 document.addEventListener('DOMContentLoaded', () => {
 
   iniciarNavbar();
   marcarLinkActivo();
-  iniciarAnimacionesScroll();
-  iniciarContadores();
   iniciarCategoriasHome();
 
-  // Solo en productos.html
   if (document.getElementById('productsGrid')) {
-    iniciarFiltros();
-    iniciarBusqueda();
-    revisarFiltroURL();  // Lee el filtro de la URL (ej: ?filtro=ofertas)
-    renderizarProductos(); // Renderiza las tarjetas de producto desde el arreglo PRODUCTOS
+    renderizarProductos();      // 1° primero genera las tarjetas del array
+    iniciarAnimacionesScroll(); // 2° ya existen en el DOM
+    iniciarFiltros();           // 3° ya hay tarjetas que filtrar
+    iniciarBusqueda();          // 4° idem
+    revisarFiltroURL();         // 5° aplica filtro de la URL si hay uno
+  } else {
+    iniciarAnimacionesScroll(); // para index.html y otras páginas
   }
+
+  iniciarContadores();
 
 });
 
@@ -377,9 +358,9 @@ function aplicarFiltro(filtro) {
   // Actualizar contador de resultados
   if (contadorTexto) {
     if (filtro === 'all') {
-      contadorTexto.textContent = `Mostrando todos los productos`;
+      contadorTexto.textContent = ⁠ Mostrando todos los productos ⁠;
     } else {
-      contadorTexto.textContent = `${visibles} producto${visibles !== 1 ? 's' : ''} encontrado${visibles !== 1 ? 's' : ''}`;
+      contadorTexto.textContent = ⁠ ${visibles} producto${visibles !== 1 ? 's' : ''} encontrado${visibles !== 1 ? 's' : ''} ⁠;
     }
   }
 
@@ -447,7 +428,7 @@ function iniciarBusqueda() {
     // Actualizar contador
     if (contadorTexto) {
       contadorTexto.textContent = termino
-        ? `${visibles} resultado${visibles !== 1 ? 's' : ''} para "${termino}"`
+        ? ⁠ ${visibles} resultado${visibles !== 1 ? 's' : ''} para "${termino}" ⁠
         : 'Mostrando todos los productos';
     }
 
@@ -502,7 +483,7 @@ function agregarAlCarrito(boton, nombre) {
   }, 1500);
 
   // Log en consola (útil para debug)
-  console.log(`Producto agregado: ${nombre} | Total en carrito: ${conteoCarrito}`);
+  console.log(⁠ Producto agregado: ${nombre} | Total en carrito: ${conteoCarrito} ⁠);
 }
 
 /**
@@ -528,7 +509,7 @@ function iniciarCategoriasHome() {
     tarjeta.addEventListener('click', () => {
       const categoria = tarjeta.dataset.cat;
       // Redirigir a productos.html con el filtro en la URL
-      window.location.href = `productos.html?filtro=${categoria}`;
+      window.location.href = ⁠ productos.html?filtro=${categoria} ⁠;
     });
   });
 }
@@ -544,7 +525,7 @@ function revisarFiltroURL() {
   if (!filtro) return; // No hay filtro en la URL
 
   // Buscar el botón de filtro correspondiente
-  const botonFiltro = document.querySelector(`.filter-btn[data-filter="${filtro}"]`);
+  const botonFiltro = document.querySelector(⁠ .filter-btn[data-filter="${filtro}"] ⁠);
 
   if (botonFiltro) {
     // Simular un clic en ese botón para activar el filtro
@@ -566,4 +547,3 @@ fetch('contacto.html')
     document.getElementById('contacto-container').innerHTML = data;
   })
   .catch(err => console.error(err));
-  
