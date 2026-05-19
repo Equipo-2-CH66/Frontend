@@ -1728,3 +1728,298 @@ footer {
 }
 
 
+
+/* ═════════════════════════════════════════════════════
+   PANEL DE ADMINISTRACIÓN
+   Aquí se controla el diseño general del formulario
+   y del panel de resultados.
+═════════════════════════════════════════════════════ */
+
+/* ── CONTENEDOR PRINCIPAL ──────────────────────────
+   Divide la pantalla en 2 columnas:
+   · izquierda = formulario
+   · derecha   = preview + JSON
+*/
+.admin-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr; /* 2 columnas iguales */
+  gap:40px; /* espacio entre columnas */
+  max-width:1100px; /* ancho máximo */
+  margin:0 auto; /* centrar horizontalmente */
+  padding:48px 40px 80px; /* espacio interno */
+}
+
+/* ── TARJETA DEL FORMULARIO ─────────────────────────
+   Caja blanca que contiene el formulario.
+*/
+.form-card{
+  background:#fff;
+  border:1.5px solid #E6E6E6;
+  border-radius:20px; /* bordes redondeados */
+  padding:36px;
+  box-shadow:0 4px 10px rgba(0,0,0,.04);
+}
+
+/* ── TÍTULO DEL FORMULARIO ───────────────────────── */
+.form-card-title{
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+/* ── SUBTÍTULO ───────────────────────────────────── */
+.form-card-sub{
+  font-size:14px;
+  color:#777;
+  margin-bottom:28px;
+}
+
+/* ── FORMULARIO ────────────────────────────────────
+   Hace que los elementos se acomoden en columna.
+*/
+#formProducto{
+  display:flex;
+  flex-direction:column;
+  gap:16px; /* separación entre elementos */
+}
+
+/* ── LABELS ────────────────────────────────────────
+   Texto que aparece arriba de los inputs.
+*/
+#formProducto label{
+  font-size:14px;
+  font-weight:600;
+  color:#333;
+}
+
+/* ── INPUTS, SELECT Y TEXTAREA ─────────────────────
+   Estilos generales para todos los campos.
+*/
+#formProducto input,
+#formProducto textarea,
+#formProducto select{
+  width:100%;
+  padding:12px 14px;
+  border:1.5px solid #DADADA;
+  border-radius:10px;
+  font-size:14px;
+  font-family:inherit;
+  outline:none; /* elimina borde azul por defecto */
+  transition:.2s; /* animación suave */
+  background:#FAFAFA;
+}
+
+/* ── EFECTO AL HACER CLICK EN INPUT ────────────────
+   Se activa cuando el usuario selecciona un campo.
+*/
+#formProducto input:focus,
+#formProducto textarea:focus,
+#formProducto select:focus{
+  border-color:#F08A24; /* borde naranja */
+  box-shadow:0 0 0 3px rgba(240,138,36,.15);
+  background:#fff;
+}
+
+/* ── TEXTAREA ──────────────────────────────────────
+   Caja de descripción.
+*/
+#formProducto textarea{
+  min-height:100px;
+  resize:vertical; /* solo puede crecer verticalmente */
+}
+
+/* ── INPUT FILE ────────────────────────────────────
+   Estilo del selector de imágenes.
+*/
+#imagen{
+  background:#fff;
+  padding:10px;
+}
+
+/* ── RADIO BUTTON ──────────────────────────────────
+   Ajusta tamaño y separación del radio de oferta.
+*/
+#formProducto input[type="radio"]{
+  width:auto;
+  margin-right:8px;
+}
+
+/* ── BOTONES ───────────────────────────────────────
+   Estilos generales de todos los botones.
+*/
+#formProducto button{
+  padding:12px 20px;
+  border:none;
+  border-radius:999px; /* forma tipo píldora */
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  transition:.2s;
+}
+
+/* ── BOTÓN CREAR PRODUCTO ────────────────────────── */
+#formProducto button[type="submit"]{
+  background:#F08A24;
+  color:#fff;
+}
+
+/* Efecto hover */
+#formProducto button[type="submit"]:hover{
+  background:#d97412;
+  transform:translateY(-1px);
+}
+
+/* ── BOTÓN LIMPIAR ───────────────────────────────── */
+#formProducto button[type="reset"]{
+  background:#fff;
+  border:1px solid #DADADA;
+  color:#555;
+}
+
+/* Hover del botón limpiar */
+#formProducto button[type="reset"]:hover{
+  border-color:#F08A24;
+  color:#F08A24;
+}
+
+/* ── ALERTAS ───────────────────────────────────────
+   Mensajes de éxito o error.
+*/
+.alerta{
+  padding:14px;
+  border-radius:10px;
+  margin-bottom:18px;
+  font-size:14px;
+  font-weight:500;
+}
+
+/* Alerta roja de error */
+.error-global{
+  background:#FFF1F1;
+  color:#B42318;
+  border:1px solid #F5B5B5;
+}
+
+/* Alerta verde de éxito */
+.exito{
+  background:#ECFDF3;
+  color:#027A48;
+  border:1px solid #ABEFC6;
+}
+
+/* ═════════════════════════════════════════════════════
+   PANEL DERECHO
+   Aquí se muestra el preview y el JSON.
+═════════════════════════════════════════════════════ */
+
+/* ── CONTENEDOR DEL RESULTADO ────────────────────── */
+.resultado-card{
+  background:#2B211B; /* fondo oscuro */
+  border-radius:20px;
+  padding:36px;
+  color:#fff;
+  position:sticky;
+  top:100px;
+  height:fit-content;
+}
+
+/* ── TÍTULO DEL PANEL ────────────────────────────── */
+.resultado-card-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+/* ── SUBTÍTULO ───────────────────────────────────── */
+.resultado-card-sub{
+  font-size:13px;
+  color:#CFCFCF;
+  margin-bottom:22px;
+}
+
+/* ── TARJETA DE PREVISUALIZACIÓN ─────────────────── */
+.preview-product-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:20px;
+  min-height:120px;
+  margin-bottom:24px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Texto placeholder */
+.preview-placeholder{
+  color:#B9B9B9;
+  font-size:14px;
+  text-align:center;
+}
+
+/* ── BLOQUE JSON ───────────────────────────────────
+   Caja donde aparece el objeto JSON generado.
+*/
+.json-block{
+  background:rgba(0,0,0,.25);
+  border-radius:12px;
+  padding:16px;
+  font-family:monospace;
+  font-size:12px;
+  line-height:1.6;
+  overflow-x:auto; /* scroll horizontal si el texto es largo */
+  color:#FFD8AA;
+  min-height:100px;
+}
+
+/* ── BOTÓN COPIAR ────────────────────────────────── */
+.btn-copy{
+  margin-top:14px;
+  padding:10px 18px;
+  border:none;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+}
+
+/* Hover del botón copiar */
+.btn-copy:hover{
+  background:rgba(255,255,255,.16);
+}
+
+/* ═════════════════════════════════════════════════════
+   RESPONSIVE
+   Adaptación para tablets y celulares.
+═════════════════════════════════════════════════════ */
+
+/* ── TABLETS ─────────────────────────────────────── */
+@media(max-width:900px){
+
+  /* Cambia de 2 columnas a 1 */
+  .admin-layout{
+    grid-template-columns:1fr;
+  }
+
+  /* El panel derecho deja de quedarse fijo */
+  .resultado-card{
+    position:static;
+  }
+}
+
+/* ── CELULARES ───────────────────────────────────── */
+@media(max-width:600px){
+
+  /* Reduce espacios laterales */
+  .admin-layout{
+    padding:32px 20px 60px;
+  }
+
+  /* Reduce padding interno */
+  .form-card,
+  .resultado-card{
+    padding:24px 18px;
+  }
+}
