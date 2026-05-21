@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abarrotes Almiux — Crear cuenta</title>
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  registro.html — Registro de usuarios                      ║
+    ║  Tarea 9 · Generation Mx Bootcamp                          ║
+    ║                                                            ║
+    ║  EQUIPO:                                                   ║
+    ║  · Kaleb   → Estructura base HTML                          ║
+    ║  · Danna   → Campos del formulario HTML                    ║
+    ║  · Arturo  → Estilos CSS                                   ║
+    ║  · Yaris   → Panel de beneficios + hero                    ║
+    ║  · Zared   → Validaciones JS                               ║
+    ║  · Noé     → Submit, JSON y alertas globales               ║
+    ║  · Diego   → UX extra (ojo, fortaleza, blur, términos)     ║
+    ╚══════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 4.4 (alertas requeridas por la tarea) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+  <!-- Hoja de estilos del proyecto -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ESTILOS — Tarea de ARTURO
+       Usa las variables CSS del proyecto. No inventes colores nuevos.
+  ════════════════════════════════════════════════════════════ -->
+  <style>
+
+    /* ── Hero superior ──────────────────────────────────────────── */
+    .registro-hero {
+      text-align: center;
+      padding: 64px var(--page-padding) 40px;
+      background: var(--color-bg);
+    }
+
+    .registro-hero h1 {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--color-dark);
+      margin-bottom: 16px;
+    }
+
+    .registro-hero h1 span {
+      color: var(--color-primary);
+    }
+
+    .registro-hero p {
+      max-width: 580px;
+      margin: 0 auto;
+      color: var(--color-muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── Layout principal: formulario + panel beneficios ────────── */
+    .registro-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--page-padding) 80px;
+      align-items: start;
+    }
+
+    /* ── Tarjeta del formulario ─────────────────────────────────── */
+    .form-card {
+      background: #fff;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 40px;
+    }
+
+    .form-card-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 6px;
+    }
+
+    .form-card-sub {
+      font-size: 14px;
+      color: var(--color-muted);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    /* ── Grupos de campo ────────────────────────────────────────── */
+    .campo-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .campo-grupo label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-dark-mid);
+    }
+
+    .campo-grupo label .req {
+      color: var(--color-primary);
+      margin-left: 2px;
+    }
+
+    .campo-grupo input,
+    .campo-grupo select {
+      padding: 13px 16px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-dark);
+      background: var(--color-bg);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+    }
+
+    .campo-grupo input:focus,
+    .campo-grupo select:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-light);
+      background: #fff;
+    }
+
+    /* Estados válido / inválido */
+    .campo-grupo input.valido,
+    .campo-grupo select.valido {
+      border-color: #28a745;
+      box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.12);
+    }
+
+    .campo-grupo input.invalido,
+    .campo-grupo select.invalido {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+    }
+
+    /* ── Fila de dos campos ─────────────────────────────────────── */
+    .fila-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ── Input con botón ojo (contraseña) ───────────────────────── */
+    .input-pwd-wrap {
+      position: relative;
+    }
+
+    .input-pwd-wrap input {
+      padding-right: 46px;
+    }
+
+    .btn-ojo {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--color-muted);
+      padding: 2px;
+      line-height: 1;
+    }
+
+    .btn-ojo:hover { color: var(--color-primary); }
+
+    /* ── Indicador de fortaleza de contraseña ───────────────────── */
+    .fortaleza-wrap {
+      margin-top: 4px;
+      display: none;
+    }
+
+    .fortaleza-barra {
+      height: 4px;
+      border-radius: 4px;
+      background: var(--color-border);
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .fortaleza-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    .fortaleza-label {
+      font-size: 11px;
+      color: var(--color-muted);
+    }
+
+    /* ── Checkbox de términos ───────────────────────────────────── */
+    .checkbox-grupo {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-grupo input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--color-primary);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .checkbox-grupo label {
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.6;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .checkbox-grupo label a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .checkbox-grupo label a:hover { text-decoration: underline; }
+
+    /* ── Alertas Bootstrap personalizadas ───────────────────────── */
+    .alert {
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      padding: 9px 13px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert.show { display: flex; }
+
+    /* ── Botones ────────────────────────────────────────────────── */
+    .btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-registrar {
+      flex: 1;
+      padding: 13px 24px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-registrar:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-registrar:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-limpiar {
+      padding: 13px 24px;
+      background: none;
+      color: var(--color-muted);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-limpiar:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* ── Panel de beneficios (columna derecha) ──────────────────── */
+    .beneficios-card {
+      background: var(--color-dark-mid);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      position: sticky;
+      top: 100px;
+      color: #fff;
+    }
+
+    .beneficios-card h3 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--color-accent);
+      margin-bottom: 10px;
+    }
+
+    .beneficios-card > p {
+      font-size: 14px;
+      color: var(--color-footer-text);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .beneficios-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .beneficio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .beneficio-icono {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .beneficio-item strong {
+      display: block;
+      font-size: 14px;
+      color: var(--color-accent);
+      margin-bottom: 3px;
+    }
+
+    .beneficio-item span {
+      font-size: 13px;
+      color: var(--color-footer-text);
+      line-height: 1.6;
+    }
+
+    /* Panel JSON generado */
+    .json-resultado {
+      display: none;
+      margin-top: 24px;
+      background: rgba(0,0,0,0.3);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .json-resultado.visible { display: block; }
+
+    .json-titulo {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .json-code {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      color: #FFD9A8;
+      white-space: pre;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    .ya-cuenta {
+      font-size: 13px;
+      color: var(--color-footer-text);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .ya-cuenta a {
+      color: var(--color-accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .ya-cuenta a:hover { text-decoration: underline; }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 950px) {
+      .registro-layout {
+        grid-template-columns: 1fr;
+        max-width: 620px;
+      }
+
+      .beneficios-card { position: static; }
+    }
+
+    @media (max-width: 650px) {
+      .registro-hero h1 { font-size: 36px; }
+      .registro-hero { padding: 40px 24px 28px; }
+      .registro-layout { padding: 0 16px 60px; }
+      .form-card { padding: 28px 20px; }
+      .beneficios-card { padding: 28px 20px; }
+      .fila-2 { grid-template-columns: 1fr; }
+      .btns { flex-direction: column; }
+      .btn-registrar,
+      .btn-limpiar { width: 100%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       NAVBAR — Tarea de KALEB
+  ══════════════════════════════════════════════════════════════ -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <img src="./images/Almiux_Logo_Sin_Fondo.png" alt="Logo Abarrotes Almiux">
+      </div>
+      <span>Abarrotes Almiux</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="index.html#ofertas">Ofertas</a>
+      <a href="registro.html" class="nav-cta active">Crear cuenta</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       HERO SUPERIOR — Tarea de YARIS
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="registro-hero">
+    <span class="badge">👤 Formulario de clientes</span>
+    <h1>Queremos <span>conocerte</span></h1>
+    <p>
+      Completa el formulario para registrarte como cliente,
+      recibir promociones especiales y una mejor experiencia
+      en Abarrotes Almiux.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LAYOUT PRINCIPAL — Tarea de KALEB
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="registro-layout">
+
+    <!-- ── Columna izquierda: formulario ──────────────────────── -->
+    <div class="form-card">
+
+      <h2 class="form-card-title">Registro de usuario</h2>
+      <p class="form-card-sub">
+        Todos los campos marcados con <span style="color:var(--color-primary)">*</span> son obligatorios.
+      </p>
+
+      <!-- Alerta global de error (Bootstrap) — manejada por NOÉ -->
+      <div class="alert alert-danger" id="alertaError" role="alert">
+        <span>⚠️</span>
+        <span id="alertaErrorMsg">Por favor corrige los errores marcados.</span>
+      </div>
+
+      <!-- Alerta global de éxito (Bootstrap) — manejada por NOÉ -->
+      <div class="alert alert-success" id="alertaExito" role="alert">
+        <span>✅</span>
+        <span>¡Cuenta creada exitosamente! Bienvenido/a a Abarrotes Almiux.</span>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           FORMULARIO — Tarea de DANNA
+           Danna: agrega aquí el <form id="registroForm"> con
+           todos los campos indicados abajo.
+      ════════════════════════════════════════════════════════ -->
+      <form id="registroForm" novalidate>
+
+        <!-- Nombre(s) y Apellidos -->
+        <div class="fila-2">
+          <div class="campo-grupo">
+            <label for="nombres">Nombre(s) <span class="req">*</span></label>
+            <input type="text" id="nombres" name="nombres"
+              placeholder="Ingresa tu nombre" autocomplete="given-name">
+            <div class="alert alert-danger" id="errorNombres" role="alert"></div>
+          </div>
+          <div class="campo-grupo">
+            <label for="apellidos">Apellidos <span class="req">*</span></label>
+            <input type="text" id="apellidos" name="apellidos"
+              placeholder="Ingresa tus apellidos" autocomplete="family-name">
+            <div class="alert alert-danger" id="errorApellidos" role="alert"></div>
+          </div>
+        </div>
+
+        <!-- Email y Teléfono -->
+        <div class="fila-2">
+          <div class="campo-grupo">
+            <label for="email">Correo electrónico <span class="req">*</span></label>
+            <input type="email" id="email" name="email"
+              placeholder="ejemplo@correo.com" autocomplete="email">
+            <div class="alert alert-danger" id="errorEmail" role="alert"></div>
+          </div>
+          <div class="campo-grupo">
+            <label for="telefono">Teléfono <span class="req">*</span></label>
+            <input type="tel" id="telefono" name="telefono"
+              placeholder="55 1234 5678" maxlength="10" autocomplete="tel">
+            <div class="alert alert-danger" id="errorTelefono" role="alert"></div>
+          </div>
+        </div>
+
+        <!-- Fecha de nacimiento y Género -->
+        <div class="fila-2">
+          <div class="campo-grupo">
+            <label for="fechaNacimiento">Fecha de nacimiento <span class="req">*</span></label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+            <div class="alert alert-danger" id="errorFecha" role="alert"></div>
+          </div>
+          <div class="campo-grupo">
+            <label for="genero">Género</label>
+            <select id="genero" name="genero">
+              <option value="">Selecciona una opción</option>
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+              <option value="no_especificado">Prefiero no decirlo</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dirección -->
+        <div class="campo-grupo">
+          <label for="direccion">Dirección <span class="req">*</span></label>
+          <input type="text" id="direccion" name="direccion"
+            placeholder="Calle, colonia, número exterior..." autocomplete="street-address">
+          <div class="alert alert-danger" id="errorDireccion" role="alert"></div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="campo-grupo">
+          <label for="password">Contraseña <span class="req">*</span></label>
+          <div class="input-pwd-wrap">
+            <input type="password" id="password" name="password"
+              placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+            <!-- Botón ojo — función de DIEGO -->
+            <button type="button" class="btn-ojo" id="ojoPwd" aria-label="Mostrar contraseña">👁️</button>
+          </div>
+          <!-- Indicador de fortaleza — función de DIEGO -->
+          <div class="fortaleza-wrap" id="fortalezaWrap">
+            <div class="fortaleza-barra">
+              <div class="fortaleza-fill" id="fortalezaFill"></div>
+            </div>
+            <span class="fortaleza-label" id="fortalezaLabel"></span>
+          </div>
+          <div class="alert alert-danger" id="errorPassword" role="alert"></div>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="campo-grupo">
+          <label for="confirmarPassword">Confirmar contraseña <span class="req">*</span></label>
+          <div class="input-pwd-wrap">
+            <input type="password" id="confirmarPassword" name="confirmarPassword"
+              placeholder="Repite tu contraseña" autocomplete="new-password">
+            <button type="button" class="btn-ojo" id="ojoConfirm" aria-label="Mostrar contraseña">👁️</button>
+          </div>
+          <div class="alert alert-danger" id="errorConfirmar" role="alert"></div>
+        </div>
+
+        <!-- Checkbox términos y condiciones -->
+        <div class="checkbox-grupo">
+          <input type="checkbox" id="terminos" name="terminos">
+          <label for="terminos">
+            Acepto los <a href="#">términos y condiciones</a> y autorizo
+            el uso de mis datos para recibir promociones y noticias.
+          </label>
+        </div>
+        <div class="alert alert-danger" id="errorTerminos" role="alert" style="margin-bottom:16px"></div>
+
+        <!-- Botones -->
+        <div class="btns">
+          <button type="submit" class="btn-registrar" id="btnRegistrar">
+            Crear mi cuenta →
+          </button>
+          <button type="button" class="btn-limpiar" id="btnLimpiar">
+            ↺ Limpiar
+          </button>
+        </div>
+
+      </form>
+
+    </div><!-- /form-card -->
+
+    <!-- ── Columna derecha: beneficios + JSON — Tarea de YARIS ── -->
+    <aside>
+      <div class="beneficios-card">
+        <h3>Beneficios</h3>
+        <p>
+          Al registrarte podrás recibir descuentos exclusivos,
+          promociones especiales y acceso prioritario a novedades.
+        </p>
+
+        <div class="beneficios-lista">
+          <div class="beneficio-item">
+            <div class="beneficio-icono">🎁</div>
+            <div>
+              <strong>Promociones exclusivas</strong>
+              <span>Recibe ofertas personalizadas cada semana.</span>
+            </div>
+          </div>
+          <div class="beneficio-item">
+            <div class="beneficio-icono">🚚</div>
+            <div>
+              <strong>Pedidos rápidos</strong>
+              <span>Facilita tus futuras compras y entregas a domicilio.</span>
+            </div>
+          </div>
+          <div class="beneficio-item">
+            <div class="beneficio-icono">⭐</div>
+            <div>
+              <strong>Atención personalizada</strong>
+              <span>Mejora tu experiencia como cliente frecuente.</span>
+            </div>
+          </div>
+          <div class="beneficio-item">
+            <div class="beneficio-icono">🏷️</div>
+            <div>
+              <strong>Programa de puntos</strong>
+              <span>Acumula puntos con cada compra y canjéalos por descuentos.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel JSON — llenado por NOÉ (JS) -->
+        <div class="json-resultado" id="jsonResultado">
+          <p class="json-titulo">📋 Objeto JSON del usuario</p>
+          <pre class="json-code" id="jsonCode"></pre>
+        </div>
+
+        <p class="ya-cuenta">
+          ¿Ya tienes cuenta? <a href="#">Inicia sesión aquí</a>
+        </p>
+      </div>
+    </aside>
+
+  </div><!-- /registro-layout -->
+
+  <!-- ══════════════════════════════════════════════════════════════
+       FOOTER — Tarea de KALEB
+  ══════════════════════════════════════════════════════════════ -->
+  <footer>
+    <a href="index.html" class="footer-logo">🏪 Abarrotes Almiux</a>
+    <div class="footer-links">
+      <a href="#">Aviso de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+      <a href="nosotros.html">Contacto</a>
+      <a href="admin.html">Panel admin</a>
+    </div>
+    <div>© 2026 · Hecho en México con ❤️</div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+  <!-- JS del proyecto (navbar hamburguesa) -->
+  <script src="main.js"></script>
+
+  <script>
+    /* ════════════════════════════════════════════════════════════════
+       JAVASCRIPT — registro.html
+
+       SECCIONES POR INTEGRANTE:
+         ZARED  → 1. Helpers  2. Validaciones individuales
+         NOÉ    → 3. Submit   4. Crear JSON   5. Limpiar
+         DIEGO  → 6. Ojo contraseña   7. Fortaleza   8. Blur en tiempo real
+    ════════════════════════════════════════════════════════════════ */
+
+
+    /* ══════════════════════════════════════════════════════════════
+       ZARED — Helpers y validaciones
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── 1. Helpers ──────────────────────────────────────────────── */
+    function mostrarError(alertaId, inputId, mensaje) {
+      const alerta = document.getElementById(alertaId);
+      const input  = document.getElementById(inputId);
+      if (alerta) { alerta.textContent = '⚠ ' + mensaje; alerta.classList.add('show'); }
+      if (input)  { input.classList.remove('valido'); input.classList.add('invalido'); }
+    }
+
+    function limpiarError(alertaId, inputId) {
+      const alerta = document.getElementById(alertaId);
+      const input  = document.getElementById(inputId);
+      if (alerta) { alerta.textContent = ''; alerta.classList.remove('show'); }
+      if (input)  { input.classList.remove('invalido'); input.classList.add('valido'); }
+    }
+
+    /* ── 2. Validaciones individuales ───────────────────────────── */
+
+    function validarNombres() {
+      const val = document.getElementById('nombres').value.trim();
+      if (!val) {
+        mostrarError('errorNombres', 'nombres', 'El nombre es obligatorio.');
+        return false;
+      }
+      limpiarError('errorNombres', 'nombres');
+      return true;
+    }
+
+    function validarApellidos() {
+      const val = document.getElementById('apellidos').value.trim();
+      if (!val) {
+        mostrarError('errorApellidos', 'apellidos', 'Los apellidos son obligatorios.');
+        return false;
+      }
+      limpiarError('errorApellidos', 'apellidos');
+      return true;
+    }
+
+    function validarEmail() {
+      const val = document.getElementById('email').value.trim();
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!val) {
+        mostrarError('errorEmail', 'email', 'El correo electrónico es obligatorio.');
+        return false;
+      }
+      if (!regex.test(val)) {
+        mostrarError('errorEmail', 'email', 'Ingresa un correo válido (ej: nombre@dominio.com).');
+        return false;
+      }
+      limpiarError('errorEmail', 'email');
+      return true;
+    }
+
+    function validarTelefono() {
+      const val = document.getElementById('telefono').value.trim().replace(/\s/g, '');
+      if (!val) {
+        mostrarError('errorTelefono', 'telefono', 'El teléfono es obligatorio.');
+        return false;
+      }
+      if (!/^\d{10}$/.test(val)) {
+        mostrarError('errorTelefono', 'telefono', 'El teléfono debe tener exactamente 10 dígitos.');
+        return false;
+      }
+      limpiarError('errorTelefono', 'telefono');
+      return true;
+    }
+
+    function validarFecha() {
+      const val = document.getElementById('fechaNacimiento').value;
+      if (!val) {
+        mostrarError('errorFecha', 'fechaNacimiento', 'La fecha de nacimiento es obligatoria.');
+        return false;
+      }
+      // Verificar que sea mayor de 18 años
+      const hoy   = new Date();
+      const nac   = new Date(val);
+      const edad  = hoy.getFullYear() - nac.getFullYear();
+      const mes   = hoy.getMonth() - nac.getMonth();
+      const mayor = edad > 18 || (edad === 18 && mes >= 0);
+      if (!mayor) {
+        mostrarError('errorFecha', 'fechaNacimiento', 'Debes tener al menos 18 años para registrarte.');
+        return false;
+      }
+      limpiarError('errorFecha', 'fechaNacimiento');
+      return true;
+    }
+
+    function validarDireccion() {
+      const val = document.getElementById('direccion').value.trim();
+      if (!val) {
+        mostrarError('errorDireccion', 'direccion', 'La dirección es obligatoria.');
+        return false;
+      }
+      limpiarError('errorDireccion', 'direccion');
+      return true;
+    }
+
+    function validarPassword() {
+      const val = document.getElementById('password').value;
+      if (!val) {
+        mostrarError('errorPassword', 'password', 'La contraseña es obligatoria.');
+        return false;
+      }
+      if (val.length < 8) {
+        mostrarError('errorPassword', 'password', 'La contraseña debe tener al menos 8 caracteres.');
+        return false;
+      }
+      if (!/\d/.test(val)) {
+        mostrarError('errorPassword', 'password', 'La contraseña debe contener al menos un número.');
+        return false;
+      }
+      limpiarError('errorPassword', 'password');
+      return true;
+    }
+
+    function validarConfirmar() {
+      const pwd     = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmarPassword').value;
+      if (!confirm) {
+        mostrarError('errorConfirmar', 'confirmarPassword', 'Por favor confirma tu contraseña.');
+        return false;
+      }
+      if (pwd !== confirm) {
+        mostrarError('errorConfirmar', 'confirmarPassword', 'Las contraseñas no coinciden.');
+        return false;
+      }
+      limpiarError('errorConfirmar', 'confirmarPassword');
+      return true;
+    }
+
+    function validarTerminos() {
+      const check = document.getElementById('terminos').checked;
+      const alerta = document.getElementById('errorTerminos');
+      if (!check) {
+        alerta.textContent = '⚠ Debes aceptar los términos y condiciones.';
+        alerta.classList.add('show');
+        return false;
+      }
+      alerta.textContent = '';
+      alerta.classList.remove('show');
+      return true;
+    }
+
+
+    /* ══════════════════════════════════════════════════════════════
+       NOÉ — Submit, JSON y limpiar
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── 3. Submit ───────────────────────────────────────────────── */
+    document.getElementById('registroForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Ocultar alertas globales previas
+      document.getElementById('alertaError').classList.remove('show');
+      document.getElementById('alertaExito').classList.remove('show');
+      document.getElementById('jsonResultado').classList.remove('visible');
+
+      // Ejecutar todas las validaciones
+      const resultados = [
+        validarNombres(),
+        validarApellidos(),
+        validarEmail(),
+        validarTelefono(),
+        validarFecha(),
+        validarDireccion(),
+        validarPassword(),
+        validarConfirmar(),
+        validarTerminos()
+      ];
+
+      const todoValido = resultados.every(r => r === true);
+
+      if (!todoValido) {
+        document.getElementById('alertaErrorMsg').textContent =
+          'Por favor corrige los errores marcados en el formulario.';
+        document.getElementById('alertaError').classList.add('show');
+        // Scroll al primer campo con error
+        const primerError = document.querySelector('.invalido');
+        if (primerError) {
+          primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          primerError.focus();
+        }
+        return;
+      }
+
+      crearUsuarioJSON();
+    });
+
+    /* ── 4. Crear objeto JSON del usuario ───────────────────────── */
+    function crearUsuarioJSON() {
+      const usuario = {
+        id:             `usr_${Date.now()}`,
+        nombres:        document.getElementById('nombres').value.trim(),
+        apellidos:      document.getElementById('apellidos').value.trim(),
+        email:          document.getElementById('email').value.trim().toLowerCase(),
+        telefono:       document.getElementById('telefono').value.trim().replace(/\s/g, ''),
+        fechaNacimiento:document.getElementById('fechaNacimiento').value,
+        genero:         document.getElementById('genero').value || 'no_especificado',
+        direccion:      document.getElementById('direccion').value.trim(),
+        // NOTA académica: en producción la contraseña nunca se guarda en texto plano.
+        password:       document.getElementById('password').value,
+        fechaRegistro:  new Date().toLocaleDateString('es-MX', {
+                          year: 'numeric', month: '2-digit', day: '2-digit'
+                        }),
+        rol: 'cliente',
+      };
+
+      // Mostrar JSON en el panel
+      document.getElementById('jsonCode').textContent = JSON.stringify(usuario, null, 2);
+      document.getElementById('jsonResultado').classList.add('visible');
+
+      // Alerta de éxito
+      document.getElementById('alertaExito').classList.add('show');
+
+      // Deshabilitar botón para evitar doble envío
+      const btn = document.getElementById('btnRegistrar');
+      btn.disabled = true;
+      btn.textContent = '✅ ¡Cuenta creada!';
+
+      // Scroll al JSON
+      document.getElementById('jsonResultado').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      console.log('✅ Usuario registrado:', usuario);
+    }
+
+    /* ── 5. Limpiar formulario ───────────────────────────────────── */
+    document.getElementById('btnLimpiar').addEventListener('click', () => {
+      document.getElementById('registroForm').reset();
+
+      // Quitar estados visuales de todos los campos
+      document.querySelectorAll('.campo-grupo input, .campo-grupo select')
+        .forEach(el => el.classList.remove('valido', 'invalido'));
+
+      // Ocultar todas las alertas de campo
+      document.querySelectorAll('.alert').forEach(a => {
+        a.textContent = '';
+        a.classList.remove('show');
+      });
+
+      // Ocultar indicador de fortaleza
+      document.getElementById('fortalezaWrap').style.display = 'none';
+
+      // Resetear botón de submit
+      const btn = document.getElementById('btnRegistrar');
+      btn.disabled = false;
+      btn.textContent = 'Crear mi cuenta →';
+
+      // Ocultar JSON
+      document.getElementById('jsonResultado').classList.remove('visible');
+    });
+
+
+    /* ══════════════════════════════════════════════════════════════
+       DIEGO — UX: ojo, fortaleza y validación en tiempo real
+    ══════════════════════════════════════════════════════════════ */
+
+    /* ── 6. Mostrar / ocultar contraseña ─────────────────────────── */
+    function togglePassword(inputId, btnId) {
+      const input = document.getElementById(inputId);
+      const btn   = document.getElementById(btnId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    document.getElementById('ojoPwd').addEventListener('click', () =>
+      togglePassword('password', 'ojoPwd'));
+
+    document.getElementById('ojoConfirm').addEventListener('click', () =>
+      togglePassword('confirmarPassword', 'ojoConfirm'));
+
+    /* ── 7. Indicador de fortaleza de contraseña ─────────────────── */
+    function evaluarFortaleza(pwd) {
+      const wrap  = document.getElementById('fortalezaWrap');
+      const fill  = document.getElementById('fortalezaFill');
+      const label = document.getElementById('fortalezaLabel');
+
+      if (!pwd) { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'block';
+
+      let puntos = 0;
+      if (pwd.length >= 8)             puntos++;
+      if (pwd.length >= 12)            puntos++;
+      if (/[A-Z]/.test(pwd))           puntos++;
+      if (/\d/.test(pwd))              puntos++;
+      if (/[^A-Za-z0-9]/.test(pwd))   puntos++;
+
+      if (puntos <= 1) {
+        fill.style.cssText  = 'width:25%; background:#dc3545';
+        label.textContent   = 'Contraseña débil';
+        label.style.color   = '#dc3545';
+      } else if (puntos <= 3) {
+        fill.style.cssText  = 'width:60%; background:#ffc107';
+        label.textContent   = 'Contraseña regular';
+        label.style.color   = '#856404';
+      } else {
+        fill.style.cssText  = 'width:100%; background:#28a745';
+        label.textContent   = 'Contraseña fuerte ✓';
+        label.style.color   = '#28a745';
+      }
+    }
+
+    document.getElementById('password').addEventListener('input', () => {
+      evaluarFortaleza(document.getElementById('password').value);
+      if (document.getElementById('confirmarPassword').value) validarConfirmar();
+    });
+
+    /* ── 8. Validación en tiempo real al salir de cada campo ─────── */
+    document.getElementById('nombres').addEventListener('blur', validarNombres);
+    document.getElementById('apellidos').addEventListener('blur', validarApellidos);
+    document.getElementById('email').addEventListener('blur', validarEmail);
+    document.getElementById('telefono').addEventListener('blur', validarTelefono);
+    document.getElementById('fechaNacimiento').addEventListener('blur', validarFecha);
+    document.getElementById('direccion').addEventListener('blur', validarDireccion);
+    document.getElementById('password').addEventListener('blur', validarPassword);
+    document.getElementById('confirmarPassword').addEventListener('blur', validarConfirmar);
+
+  </script>
+
+</body>
+</html>

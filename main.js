@@ -26,71 +26,88 @@
 // ══════════════════════════════════════════════════════════════════
 // PUNTO DE ENTRADA — se ejecuta cuando el HTML termina de cargar
 // ══════════════════════════════════════════════════════════════════
-/*const PRODUCTOS=[
+
+const PRODUCTOS = [
   {
-    
+    nombre: 'Hola mundo', precio: 42.00, cat: 'lacteos', catLabel: 'Lácteos', desc: 'Yogurt cremoso sin azúcar añadida, rico en proteínas.', icono: '🍦',
+
   },
+];
 
-
-
-
-
-]
 function renderizarProductos() {
   const grid = document.getElementById('productsGrid');
+
   if (!grid) return;
 
-  // Limpiar tarjetas existentes (por si se llama varias veces)
-  //grid.innerHTML = '';
+  // Limpiar tarjetas existentes
+  // grid.innerHTML = '';
 
   PRODUCTOS.forEach(p => {
-    // Construir la imagen/ícono del producto
+
+    // Construir imagen o ícono
     const imgHTML = p.imagen
       ? `<img src="${p.imagen}" alt="${p.nombre}">`
       : `<span class="prod-icon">${p.icono}</span>`;
 
-    // Badge de oferta (solo si existe)
+    // Badge de oferta
     const badgeHTML = p.badge
       ? `<span class="prod-badge">${p.badge}</span>`
       : '';
 
-    // Precio original tachado (solo si hay oferta)
+    // Precio original tachado
     const precioOrigHTML = p.precioOriginal
       ? `<span class="prod-original">$${p.precioOriginal.toFixed(2)}</span>`
       : '';
 
-    // data-oferta para el filtro de ofertas
-    const dataOferta = p.oferta ? 'data-oferta="true"' : '';
-
-    // Construir la tarjeta completa
+    // Crear tarjeta
     const card = document.createElement('div');
+
     card.className = 'product-card';
+
     card.dataset.cat = p.cat;
-    if (p.oferta) card.dataset.oferta = 'true';
+
+    if (p.oferta) {
+      card.dataset.oferta = 'true';
+    }
 
     card.innerHTML = `
       <div class="prod-img-wrap">
         ${imgHTML}
         ${badgeHTML}
       </div>
+
       <div class="prod-info">
         <p class="prod-cat-tag">${p.catLabel}</p>
+
         <h3 class="prod-name">${p.nombre}</h3>
+
         <p class="prod-desc">${p.desc}</p>
+
         <div class="prod-prices">
           <span class="prod-price">$${p.precio.toFixed(2)}</span>
           ${precioOrigHTML}
         </div>
       </div>
-      <button class="btn-agregar" onclick="agregarAlCarrito(this, '${p.nombre}')">
+
+      <button 
+        class="btn-agregar"
+        onclick="agregarAlCarrito(this, '${p.nombre}')"
+      >
         + Agregar
       </button>
     `;
 
     grid.appendChild(card);
   });
-}*/
-// NUEVO — REEMPLAZAR CON ESTO:
+}
+
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
   iniciarNavbar();
@@ -98,16 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarCategoriasHome();
 
   if (document.getElementById('productsGrid')) {
-    renderizarProductos();      // 1° primero genera las tarjetas del array
-    iniciarAnimacionesScroll(); // 2° ya existen en el DOM
-    iniciarFiltros();           // 3° ya hay tarjetas que filtrar
-    iniciarBusqueda();          // 4° idem
-    revisarFiltroURL();         // 5° aplica filtro de la URL si hay uno
-  } else {
-    iniciarAnimacionesScroll(); // para index.html y otras páginas
+    iniciarFiltros();
+    iniciarBusqueda();
+    revisarFiltroURL();  // Lee el filtro de la URL (ej: ?filtro=ofertas)
+    renderizarProductos(); // Renderiza las tarjetas de producto desde el arreglo PRODUCTOS
   }
-
-  iniciarContadores();
 
 });
 
@@ -551,3 +563,4 @@ fetch('contacto.html')
     document.getElementById('contacto-container').innerHTML = data;
   })
   .catch(err => console.error(err));
+  
