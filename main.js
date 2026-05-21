@@ -33,6 +33,10 @@ const PRODUCTOS = [
 
   },
 ];
+try {
+  const adminProds = JSON.parse(localStorage.getItem('almiux_productos_admin')) || [];
+  adminProds.forEach(p => PRODUCTOS.push(p));
+} catch (e) {}
 
 function renderizarProductos() {
   const grid = document.getElementById('productsGrid');
