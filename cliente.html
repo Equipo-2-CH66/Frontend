@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,8 @@
   -->
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <!-- Bootstrap 4.4 (alertas requeridas por la tarea) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
@@ -39,6 +41,7 @@
 
 
 </head>
+
 <body>
 
   <!-- ══════════════════════════════════════════════════════════════
@@ -66,7 +69,7 @@
   <!-- ══════════════════════════════════════════════════════════════
        HERO SUPERIOR 
   ══════════════════════════════════════════════════════════════ -->
- <section class="registro-hero">
+  <section class="registro-hero">
     <span class="badge">Formulario de clientes</span>
     <h1>Queremos <span>conocerte</span></h1>
     <p>
@@ -106,14 +109,13 @@
         <div class="fila-2">
           <div class="campo-grupo">
             <label for="nombres">Nombre(s) <span class="req">*</span></label>
-            <input type="text" id="nombres" name="nombres"
-              placeholder="Ingresa tu nombre" autocomplete="given-name">
+            <input type="text" id="nombres" name="nombres" placeholder="Ingresa tu nombre" autocomplete="given-name">
             <div class="alert alert-danger" id="errorNombres" role="alert"></div>
           </div>
           <div class="campo-grupo">
             <label for="apellidos">Apellidos <span class="req">*</span></label>
-            <input type="text" id="apellidos" name="apellidos"
-              placeholder="Ingresa tus apellidos" autocomplete="family-name">
+            <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos"
+              autocomplete="family-name">
             <div class="alert alert-danger" id="errorApellidos" role="alert"></div>
           </div>
         </div>
@@ -122,14 +124,13 @@
         <div class="fila-2">
           <div class="campo-grupo">
             <label for="email">Correo electrónico <span class="req">*</span></label>
-            <input type="email" id="email" name="email"
-              placeholder="ejemplo@correo.com" autocomplete="email">
+            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" autocomplete="email">
             <div class="alert alert-danger" id="errorEmail" role="alert"></div>
           </div>
           <div class="campo-grupo">
             <label for="telefono">Teléfono <span class="req">*</span></label>
-            <input type="tel" id="telefono" name="telefono"
-              placeholder="55 1234 5678" maxlength="10" autocomplete="tel">
+            <input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" maxlength="10"
+              autocomplete="tel">
             <div class="alert alert-danger" id="errorTelefono" role="alert"></div>
           </div>
         </div>
@@ -155,8 +156,8 @@
         <!-- Dirección -->
         <div class="campo-grupo">
           <label for="direccion">Dirección <span class="req">*</span></label>
-          <input type="text" id="direccion" name="direccion"
-            placeholder="Calle, colonia, número exterior..." autocomplete="street-address">
+          <input type="text" id="direccion" name="direccion" placeholder="Calle, colonia, número exterior..."
+            autocomplete="street-address">
           <div class="alert alert-danger" id="errorDireccion" role="alert"></div>
         </div>
 
@@ -164,12 +165,12 @@
         <div class="campo-grupo">
           <label for="password">Contraseña <span class="req">*</span></label>
           <div class="input-pwd-wrap">
-            <input type="password" id="password" name="password"
-              placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+            <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres"
+              autocomplete="new-password">
             <!-- Botón ojo — función de DIEGO -->
             <button type="button" class="btn-ojo" id="ojoPwd" aria-label="Mostrar contraseña">👁️</button>
           </div>
-          
+
           <!-- Indicador de fortaleza — función de DIEGO -->
           <div class="fortaleza-wrap" id="fortalezaWrap">
             <div class="fortaleza-barra">
@@ -184,8 +185,8 @@
         <div class="campo-grupo">
           <label for="confirmarPassword">Confirmar contraseña <span class="req">*</span></label>
           <div class="input-pwd-wrap">
-            <input type="password" id="confirmarPassword" name="confirmarPassword"
-              placeholder="Repite tu contraseña" autocomplete="new-password">
+            <input type="password" id="confirmarPassword" name="confirmarPassword" placeholder="Repite tu contraseña"
+              autocomplete="new-password">
             <button type="button" class="btn-ojo" id="ojoConfirm" aria-label="Mostrar contraseña">👁️</button>
           </div>
           <div class="alert alert-danger" id="errorConfirmar" role="alert"></div>
@@ -212,7 +213,7 @@
         </div>
 
       </form>
-    </div>  <!-- /form-card -->
+    </div> <!-- /form-card -->
 
     <!-- ── Columna derecha: beneficios — Tarea de YARIS ────────── -->
     <aside>
@@ -220,7 +221,7 @@
         <h3>Beneficios</h3>
         <p>
           Al registrarte podrás realizar pedidos a domicilio de forma sencilla
-          Todo lo que necesitas a un solo click 
+          Todo lo que necesitas a un solo click
         </p>
 
         <div class="beneficios-lista">
@@ -243,7 +244,7 @@
               <span>Obtén un servicio cercano y dedicado, ideal para clientes frecuentes.</span>
             </div>
           </div>
-          
+
         </div>
 
         <!-- Panel JSON — llenado por NOÉ (JS) -->
@@ -281,27 +282,14 @@
 
   <!-- JS del proyecto (navbar hamburguesa) -->
   <script src="main.js"></script>
+  <!-- Validaciones del registro -->
+  <script src="./js/cliente.js"></script>
 
-  <!-- ═══════════════════════════════════════════════════════════
-       JAVASCRIPT — Tareas de ZARED, NOÉ y DIEGO
-       Cada quien agrega sus funciones en el orden indicado.
-
-       ZARED  → mostrarError(), limpiarError(), validar*()
-       NOÉ    → submit handler, crearUsuarioJSON(), btnLimpiar
-       DIEGO  → togglePassword(), evaluarFortaleza(), blur listeners
-  ════════════════════════════════════════════════════════════ -->
   <script>
-
-    // ── ZARED: agrega tus funciones aquí ──────────────────────
-
-
-    // ── NOÉ: agrega tus funciones aquí ────────────────────────
-
-
-    // ── DIEGO: agrega tus funciones aquí ──────────────────────
 
 
   </script>
 
 </body>
+
 </html>
