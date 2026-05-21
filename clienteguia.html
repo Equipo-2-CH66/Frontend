@@ -1,0 +1,567 @@
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Formulario de Usuario — Abarrotes Almiux</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@700;900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ════════════════════════════════════════
+       VARIABLES
+    ════════════════════════════════════════ */
+
+    :root {
+      --color-primary: #D45F1A;
+      --color-primary-dark: #B84E12;
+      --color-primary-light: #FDE8D0;
+
+      --color-bg: #FFF8EF;
+      --color-bg-card: #FFF0E0;
+
+      --color-dark: #2C1A0E;
+      --color-dark-mid: #3B1F08;
+
+      --color-muted: #7A4A26;
+      --color-border: #E8D8C0;
+
+      --radius-card: 18px;
+      --radius-pill: 999px;
+
+      --font-display: 'Fraunces', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    /* ════════════════════════════════════════
+       RESET
+    ════════════════════════════════════════ */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--color-bg);
+      font-family: var(--font-body);
+      color: var(--color-dark);
+      min-height: 100vh;
+    }
+
+    /* ════════════════════════════════════════
+       CONTENEDOR
+    ════════════════════════════════════════ */
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 50px 24px;
+    }
+
+    /* ════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════ */
+
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 54px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: var(--color-primary);
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: auto;
+      color: var(--color-muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ════════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════════ */
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 30px;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════════════
+       FORM CARD
+    ════════════════════════════════════════ */
+
+    .form-card {
+      background: white;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-card);
+      padding: 38px;
+    }
+
+    .form-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .form-sub {
+      color: var(--color-muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* ════════════════════════════════════════
+       FORM
+    ════════════════════════════════════════ */
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-dark-mid);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--color-border);
+      background: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      transition: .2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px rgba(212, 95, 26, .12);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* ════════════════════════════════════════
+       CHECKBOX
+    ════════════════════════════════════════ */
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: -6px;
+    }
+
+    .checkbox-group input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--color-muted);
+      font-weight: 500;
+    }
+
+    /* ════════════════════════════════════════
+       BUTTONS
+    ════════════════════════════════════════ */
+
+    .btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid var(--color-border);
+      color: var(--color-muted);
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    /* ════════════════════════════════════════
+       SIDE CARD
+    ════════════════════════════════════════ */
+
+    .info-card {
+      background: var(--color-dark-mid);
+      color: white;
+      border-radius: var(--radius-card);
+      padding: 36px;
+      position: sticky;
+      top: 30px;
+    }
+
+    .info-card h3 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: #DDBA96;
+      line-height: 1.7;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      font-size: 24px;
+    }
+
+    .info-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #FFD9A8;
+      font-size: 14px;
+    }
+
+    .info-item span {
+      font-size: 13px;
+      color: #CDAA84;
+      line-height: 1.6;
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+
+    @media (max-width: 950px) {
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .info-card {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 650px) {
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .form-card,
+      .info-card {
+        padding: 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .btns {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="badge">
+        Formulario de clientes
+      </div>
+
+      <h1>
+        Queremos <span>conocerte</span>
+      </h1>
+
+      <p>
+        Completa el siguiente formulario para registrarte como cliente,
+        recibir promociones especiales, novedades y una mejor experiencia
+        en Abarrotes Almiux.
+      </p>
+
+    </section>
+
+    <!-- LAYOUT -->
+    <section class="layout">
+
+      <!-- FORMULARIO -->
+      <div class="form-card">
+
+        <h2 class="form-title">
+          Registro de usuario
+        </h2>
+
+        <p class="form-sub">
+          Todos los campos marcados son importantes para brindarte una mejor atención.
+        </p>
+
+        <form>
+
+          <!-- FILA -->
+          <div class="form-row">
+
+            <div class="form-group">
+              <label>Nombre(s)</label>
+              <input type="text" placeholder="Ingresa tu nombre">
+            </div>
+
+            <div class="form-group">
+              <label>Apellidos</label>
+              <input type="text" placeholder="Ingresa tus apellidos">
+            </div>
+
+          </div>
+
+          <!-- FILA -->
+          <div class="form-row">
+
+            <div class="form-group">
+              <label>Correo electrónico</label>
+              <input type="email" placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="tel" placeholder="442 123 4567">
+            </div>
+
+          </div>
+
+          <!-- FILA -->
+          <div class="form-row">
+
+            <div class="form-group">
+              <label>Fecha de nacimiento</label>
+              <input type="date">
+            </div>
+
+            <div class="form-group">
+              <label>Género</label>
+
+              <select>
+                <option>Selecciona una opción</option>
+                <option>Masculino</option>
+                <option>Femenino</option>
+                <option>Prefiero no decirlo</option>
+              </select>
+
+            </div>
+
+          </div>
+
+          <!-- DIRECCIÓN -->
+          <div class="form-group">
+
+            <label>Dirección</label>
+
+            <input type="text" placeholder="Calle, colonia, número exterior...">
+
+          </div>
+
+          <!-- MENSAJE -->
+          <div class="form-group">
+
+            <label>Comentarios adicionales</label>
+
+            <textarea
+              placeholder="Escribe aquí cualquier información adicional..."></textarea>
+
+          </div>
+
+          <!-- CHECK -->
+          <div class="checkbox-group">
+
+            <input type="checkbox">
+
+            <label>
+              Acepto los términos y condiciones y autorizo el uso
+              de mis datos para recibir promociones y noticias.
+            </label>
+
+          </div>
+
+          <!-- BOTONES -->
+          <div class="btns">
+
+            <button type="submit" class="btn-primary">
+              Crear cuenta
+            </button>
+
+            <button type="reset" class="btn-secondary">
+              Limpiar formulario
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <aside class="info-card">
+
+        <h3>
+          Beneficios
+        </h3>
+
+        <p>
+          Al registrarte podrás recibir descuentos exclusivos,
+          promociones especiales y acceso prioritario a novedades.
+        </p>
+
+        <div class="info-list">
+
+          <div class="info-item">
+
+            <div class="info-icon">🎁</div>
+
+            <div>
+              <strong>Promociones</strong>
+              <span>
+                Recibe ofertas exclusivas cada semana.
+              </span>
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <div class="info-icon">🚚</div>
+
+            <div>
+              <strong>Pedidos rápidos</strong>
+              <span>
+                Facilita tus futuras compras y pedidos.
+              </span>
+            </div>
+
+          </div>
+
+          <div class="info-item">
+
+            <div class="info-icon">⭐</div>
+
+            <div>
+              <strong>Atención personalizada</strong>
+              <span>
+                Mejora tu experiencia como cliente frecuente.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </div>
+
+</body>
+
+</html>
