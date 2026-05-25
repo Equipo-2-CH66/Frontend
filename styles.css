@@ -2486,3 +2486,143 @@ footer {
   font-size: 40px;
   margin-bottom: 16px;
 }
+
+/* ==========================================================================
+   13. PÁGINAS LEGALES (Aviso de Privacidad y Términos y Condiciones)
+   Centrado óptimo, lectura limpia y adaptación perfecta a la paleta Almiux.
+   ========================================================================== */
+
+/* Contenedor principal que centra la tarjeta visualmente en la pantalla */
+.legal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px); /* Resta el espacio del Navbar y Footer */
+    padding: 64px var(--page-padding);
+    background: var(--color-bg);     /* Fondo crema general de la tienda */
+}
+
+/* Tarjeta elegante centrada para los textos legales */
+.legal-card {
+    background: var(--color-bg-card); /* Fondo crema oscuro de tus tarjetas */
+    max-width: 800px;
+    width: 100%;
+    padding: 48px;
+    border-radius: var(--radius-card); /* Radio de 16px de tu token */
+    border: 1.5px solid var(--color-border); /* Borde beige suave */
+    box-shadow: 0 4px 24px rgba(44, 26, 14, 0.04); /* Sombra sutil con tu café oscuro */
+    box-sizing: border-box;
+}
+
+/* Título principal centrado */
+.legal-card h1 {
+    font-family: var(--font-display); /* Fuente Fraunces */
+    font-size: 38px;
+    color: var(--color-dark-mid);     /* Tu tono café de títulos */
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1.15;
+}
+
+/* Subtítulo de fecha de actualización */
+.legal-card .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-footer-text); /* Café claro de tus tokens */
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+/* Subtítulos de secciones legales (1, 2, 3...) */
+.legal-card h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin-top: 32px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--color-border); /* Línea divisoria perfecta */
+}
+
+/* Párrafos y listas con justificado alineado */
+.legal-card p, 
+.legal-card ul {
+    font-family: var(--font-body); /* Fuente DM Sans */
+    font-size: 15px;
+    color: var(--color-dark);
+    line-height: 1.7;
+    text-align: justify; /* Mantiene ambos lados perfectamente parejos y derechitos */
+    margin-bottom: 16px;
+}
+
+.legal-card ul {
+    padding-left: 24px; /* Sangría para las viñetas */
+}
+
+.legal-card li {
+    margin-bottom: 8px;
+}
+
+/* Enfoque o textos destacados (Garantía Almiux, Tiempos, etc.) */
+.legal-card em {
+    color: var(--color-primary); /* Resalta con tu Terracota principal */
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* Botón de regreso al pie de la tarjeta */
+/* BOTÓN PRINCIPAL */
+.form-aviso button[type="submit"]{
+  background:#F08A24;
+  color:#fff;
+  border:none;
+  padding:16px;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s ease;
+  width:100%;
+  box-shadow: 0 6px 18px rgba(240, 138, 36, 0.25);
+}
+
+.form-aviso button[type="submit"]:hover{
+  background:#d97514;
+  transform:translateY(-2px);
+}
+
+/* BOTÓN SECUNDARIO */
+.legal-card .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    color: var(--color-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.legal-card .btn-secondary:hover {
+    color: var(--color-primary);
+}
+
+/* Adaptación responsiva automática para celulares */
+@media (max-width: 576px) {
+    .legal-container {
+        padding: 24px 16px;
+    }
+    .legal-card {
+        padding: 28px 20px;
+    }
+    .legal-card h1 {
+        font-size: 28px;
+    }
+    .legal-card p, .legal-card ul {
+        font-size: 14px;
+        text-align: left; /* En móviles pequeños la lectura izquierda es más cómoda */
+    }
+}
+
