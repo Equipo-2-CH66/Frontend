@@ -24,36 +24,16 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
 
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════════════════════════
-       NAVBAR
-       · Igual al de las otras páginas
-       · No tiene el botón "Pedir ahora" (es panel interno)
-  ══════════════════════════════════════════════════════════════ -->
-  <nav id="navbar">
-    <a href="index.html" class="logo">
-      <div class="logo-icon">
-        <img src="./images/Almiux_Logo_Sin_Fondo.png" alt="Logo Abarrotes Almiux">
-      </div>
-      <span>Abarrotes Almiux</span>
-    </a>
-
-    <div class="nav-links" id="navLinks">
-      <a href="index.html">Inicio</a>
-      <a href="productos.html">Productos</a>
-      <a href="nosotros.html">Nosotros</a>
-      <a href="index.html#ofertas">Ofertas</a>
-      <!-- Indicador de que estamos en el panel admin -->
-      <a href="admin.html" class="active" style="pointer-events:none">🔧 Admin</a>
-    </div>
-
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<!-- Contenedor donde se cargará el Navbar -->
+  <div id="navbar-container"></div>
 
   <!-- ══════════════════════════════════════════════════════════════
        HERO DE SECCIÓN
@@ -191,22 +171,12 @@
  
   </div><!-- /admin-layout -->
  
-  <!-- ══════════════════════════════════════════════════════════
-       FOOTER — Tarea de KALEB
-  ══════════════════════════════════════════════════════════ -->
-  <footer>
-    <a href="index.html" class="footer-logo">🏪 Abarrotes Almiux</a>
-    <div class="footer-links">
-      <a href="#">Aviso de privacidad</a>
-      <a href="#">Términos y condiciones</a>
-      <a href="nosotros.html">Contacto</a>
-      <a href="admin.html">Admin</a>
-    </div>
-    <div>© 2026 · Hecho en México con ❤️</div>
-  </footer>
+  <!-- Contenedor donde se cargará el Footer -->
+  <div id="footer-container"></div>
+
  
   <!-- JS del proyecto (navbar, hamburguesa, etc.) -->
-  <script src="main.js"></script>
+  <script src="js/main.js"></script>
    <script src="js/admin.js"></script>
  
   
