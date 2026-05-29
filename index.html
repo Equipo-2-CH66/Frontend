@@ -8,9 +8,9 @@
 
   <!--
     ╔══════════════════════════════════════════════════════════════╗
-    ║  ABARROTES ALMIUX — index.html                           ║
-    ║  Página principal (Home)                                   ║
-    ║  Secciones: Hero · Stats · Categorías · Banner promo       ║
+    ║  ABARROTES ALMIUX — index.html                               ║
+    ║  Página principal (Home)                                     ║
+    ║  Secciones: Hero · Stats · Categorías · Banner promo         ║
     ╚══════════════════════════════════════════════════════════════╝
 
     ARCHIVOS DEL PROYECTO:
@@ -31,41 +31,17 @@
 
   <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="styles.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
 </head>
 
 <body>
 
-  <!-- ══════════════════════════════════════════════════════════════
-       NAVBAR
-       · Sticky: se queda fijo arriba al hacer scroll
-       · Incluye menú hamburguesa para mobile (activado por JS)
-       · El link activo se marca con la clase .active (via JS)
-  ══════════════════════════════════════════════════════════════ -->
-  <nav id="navbar">
-    <!-- Logo: ícono + nombre de la tienda -->
-    <a href="index.html" class="logo">
-      <div class="logo-icon">
-        <img src="./images/Almiux_Logo_Sin_Fondo.png" alt="Logo de Abarrotes Almiux" class="logo-img">
-      </div>
-      <span>Abarrotes Almiux</span>
-    </a>
+<!-- Contenedor donde se cargará el Navbar -->
+  <div id="navbar-container"></div>
 
-    <!-- Links de navegación (desktop) -->
-    <div class="nav-links" id="navLinks">
-      <a href="index.html" class="active">Inicio</a>
-      <a href="productos.html">Productos</a>
-      <a href="nosotros.html">Nosotros</a>
-      <a href="promociones.html">Promocionales</a>
-      <a href="productos.html" class="nav-cta">Pedir ahora</a>
-    </div>
-
-    <!-- Botón hamburguesa (solo visible en mobile) -->
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </nav>
 
   <!-- ══════════════════════════════════════════════════════════════
        HERO
@@ -191,8 +167,8 @@
       <div class="stat-label">Sirviendo al barrio</div>
     </div>
     <div class="stat">
-      <div class="stat-num">⭐ 4.9</div>
-      <div class="stat-label">Calificación de clientes</div>
+      <div class="stat-num">+100 marcas</div>
+      <div class="stat-label">Tus favoritas de siempre</div>
     </div>
     <div class="stat">
       <div class="stat-num">30 min</div>
@@ -268,24 +244,12 @@
     <a href="promociones.html" class="btn-light">Ver Promociones →</a>
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════════
-       FOOTER
-       · Aparece en todas las páginas con el mismo diseño
-       · Para cambiar links, edita los <a href="..."> de abajo
-  ══════════════════════════════════════════════════════════════ -->
-  <footer>
-    <a href="index.html" class="footer-logo">🏪 Abarrotes Almiux</a>
-    <div class="footer-links">
-      <a href="#">Aviso de privacidad</a>
-      <a href="#">Términos y condiciones</a>
-      <a href="nosotros.html">Contacto</a>
-      <a href="admin.html">Admin</a>
-    </div>
-    <div>© 2026 · Hecho en México con ❤️ </div>
-  </footer>
+ <!-- Contenedor donde se cargará el Footer -->
+  <div id="footer-container"></div>
+
 
   <!-- JavaScript principal (debe ir al final del body para que el HTML ya esté cargado) -->
-  <script src="main.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
 

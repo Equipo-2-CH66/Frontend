@@ -1,6 +1,6 @@
 /**
  * ╔══════════════════════════════════════════════════════════════════╗
- * ║  ABARROTES ALMIUX — main.js                                  ║
+ * ║  ABARROTES ALMIUX — main.js                                   ║
  * ║  Archivo de interactividad principal                           ║
  * ║                                                                ║
  * ║  CONTENIDO:                                                    ║
@@ -29,41 +29,49 @@
 
 const PRODUCTOS = [
   {
-    nombre: 'Hola mundo', precio: 42.00, cat: 'lacteos', catLabel: 'Lácteos', desc: 'Yogurt cremoso sin azúcar añadida, rico en proteínas.', icono: '🍦',
-
+    nombre: 'Hola mundo',
+    precio: 42.00,
+    cat: 'lacteos',
+    catLabel: 'Lácteos',
+    desc: 'Yogurt cremoso sin azúcar añadida, rico en proteínas.',
+    icono: '🍦',
   },
 ];
+
 try {
-  const adminProds = JSON.parse(localStorage.getItem('almiux_productos_admin')) || [];
+
+  const adminProds =
+    JSON.parse(localStorage.getItem('almiux_productos_admin')) || [];
+
   adminProds.forEach(p => PRODUCTOS.push(p));
+
 } catch (e) {}
 
+
+/* ══════════════════════════════════════════════════════════════════
+   RENDERIZAR PRODUCTOS
+══════════════════════════════════════════════════════════════════ */
+
 function renderizarProductos() {
+
   const grid = document.getElementById('productsGrid');
 
   if (!grid) return;
 
-  // Limpiar tarjetas existentes
-  // grid.innerHTML = '';
-
   PRODUCTOS.forEach(p => {
 
-    // Construir imagen o ícono
     const imgHTML = p.imagen
       ? `<img src="${p.imagen}" alt="${p.nombre}">`
       : `<span class="prod-icon">${p.icono}</span>`;
 
-    // Badge de oferta
     const badgeHTML = p.badge
       ? `<span class="prod-badge">${p.badge}</span>`
       : '';
 
-    // Precio original tachado
     const precioOrigHTML = p.precioOriginal
       ? `<span class="prod-original">$${p.precioOriginal.toFixed(2)}</span>`
       : '';
 
-    // Crear tarjeta
     const card = document.createElement('div');
 
     card.className = 'product-card';
@@ -81,19 +89,32 @@ function renderizarProductos() {
       </div>
 
       <div class="prod-info">
-        <p class="prod-cat-tag">${p.catLabel}</p>
 
-        <h3 class="prod-name">${p.nombre}</h3>
+        <p class="prod-cat-tag">
+          ${p.catLabel}
+        </p>
 
-        <p class="prod-desc">${p.desc}</p>
+        <h3 class="prod-name">
+          ${p.nombre}
+        </h3>
+
+        <p class="prod-desc">
+          ${p.desc}
+        </p>
 
         <div class="prod-prices">
-          <span class="prod-price">$${p.precio.toFixed(2)}</span>
+
+          <span class="prod-price">
+            $${p.precio.toFixed(2)}
+          </span>
+
           ${precioOrigHTML}
+
         </div>
+
       </div>
 
-      <button 
+      <button
         class="btn-agregar"
         onclick="agregarAlCarrito(this, '${p.nombre}')"
       >
@@ -102,101 +123,358 @@ function renderizarProductos() {
     `;
 
     grid.appendChild(card);
+
   });
+
 }
 
 
-
-
-
-
-
+/* ══════════════════════════════════════════════════════════════════
+   DOM READY
+══════════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  iniciarNavbar();
-  marcarLinkActivo();
   iniciarCategoriasHome();
 
+  // ─────────────────────────────────────────────
+  // CARGAR NAVBAR
+  // ─────────────────────────────────────────────
+
+  const basePath = obtenerBasePath().replace('/', '');
+
+  cargarFragmento(
+    `${basePath}/utils/navbar/navbar.html`,
+    'navbar-container',
+    () => {
+
+      // Arreglar rutas
+      arreglarLinks();
+      arreglarImagenes();
+      arreglarBotones();
+
+      // Inicializar navbar
+      iniciarNavbar();
+
+      // Activar link actual
+      marcarLinkActivo();
+
+      // ── Menú usuario ─────────────────────
+
+      const userBtn =
+        document.getElementById("userBtn");
+
+      const userMenu =
+        document.getElementById("userMenu");
+
+      if (userBtn && userMenu) {
+
+        userBtn.addEventListener("click", (e) => {
+
+          e.stopPropagation();
+
+          const abierto =
+            userMenu.style.display === "block";
+
+          userMenu.style.display =
+            abierto ? "none" : "block";
+
+          userMenu.setAttribute(
+            "aria-hidden",
+            String(abierto)
+          );
+
+        });
+
+        // Cerrar al hacer click fuera
+        document.addEventListener("click", (e) => {
+
+          if (
+            !userMenu.contains(e.target) &&
+            !userBtn.contains(e.target)
+          ) {
+
+            userMenu.style.display = "none";
+
+            userMenu.setAttribute(
+              "aria-hidden",
+              "true"
+            );
+
+          }
+
+        });
+
+      }
+
+    }
+  );
+
+  // ─────────────────────────────────────────────
+  // CARGAR FOOTER
+  // ─────────────────────────────────────────────
+
+  cargarFragmento(
+    `${basePath}/utils/footer/footer.html`,
+    'footer-container',
+    () => {
+
+      arreglarLinks();
+      arreglarImagenes();
+
+    }
+  );
+
+  // ─────────────────────────────────────────────
+  // PRODUCTOS
+  // ─────────────────────────────────────────────
+
   if (document.getElementById('productsGrid')) {
+
     iniciarFiltros();
+
     iniciarBusqueda();
-    revisarFiltroURL();  // Lee el filtro de la URL (ej: ?filtro=ofertas)
-    renderizarProductos(); // Renderiza las tarjetas de producto desde el arreglo PRODUCTOS
+
+    revisarFiltroURL();
+
+    renderizarProductos();
+
   }
 
 });
 
 
 /* ══════════════════════════════════════════════════════════════════
-   1. NAVBAR
-   · Oculta la navbar al bajar en la página
-   · La muestra al subir
-   · Maneja el menú hamburguesa en mobile
-   ══════════════════════════════════════════════════════════════════ */
+   NAVBAR
+══════════════════════════════════════════════════════════════════ */
+
 function iniciarNavbar() {
-  const navbar     = document.getElementById('navbar');
-  const hamburger  = document.getElementById('hamburger');
-  const navLinks   = document.getElementById('navLinks');
+
+  const navbar =
+    document.getElementById('navbar');
+
+  const hamburger =
+    document.getElementById('hamburger');
+
+  const navLinks =
+    document.getElementById('navLinks');
 
   if (!navbar) return;
 
-  // ── Scroll hide/show ──────────────────────────────────────────
+  // ── Scroll hide/show ─────────────────────
+
   let ultimoScroll = 0;
 
   window.addEventListener('scroll', () => {
+
     const scrollActual = window.scrollY;
 
-    if (scrollActual > ultimoScroll && scrollActual > 80) {
-      // Usuario bajando: ocultar navbar
-      navbar.style.transform = 'translateY(-100%)';
+    if (
+      scrollActual > ultimoScroll &&
+      scrollActual > 80
+    ) {
+
+      navbar.style.transform =
+        'translateY(-100%)';
+
     } else {
-      // Usuario subiendo: mostrar navbar
-      navbar.style.transform = 'translateY(0)';
+
+      navbar.style.transform =
+        'translateY(0)';
+
     }
 
     ultimoScroll = scrollActual;
+
   });
 
-  // ── Menú hamburguesa (mobile) ─────────────────────────────────
+  // ── Hamburguesa ──────────────────────────
+
   if (!hamburger || !navLinks) return;
 
   hamburger.addEventListener('click', () => {
-    // Alternar la clase .open en el botón y el menú
+
     hamburger.classList.toggle('open');
+
     navLinks.classList.toggle('open');
+
   });
 
-  // Cerrar el menú al hacer clic en cualquier link
+  // Cerrar menú al dar click
+
   navLinks.querySelectorAll('a').forEach(link => {
+
     link.addEventListener('click', () => {
+
       hamburger.classList.remove('open');
+
       navLinks.classList.remove('open');
+
     });
+
   });
+
 }
 
 
 /* ══════════════════════════════════════════════════════════════════
-   2. LINK ACTIVO EN EL NAVBAR
-   Detecta en qué página estamos y marca el link correspondiente
-   con la clase .active para resaltarlo visualmente.
-   ══════════════════════════════════════════════════════════════════ */
-function marcarLinkActivo() {
-  // Nombre del archivo actual (ej: "productos.html")
-  const paginaActual = window.location.pathname.split('/').pop() || 'index.html';
+   LINK ACTIVO
+══════════════════════════════════════════════════════════════════ */
 
-  // Seleccionar todos los links del navbar
-  const links = document.querySelectorAll('.nav-links a');
+function marcarLinkActivo() {
+
+  const paginaActual =
+    window.location.pathname
+      .split('/')
+      .pop() || 'index.html';
+
+  const links =
+    document.querySelectorAll('.nav-links a');
 
   links.forEach(link => {
+
     const href = link.getAttribute('href');
 
-    // Si el href del link coincide con la página actual, marcarlo como activo
-    if (href && href.includes(paginaActual) && !link.classList.contains('nav-cta')) {
+    if (
+      href &&
+      href.includes(paginaActual) &&
+      !link.classList.contains('nav-cta')
+    ) {
+
       link.classList.add('active');
+
     }
+
   });
+
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CARGAR FRAGMENTOS HTML
+══════════════════════════════════════════════════════════════════ */
+
+function cargarFragmento(url, elementoId, callback) {
+
+  fetch(url)
+
+    .then((response) => {
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Error al cargar " + url
+        );
+
+      }
+
+      return response.text();
+
+    })
+
+    .then((html) => {
+
+      const elemento =
+        document.getElementById(elementoId);
+
+      if (!elemento) return;
+
+      elemento.innerHTML = html;
+
+      if (callback) callback();
+
+    })
+
+    .catch((error) => {
+
+      console.error("Error:", error);
+
+    });
+
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   DETECTAR BASE PATH
+══════════════════════════════════════════════════════════════════ */
+
+function obtenerBasePath() {
+
+  return window.location.pathname.includes('/usuario/')
+    ? '../'
+    : './';
+
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ARREGLAR LINKS
+══════════════════════════════════════════════════════════════════ */
+
+function arreglarLinks() {
+
+  const base = obtenerBasePath();
+
+  const links =
+    document.querySelectorAll('[data-link]');
+
+  links.forEach(link => {
+
+    const ruta = link.dataset.link;
+
+    link.href = `${base}${ruta}`;
+
+  });
+
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ARREGLAR IMÁGENES
+══════════════════════════════════════════════════════════════════ */
+
+function arreglarImagenes() {
+
+  const base = obtenerBasePath();
+
+  const imagenes =
+    document.querySelectorAll('[data-img]');
+
+  imagenes.forEach(img => {
+
+    const ruta = img.dataset.img;
+
+    img.src = `${base}${ruta}`;
+
+  });
+
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   BOTONES CON REDIRECCIÓN
+══════════════════════════════════════════════════════════════════ */
+
+function arreglarBotones() {
+
+  const base = obtenerBasePath();
+
+  const botones =
+    document.querySelectorAll('[data-go]');
+
+  botones.forEach(btn => {
+
+    const ruta = btn.dataset.go;
+
+    btn.onclick = () => {
+
+      window.location.href =
+        `${base}${ruta}`;
+
+    };
+
+  });
+
 }
 
 
