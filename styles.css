@@ -2661,3 +2661,168 @@ footer {
     }
 }
 
+
+
+
+
+/* ══════════════════════════════════════════════════════════════════
+   15. PÁGINA PROMOCIONES
+   Estilos exclusivos de promociones.html
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── HEADER SUPERIOR ───────────────────────────────────────────── */
+.promo-page-header{
+  padding:72px var(--page-padding) 48px;
+  border-bottom:1.5px solid var(--color-border);
+  position:relative;
+  overflow:hidden;
+}
+
+/* círculo decorativo */
+.promo-page-header::before{
+  content:'';
+  position:absolute;
+  right:-120px;
+  top:-120px;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  background:radial-gradient(circle,#FFD9A8 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* título */
+.promo-page-title{
+  font-family:var(--font-display);
+  font-size:48px;
+  font-weight:900;
+  line-height:1.1;
+  color:var(--color-dark);
+  max-width:700px;
+  margin-bottom:18px;
+  position:relative;
+  z-index:1;
+}
+
+/* subtítulo */
+.promo-page-sub{
+  max-width:620px;
+  font-size:16px;
+  line-height:1.7;
+  color:var(--color-muted);
+  position:relative;
+  z-index:1;
+}
+
+/* ── LISTA DE PROMOCIONES ─────────────────────────────────────── */
+.promo-list{
+  padding:56px var(--page-padding) 80px;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+/* tarjeta individual */
+.promo-item{
+  background:var(--color-bg-card);
+  border:1.5px solid var(--color-border);
+  border-radius:20px;
+  padding:28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  transition:.2s ease;
+}
+
+/* hover suave */
+.promo-item:hover{
+  border-color:var(--color-primary);
+  transform:translateY(-2px);
+}
+
+/* información izquierda */
+.promo-info{
+  flex:1;
+}
+
+/* título promoción */
+.promo-info h2{
+  font-family:var(--font-display);
+  font-size:24px;
+  font-weight:700;
+  color:var(--color-dark);
+  margin-bottom:10px;
+}
+
+/* descripción */
+.promo-info p{
+  font-size:15px;
+  line-height:1.7;
+  color:var(--color-muted);
+  max-width:700px;
+}
+
+/* bloque fechas */
+.promo-dates{
+  min-width:220px;
+  background:rgba(255,255,255,.5);
+  border-radius:14px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  border:1px solid rgba(0,0,0,.04);
+}
+
+/* textos fechas */
+.promo-dates span{
+  font-size:13px;
+  font-weight:500;
+  color:var(--color-dark-mid);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media(max-width:800px){
+
+  .promo-page-title{
+    font-size:36px;
+  }
+
+  .promo-item{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .promo-dates{
+    width:100%;
+    min-width:unset;
+  }
+}
+
+@media(max-width:600px){
+
+  .promo-page-header{
+    padding:56px var(--page-padding) 36px;
+  }
+
+  .promo-page-title{
+    font-size:30px;
+  }
+
+  .promo-list{
+    padding:36px var(--page-padding) 60px;
+  }
+
+  .promo-item{
+    padding:22px 18px;
+  }
+
+  .promo-info h2{
+    font-size:20px;
+  }
+
+  .promo-info p{
+    font-size:14px;
+  }
+}
