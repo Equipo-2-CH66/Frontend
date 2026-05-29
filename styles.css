@@ -1927,60 +1927,6 @@ footer {
 .resultado-card-title{
   font-size:22px;
   font-weight:700;
-  margin-bottom:6px;
-}
-
-/* ── SUBTÍTULO ───────────────────────────────────── */
-.resultado-card-sub{
-  font-size:13px;
-  color:#CFCFCF;
-  margin-bottom:22px;
-}
-
-/* ── TARJETA DE PREVISUALIZACIÓN ─────────────────── */
-.preview-product-card{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-  padding:20px;
-  min-height:120px;
-  margin-bottom:24px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* Texto placeholder */
-.preview-placeholder{
-  color:#B9B9B9;
-  font-size:14px;
-  text-align:center;
-}
-
-/* ── BLOQUE JSON ───────────────────────────────────
-   Caja donde aparece el objeto JSON generado.
-*/
-.json-block{
-  background:rgba(0,0,0,.25);
-  border-radius:12px;
-  padding:16px;
-  font-family:monospace;
-  font-size:12px;
-  line-height:1.6;
-  overflow-x:auto; /* scroll horizontal si el texto es largo */
-  color:#FFD8AA;
-  min-height:100px;
-}
-
-/* ── BOTÓN COPIAR ────────────────────────────────── */
-.btn-copy{
-  margin-top:14px;
-  padding:10px 18px;
-  border:none;
-  border-radius:999px;
-  background:rgba(255,255,255,.08);
-  color:#fff;
   cursor:pointer;
   transition:.2s;
 }
