@@ -22,9 +22,11 @@
     ╚══════════════════════════════════════════════════════════════╝
   -->
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 
@@ -118,7 +120,7 @@
       <div class="product-card" data-cat="abarrotes" data-oferta="true">
         <div class="prod-img-wrap">
           <span class="prod-icon">
-            <img src="" alt="">
+            <img src="" alt="Leche entera Lala 1L" loading="lazy">
           </span>
           <!-- Badge de oferta (solo si el producto está en oferta) -->
           <span class="prod-badge">-20%</span>
@@ -142,7 +144,7 @@
       <div class="product-card" data-cat="lacteos">
         <div class="prod-img-wrap">
           <span class="prod-icon">
-            <img src="" alt="">
+            <img src="" alt="Yogurt natural Danone 1kg" loading="lazy">
           </span>
         </div>
         <div class="prod-info">
@@ -181,7 +183,7 @@
       <!-- Producto: Agua embotellada -->
       <div class="product-card" data-cat="bebidas" >
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/AguaEmbotellada.png" alt=""></span>
+          <span><img src="imagenes-bebidas/AguaEmbotellada.png" alt="Agua embotellada Skarch 500mL" loading="lazy"></span>
           <span class="prod-badge">-15%</span>
         </div>
         <div class="prod-info">
@@ -200,7 +202,7 @@
       <!-- Producto: Refresco de cola -->
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/cocaLata.png" alt=""></span>
+          <span><img src="imagenes-bebidas/cocaLata.png" alt="Coca-Cola lata 600mL" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -218,7 +220,7 @@
       <!-- Producto: Jugo de naranja -->
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/jugoNaranja2L.png" alt=""></span>
+          <span><img src="imagenes-bebidas/jugoNaranja2L.png" alt="Jugo de naranja Del Valle 2L" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -236,7 +238,7 @@
       
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/fantaLata.png" alt=""></span>
+          <span><img src="imagenes-bebidas/fantaLata.png" alt="Refresco Fanta naranja 600mL" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -253,7 +255,7 @@
       
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/fuzeTea.png" alt=""></span>
+          <span><img src="imagenes-bebidas/fuzeTea.png" alt="Fuze Tea té verde" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -270,7 +272,7 @@
       
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/jugoManzana.png" alt=""></span>
+          <span><img src="imagenes-bebidas/jugoManzana.png" alt="Jugo de manzana Del Valle 600mL" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -287,7 +289,7 @@
       
       <div class="product-card" data-cat="bebidas">
         <div class="prod-img-wrap">
-          <span class="prod-icon"><img src="imagenes-bebidas/AguaM2L.png" alt=""></span>
+          <span class="prod-icon"><img src="imagenes-bebidas/AguaM2L.png" alt="Agua mineral 2L" loading="lazy"></span>
         </div>
         <div class="prod-info">
           <p class="prod-cat-tag">Bebidas</p>
@@ -561,61 +563,6 @@
         </button>
       </div>
 
-      <!-- ══ ABARROTES ════════════════════════════════════════════ -->
-
-      <!-- Producto: Agua embotellada -->
-      <div class="product-card" data-cat="bebidas" >
-        <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/AguaEmbotellada.png" alt=""></span>
-          <span class="prod-badge">-15%</span>
-        </div>
-        <div class="prod-info">
-          <p class="prod-cat-tag">Bebidas</p>
-          <h3 class="prod-name">Agua skarch 500mL</h3>
-          <p class="prod-desc">Agua purificada sin gas, presentación individual.</p>
-          <div class="prod-prices">
-            <span class="prod-price">$12.00</span>
-          </div>
-        </div>
-        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Agua skarch 500mL')">
-          + Agregar
-        </button>
-      </div>
-
-      <!-- Producto: Refresco de cola -->
-      <div class="product-card" data-cat="bebidas">
-        <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/cocaLata.png" alt=""></span>
-        </div>
-        <div class="prod-info">
-          <p class="prod-cat-tag">Bebidas</p>
-          <h3 class="prod-name">Coca-Cola lata 600 mL</h3>
-          <p class="prod-desc">Refresco de cola clásico, presentación en lata.</p>
-          <div class="prod-prices">
-            <span class="prod-price">$18.00</span>
-          </div>
-        </div>
-        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Coca-Cola lata')">
-          + Agregar
-        </button>
-      </div>
-      <!-- Producto: Refresco de cola -->
-      <div class="product-card" data-cat="bebidas">
-        <div class="prod-img-wrap">
-          <span><img src="imagenes-bebidas/cocaLata.png" alt=""></span>
-        </div>
-        <div class="prod-info">
-          <p class="prod-cat-tag">Bebidas</p>
-          <h3 class="prod-name">Coca-Cola lata 600 mL</h3>
-          <p class="prod-desc">Refresco de cola clásico, presentación en lata.</p>
-          <div class="prod-prices">
-            <span class="prod-price">$18.00</span>
-          </div>
-        </div>
-        <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Coca-Cola lata')">
-          + Agregar
-        </button>
-      </div>
 
 
       <!--
@@ -673,6 +620,9 @@
   <div id="footer-container"></div>
 
 
+  <script src="js/utils.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/productos.js"></script>
   <script src="js/main.js"></script>
 
 </body>
