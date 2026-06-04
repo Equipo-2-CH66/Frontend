@@ -18,6 +18,7 @@
     ├── productos.html   → Catálogo de productos con filtros
     ├── nosotros.html    → Acerca de nosotros / historia
     ├── styles.css       → Todos los estilos (diseño, layout, responsive)
+    ├── hero.css         → Estilos exclusivos del hero (Almo, flotación)
     └── main.js          → Interactividad y comportamientos
 
     FUENTES (Google Fonts):
@@ -31,32 +32,34 @@
 
   <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="styles.css">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+  <!-- Estilos exclusivos del hero -->
+  <link rel="stylesheet" href="hero.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<!-- Contenedor donde se cargará el Navbar -->
+  <!-- Contenedor donde se cargará el Navbar -->
   <div id="navbar-container"></div>
-
 
   <!-- ══════════════════════════════════════════════════════════════
        HERO
        · Sección principal de bienvenida, divide en 2 columnas:
-         izquierda = texto + botones · derecha = anaquel ilustrado
-       · En mobile se apila verticalmente (ver styles.css)
+         izquierda = texto + botones · derecha = Almo con animación
+       · En mobile se apila verticalmente (ver hero.css)
   ══════════════════════════════════════════════════════════════ -->
   <section class="hero">
 
     <!-- Columna izquierda: texto principal -->
     <div class="hero-text">
+
       <!-- Badge / etiqueta superior -->
       <span class="badge">✦ Entrega a domicilio disponible</span>
 
-      <!-- Título principal (H1) — la palabra "confianza" lleva color de acento -->
+      <!-- Título principal -->
       <h1>Tu tienda de<br><span>confianza</span><br>siempre cerca</h1>
 
       <!-- Subtítulo descriptivo -->
@@ -67,127 +70,69 @@
 
       <!-- Botones de acción -->
       <div class="hero-btns">
-        <!-- Botón primario: lleva a productos -->
         <a href="productos.html" class="btn-primary">Ver productos</a>
-        <!-- Botón secundario: hace scroll suave al banner de ofertas -->
         <a href="#ofertas" class="btn-secondary">Promociones →</a>
       </div>
-    </div>
 
-    <!-- Columna derecha: ilustración de anaquel de latas -->
+    </div><!-- /hero-text -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         Columna derecha: Almo flotando
+         · .hero-almo-wrap aplica el difuminado lateral con mask-image
+         · .hero-almo tiene la animación de flotación (flotar keyframe)
+         · .hero-almo-sombra es la sombra del piso que respira
+           al compás de la animación
+    ══════════════════════════════════════════════════════════ -->
     <div class="hero-visual">
-      <div class="shelf">
-        <!-- Tablas horizontales del anaquel -->
-        <div class="shelf-plank p1"></div>
-        <div class="shelf-plank p2"></div>
-        <div class="shelf-plank p3"></div>
 
-        <!-- ── FILA INFERIOR ─────────────────────── -->
-        <div class="prod" style="left:16px; bottom:10px">
-          <div class="can red">🥫</div>
-          <span class="can-label">Tomate</span>
-        </div>
-        <div class="prod" style="left:72px; bottom:10px">
-          <div class="can green">🫒</div>
-          <span class="can-label">Aceite</span>
-        </div>
-        <div class="prod" style="left:128px; bottom:10px">
-          <div class="can yellow">🌽</div>
-          <span class="can-label">Maíz</span>
-        </div>
-        <div class="prod" style="left:184px; bottom:10px">
-          <div class="can blue">💧</div>
-          <span class="can-label">Agua</span>
-        </div>
-        <div class="prod" style="left:240px; bottom:10px">
-          <div class="can orange">🍑</div>
-          <span class="can-label">Durazno</span>
-        </div>
-        <div class="prod" style="left:286px; bottom:10px">
-          <div class="can brown">☕</div>
-          <span class="can-label">Café</span>
+      <div>
+        <!-- Contenedor con difuminado en costados -->
+        <div class="hero-almo-wrap">
+          <img
+            src="./images/Almo_recargado.png"
+            alt="Almo, la mascota de Abarrotes Almiux, recargado en un estante"
+            class="hero-almo"
+          >
         </div>
 
-        <!-- ── FILA MEDIA ─────────────────────────── -->
-        <div class="prod" style="left:16px; bottom:150px">
-          <div class="can yellow">🧀</div>
-          <span class="can-label">Queso</span>
-        </div>
-        <div class="prod" style="left:72px; bottom:150px">
-          <div class="can green">🥦</div>
-          <span class="can-label">Verduras</span>
-        </div>
-        <div class="prod" style="left:128px; bottom:150px">
-          <div class="can red">🍅</div>
-          <span class="can-label">Salsa</span>
-        </div>
-        <div class="prod" style="left:184px; bottom:150px">
-          <div class="can blue">🐟</div>
-          <span class="can-label">Atún</span>
-        </div>
-        <div class="prod" style="left:240px; bottom:150px">
-          <div class="can orange">🍯</div>
-          <span class="can-label">Miel</span>
-        </div>
-
-        <!-- ── FILA SUPERIOR ──────────────────────── -->
-        <div class="prod" style="left:16px; bottom:290px">
-          <div class="can brown">🍫</div>
-          <span class="can-label">Chocolate</span>
-        </div>
-        <div class="prod" style="left:72px; bottom:290px">
-          <div class="can yellow">🌾</div>
-          <span class="can-label">Arroz</span>
-        </div>
-        <div class="prod" style="left:128px; bottom:290px">
-          <div class="can red">🫙</div>
-          <span class="can-label">Frijoles</span>
-        </div>
-        <div class="prod" style="left:184px; bottom:290px">
-          <div class="can green">🫛</div>
-          <span class="can-label">Chícharos</span>
-        </div>
+        <!-- Sombra animada en el piso -->
+        <div class="hero-almo-sombra"></div>
       </div>
-    </div>
+
+    </div><!-- /hero-visual -->
+
   </section>
 
   <!-- ══════════════════════════════════════════════════════════════
        STATS STRIP
-       · Franja oscura con 4 métricas clave de la tienda
-       · Los números se animan al entrar al viewport (via JS)
   ══════════════════════════════════════════════════════════════ -->
-  <div class="stats-strip">
-    <div class="stat">
-      <!-- data-target: valor numérico final para la animación JS -->
-      <div class="stat-num" data-target="2000" data-prefix="+">+2,000</div>
-      <div class="stat-label">Productos disponibles</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">20 años</div>
-      <div class="stat-label">Sirviendo al barrio</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">+100 marcas</div>
-      <div class="stat-label">Tus favoritas de siempre</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">30 min</div>
-      <div class="stat-label">Entrega express</div>
-    </div>
+<div class="stats-strip">
+  <div class="stat">
+    <div class="stat-num" data-target="2000" data-prefix="+">+2,000</div>
+    <div class="stat-label">Productos disponibles</div>
   </div>
+  <div class="stat">
+    <div class="stat-num" data-target="20" data-suffix=" años">20 años</div>
+    <div class="stat-label">Sirviendo al barrio</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="100" data-prefix="+">+100</div>
+    <div class="stat-label">Tus favoritas de siempre</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-target="30" data-suffix=" min">30 min</div>
+    <div class="stat-label">Entrega express</div>
+  </div>
+</div>
 
   <!-- ══════════════════════════════════════════════════════════════
        SECCIÓN DE CATEGORÍAS
-       · Grid de 4×2 tarjetas, cada una con ícono + nombre + conteo
-       · Al hacer clic, navegan a productos.html con filtro activo
   ══════════════════════════════════════════════════════════════ -->
   <section class="categories">
     <div class="section-label">Lo que tenemos</div>
     <div class="section-title">Explora nuestras categorías</div>
 
-    <!-- Grid de categorías — 4 columnas en desktop, 2 en tablet, 1 en mobile -->
     <div class="cats-grid">
-      <!-- Cada .cat-card tiene data-cat para el filtro en productos.html -->
       <div class="cat-card" data-cat="carnes">
         <span class="cat-icon">🥩</span>
         <div class="cat-name">Carnes y embutidos</div>
@@ -233,8 +178,6 @@
 
   <!-- ══════════════════════════════════════════════════════════════
        BANNER PROMO
-       · id="ofertas" para que el scroll suave desde el hero funcione
-       · El botón "Ver ofertas" lleva a productos con filtro de oferta
   ══════════════════════════════════════════════════════════════ -->
   <div class="promo" id="ofertas">
     <div class="promo-text">
@@ -244,11 +187,10 @@
     <a href="promociones.html" class="btn-light">Ver Promociones →</a>
   </div>
 
- <!-- Contenedor donde se cargará el Footer -->
+  <!-- Contenedor donde se cargará el Footer -->
   <div id="footer-container"></div>
 
-
-  <!-- JavaScript principal (debe ir al final del body para que el HTML ya esté cargado) -->
+  <!-- JavaScript principal -->
   <script src="js/main.js"></script>
 
 </body>
