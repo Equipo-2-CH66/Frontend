@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Contacto embebido (nosotros.html) ────────────────────────────
   const contenedorContacto = document.getElementById('contacto-container');
   if (contenedorContacto) {
-    fetch(`${basePath}contacto.html`)
+    fetch('./contacto.html')
       .then(res => res.text())
       .then(data => { contenedorContacto.innerHTML = data; })
       .catch(err => console.error(err));
