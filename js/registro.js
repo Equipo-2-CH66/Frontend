@@ -1,230 +1,149 @@
 /* ══════════════════════════════════════════════════════════════════
-   ABARROTES ALMIUX — registro.js
-   Validación del formulario de registro (usuario/registro.html).
-   Requiere: utils.js
+   ABARROTES ALMIUX — registro.js  (reemplaza el existente)
+   Valida al submit y blur · Guarda en localStorage
+   Requiere: utils.js · auth.js
 ══════════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('registroForm');
+
+  const form = document.getElementById('authForm');
   if (!form) return;
 
-  const alertaError = document.getElementById('alertaError');
-  const alertaExito = document.getElementById('alertaExito');
+  /* Alertas globales */
+  const alerta = new Alerta('alertaError', 'alertaExito');
+  alerta.limpiar();
 
-  if (alertaError) alertaError.style.display = 'none';
-  if (alertaExito) alertaExito.style.display = 'none';
+  /* ── Campos (IDs exactos del HTML) ─────────────────────── */
+  const fNombres   = new CampoForm('nombres',          'errorNombres');
+  const fApellidos = new CampoForm('apellidos',        'errorApellidos');
+  const fEmail     = new CampoForm('email',            'errorEmail');
+  const fTelefono  = new CampoForm('telefono',         'errorTelefono');
+  const fFecha     = new CampoForm('fechaNacimiento',  'errorFecha');
+  const fDireccion = new CampoForm('direccion',        'errorDireccion');
+  const fPassword  = new CampoForm('password',         'errorPassword');
+  const fConfirmar = new CampoForm('confirmarPassword','errorConfirmar');
 
-  function validarNombres() {
-    const nombres = document.getElementById('nombres');
-    const error   = document.getElementById('errorNombres');
-    if (nombres.value.trim() === '') {
-      error.textContent = 'El nombre es obligatorio.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
+  /* ── Botones ojo ───────────────────────────────────────── */
+  new TogglePassword('password',          'ojoPwd',     'ojoIcon');
+  new TogglePassword('confirmarPassword', 'ojoConfirm', 'ojoIcon');
 
-  function validarApellidos() {
-    const apellidos = document.getElementById('apellidos');
-    const error     = document.getElementById('errorApellidos');
-    if (apellidos.value.trim() === '') {
-      error.textContent = 'Los apellidos son obligatorios.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarEmail() {
-    const email = document.getElementById('email');
-    const error = document.getElementById('errorEmail');
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(email.value)) {
-      error.textContent = 'Correo inválido.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarTelefono() {
-    const tel   = document.getElementById('telefono');
-    const error = document.getElementById('errorTelefono');
-    if (!/^[0-9]{10}$/.test(tel.value)) {
-      error.textContent = 'Teléfono inválido (10 dígitos).';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarFecha() {
-    const fecha = document.getElementById('fechaNacimiento');
-    const error = document.getElementById('errorFecha');
-    if (!fecha.value) {
-      error.textContent = 'La fecha de nacimiento es obligatoria.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarDireccion() {
-    const dir   = document.getElementById('direccion');
-    const error = document.getElementById('errorDireccion');
-    if (dir.value.trim() === '') {
-      error.textContent = 'La dirección es obligatoria.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarPassword() {
-    const pwd   = document.getElementById('password');
-    const error = document.getElementById('errorPassword');
-    if (pwd.value.length < 8) {
-      error.textContent = 'La contraseña debe tener al menos 8 caracteres.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarConfirmar() {
-    const pwd     = document.getElementById('password').value;
-    const confirm = document.getElementById('confirmarPassword').value;
-    const error   = document.getElementById('errorConfirmar');
-    if (pwd !== confirm) {
-      error.textContent = 'Las contraseñas no coinciden.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function validarTerminos() {
-    const terminos = document.getElementById('terminos');
-    const error    = document.getElementById('errorTerminos');
-    if (!terminos.checked) {
-      error.textContent = 'Debes aceptar los términos y condiciones.';
-      error.style.display = 'block';
-      return false;
-    }
-    error.style.display = 'none';
-    return true;
-  }
-
-  function togglePassword(inputId, btnId) {
-    const input  = document.getElementById(inputId);
-    const btn    = document.getElementById(btnId);
-    const hidden = input.type === 'password';
-    input.type      = hidden ? 'text' : 'password';
-    btn.textContent = hidden ? '🙈' : '👁️';
-  }
-
-  document.getElementById('ojoPwd')?.addEventListener('click', () =>
-    togglePassword('password', 'ojoPwd'));
-  document.getElementById('ojoConfirm')?.addEventListener('click', () =>
-    togglePassword('confirmarPassword', 'ojoConfirm'));
-
-  function evaluarFortaleza(pwd) {
-    const wrap  = document.getElementById('fortalezaWrap');
-    const fill  = document.getElementById('fortalezaFill');
-    const label = document.getElementById('fortalezaLabel');
-    if (!pwd) { wrap.style.display = 'none'; return; }
-    wrap.style.display = 'flex';
-    let puntos = 0;
-    if (pwd.length >= 8)           puntos++;
-    if (pwd.length >= 12)          puntos++;
-    if (/[A-Z]/.test(pwd))         puntos++;
-    if (/\d/.test(pwd))            puntos++;
-    if (/[^A-Za-z0-9]/.test(pwd))  puntos++;
-    if (puntos <= 1) {
-      fill.style.cssText  = 'width:25%; background:#dc3545';
-      label.textContent   = 'Contraseña débil';
-      label.style.color   = '#dc3545';
-    } else if (puntos <= 3) {
-      fill.style.cssText  = 'width:60%; background:#ffc107';
-      label.textContent   = 'Contraseña regular';
-      label.style.color   = '#856404';
-    } else {
-      fill.style.cssText  = 'width:100%; background:#28a745';
-      label.textContent   = 'Contraseña fuerte ✓';
-      label.style.color   = '#28a745';
-    }
-  }
-
-  document.getElementById('password')?.addEventListener('input', () => {
-    evaluarFortaleza(document.getElementById('password').value);
-    if (document.getElementById('confirmarPassword').value) validarConfirmar();
+  /* ── Fortaleza en tiempo real ──────────────────────────── */
+  fPassword.input?.addEventListener('input', () => {
+    evaluarFortalezaPassword(fPassword.valor);
+    if (fConfirmar.valor !== '') vConfirmar();
   });
 
-  document.getElementById('nombres')?.addEventListener('blur', validarNombres);
-  document.getElementById('apellidos')?.addEventListener('blur', validarApellidos);
-  document.getElementById('email')?.addEventListener('blur', validarEmail);
-  document.getElementById('telefono')?.addEventListener('blur', validarTelefono);
-  document.getElementById('fechaNacimiento')?.addEventListener('blur', validarFecha);
-  document.getElementById('direccion')?.addEventListener('blur', validarDireccion);
-  document.getElementById('password')?.addEventListener('blur', validarPassword);
-  document.getElementById('confirmarPassword')?.addEventListener('blur', validarConfirmar);
+  /* ── Funciones de validación individuales ───────────────── */
+  function vNombres()   { return validarSoloLetras(fNombres,   'El nombre'); }
+  function vApellidos() { return validarSoloLetras(fApellidos, 'Los apellidos'); }
+  function vEmail()     { return validarEmail(fEmail); }
+  function vTelefono()  { return validarTelefono(fTelefono); }
+  function vPassword()  { return validarPassword(fPassword); }
+  function vConfirmar() { return validarConfirmacion(fConfirmar, fPassword.valor); }
 
-  form.addEventListener('submit', (e) => {
+  function vFecha() {
+    if (!fFecha.input?.value)
+      return fFecha.error('La fecha de nacimiento es obligatoria.');
+    const hoy  = new Date();
+    const nac  = new Date(fFecha.input.value);
+    let edad   = hoy.getFullYear() - nac.getFullYear();
+    const mes  = hoy.getMonth() - nac.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nac.getDate())) edad--;
+    if (edad < 18)
+      return fFecha.error('Debes tener al menos 18 años para registrarte.');
+    return fFecha.ok();
+  }
+
+  function vDireccion() { return validarRequerido(fDireccion, 'La dirección'); }
+
+  function vTerminos() {
+    const chk = document.getElementById('terminos');
+    const err = document.getElementById('errorTerminos');
+    if (!chk?.checked) {
+      err.textContent    = 'Debes aceptar los términos y condiciones.';
+      err.style.display  = 'block';
+      return false;
+    }
+    err.style.display = 'none';
+    return true;
+  }
+
+  /* ── Validación blur (en tiempo real al salir del campo) ── */
+  fNombres.input?.addEventListener('blur',   vNombres);
+  fApellidos.input?.addEventListener('blur', vApellidos);
+  fEmail.input?.addEventListener('blur',     vEmail);
+  fTelefono.input?.addEventListener('blur',  vTelefono);
+  fFecha.input?.addEventListener('blur',     vFecha);
+  fDireccion.input?.addEventListener('blur', vDireccion);
+  fPassword.input?.addEventListener('blur',  vPassword);
+  fConfirmar.input?.addEventListener('blur', vConfirmar);
+
+  /* ── Submit ─────────────────────────────────────────────── */
+  form.addEventListener('submit', e => {
     e.preventDefault();
-    const valido =
-      validarNombres()   &&
-      validarApellidos() &&
-      validarEmail()     &&
-      validarTelefono()  &&
-      validarFecha()     &&
-      validarDireccion() &&
-      validarPassword()  &&
-      validarConfirmar() &&
-      validarTerminos();
 
-    if (valido) {
-      alertaError.style.display = 'none';
-      alertaExito.style.display = 'block';
-      const datosUsuario = {
-        nombres:         document.getElementById('nombres').value,
-        apellidos:       document.getElementById('apellidos').value,
-        email:           document.getElementById('email').value,
-        telefono:        document.getElementById('telefono').value,
-        fechaNacimiento: document.getElementById('fechaNacimiento').value,
-        genero:          document.getElementById('genero').value,
-        direccion:       document.getElementById('direccion').value,
-      };
-      document.getElementById('jsonCode').textContent = JSON.stringify(datosUsuario, null, 2);
-    } else {
-      alertaError.style.display = 'block';
-      alertaExito.style.display = 'none';
+    /* Ejecutar TODAS las validaciones para mostrar todos los errores */
+    const resultados = [
+      vNombres(),
+      vApellidos(),
+      vEmail(),
+      vTelefono(),
+      vFecha(),
+      vDireccion(),
+      vPassword(),
+      vConfirmar(),
+      vTerminos()
+    ];
+
+    if (resultados.includes(false)) {
+      alerta.error('Por favor corrige los errores marcados.');
+      /* Scroll al primer campo con error */
+      form.querySelector('.input-error')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    /* Guardar en localStorage */
+    try {
+      AlmiuxStorage.agregarUsuario({
+        nombres:         fNombres.valor.trim(),
+        apellidos:       fApellidos.valor.trim(),
+        email:           fEmail.valor.trim().toLowerCase(),
+        telefono:        fTelefono.valor.trim(),
+        fechaNacimiento: fFecha.input.value,
+        genero:          document.getElementById('genero')?.value || '',
+        direccion:       fDireccion.valor.trim(),
+        password:        fPassword.valor,
+      });
+
+      alerta.exito('¡Cuenta creada exitosamente! Redirigiendo al inicio de sesión…');
+      form.reset();
+      form.querySelectorAll('.input-ok').forEach(el => el.classList.remove('input-ok'));
+      const wrap = document.getElementById('fortalezaWrap');
+      if (wrap) wrap.style.display = 'none';
+
+      setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+
+    } catch (err) {
+      alerta.error(err.message);
+      fEmail.error(err.message);
     }
   });
 
+  /* ── Limpiar ─────────────────────────────────────────────── */
   document.getElementById('btnLimpiar')?.addEventListener('click', () => {
     form.reset();
-    document.querySelectorAll('.alert-danger').forEach(div => {
-      div.style.display = 'none';
-      div.textContent   = '';
+    alerta.limpiar();
+    form.querySelectorAll('.input-ok,.input-error')
+        .forEach(el => el.classList.remove('input-ok','input-error'));
+    form.querySelectorAll('.alerta-global.alerta-error').forEach(el => {
+      el.textContent    = '';
+      el.style.display  = 'none';
     });
-    alertaError.style.display = 'none';
-    alertaExito.style.display = 'none';
-    const fortalezaWrap  = document.getElementById('fortalezaWrap');
-    const fortalezaFill  = document.getElementById('fortalezaFill');
-    const fortalezaLabel = document.getElementById('fortalezaLabel');
-    const jsonCode       = document.getElementById('jsonCode');
-    if (fortalezaWrap)  fortalezaWrap.style.display = 'none';
-    if (fortalezaFill)  fortalezaFill.style.width   = '0';
-    if (fortalezaLabel) fortalezaLabel.textContent   = '';
-    if (jsonCode)       jsonCode.textContent         = '';
+    form.querySelectorAll('.msg-error span').forEach(el => el.textContent = '');
+    form.querySelectorAll('.msg-error').forEach(el => el.style.display = 'none');
+    const wrap = document.getElementById('fortalezaWrap');
+    if (wrap) wrap.style.display = 'none';
   });
+
 });

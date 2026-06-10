@@ -48,8 +48,8 @@
   <!-- ══════════════════════════════════════════════════════════════
        HERO SUPERIOR 
   ══════════════════════════════════════════════════════════════ -->
-  <section class="registro-hero">
-    <span class="badge">Formulario de clientes</span>
+  <section class="auth-hero">
+    <span class="badge"><i class="fa-solid fa-lock"></i> &nbsp;Crear cuenta</span>
     <h1>Queremos <span>conocerte</span></h1>
     <p>
       Completa el formulario para registrarte como cliente en Abarrotes Almiux.
@@ -60,7 +60,7 @@
        LAYOUT PRINCIPAL — Tarea de KALEB
        Dos columnas: izquierda = formulario, derecha = beneficios
   ══════════════════════════════════════════════════════════════ -->
-  <div class="registro-layout">
+  <div class="auth-layout">
 
     <!-- ── Columna izquierda: formulario ──────────────────────── -->
     <div class="form-card">
@@ -70,32 +70,33 @@
         Todos los campos marcados con <span style="color:var(--color-primary)">*</span> son obligatorios.
       </p>
 
-      <!-- Alerta global de error (Bootstrap) — manejada por NOÉ -->
-      <div class="alert alert-danger" id="alertaError" role="alert">
-        <span>⚠️</span>
+       <!-- ALERTA GLOBAL ERROR -->
+      <div class="alerta-global alerta-error" id="alertaError" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i>
         <span id="alertaErrorMsg">Por favor corrige los errores marcados.</span>
       </div>
 
-      <!-- Alerta global de éxito (Bootstrap) — manejada por NOÉ -->
-      <div class="alert alert-success" id="alertaExito" role="alert">
-        <span>✅</span>
-        <span>¡Cuenta creada exitosamente! Bienvenido/a a Abarrotes Almiux.</span>
+      <!-- ALERTA GLOBAL ÉXITO -->
+      <div class="alerta-global alerta-exito" id="alertaExito" role="alert">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="alertaExitoMsg">¡Cuenta creada exitosamente! Bienvenido/a a Abarrotes Almiux.</span>
       </div>
+      
 
-      <form id="registroForm" novalidate>
+      <form id="authForm" novalidate>
 
         <!-- Nombre(s) y Apellidos -->
         <div class="fila-2">
           <div class="campo-grupo">
             <label for="nombres">Nombre(s) <span class="req">*</span></label>
             <input type="text" id="nombres" name="nombres" placeholder="Ingresa tu nombre" autocomplete="given-name">
-            <div class="alert alert-danger" id="errorNombres" role="alert"></div>
+            <div class="alerta-global alerta-error" id="errorNombres" role="alert"></div>
           </div>
           <div class="campo-grupo">
             <label for="apellidos">Apellidos <span class="req">*</span></label>
             <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos"
               autocomplete="family-name">
-            <div class="alert alert-danger" id="errorApellidos" role="alert"></div>
+            <div class="alerta-global alerta-error" id="errorApellidos" role="alert"></div>
           </div>
         </div>
 
@@ -104,13 +105,13 @@
           <div class="campo-grupo">
             <label for="email">Correo electrónico <span class="req">*</span></label>
             <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" autocomplete="email">
-            <div class="alert alert-danger" id="errorEmail" role="alert"></div>
+            <div class="alerta-global alerta-error" id="errorEmail" role="alert"></div>
           </div>
           <div class="campo-grupo">
             <label for="telefono">Teléfono <span class="req">*</span></label>
             <input type="tel" id="telefono" name="telefono" placeholder="55 1234 5678" maxlength="10"
               autocomplete="tel">
-            <div class="alert alert-danger" id="errorTelefono" role="alert"></div>
+            <div class="alerta-global alerta-error" id="errorTelefono" role="alert"></div>
           </div>
         </div>
 
@@ -119,7 +120,7 @@
           <div class="campo-grupo">
             <label for="fechaNacimiento">Fecha de nacimiento <span class="req">*</span></label>
             <input type="date" id="fechaNacimiento" name="fechaNacimiento">
-            <div class="alert alert-danger" id="errorFecha" role="alert"></div>
+            <div class="alerta-global alerta-error" id="errorFecha" role="alert"></div>
           </div>
           <div class="campo-grupo">
             <label for="genero">Género</label>
@@ -137,7 +138,7 @@
           <label for="direccion">Dirección <span class="req">*</span></label>
           <input type="text" id="direccion" name="direccion" placeholder="Calle, colonia, número exterior..."
             autocomplete="street-address">
-          <div class="alert alert-danger" id="errorDireccion" role="alert"></div>
+          <div class="alerta-global alerta-error" id="errorDireccion" role="alert"></div>
         </div>
 
         <!-- Contraseña -->
@@ -146,8 +147,9 @@
           <div class="input-pwd-wrap">
             <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres"
               autocomplete="new-password">
-            <!-- Botón ojo — función de DIEGO -->
-            <button type="button" class="btn-ojo" id="ojoPwd" aria-label="Mostrar contraseña">👁️</button>
+            <button type="button" class="btn-ojo" id="ojoPwd" aria-label="Mostrar contraseña">
+              <i class="fa-regular fa-eye" id="ojoIcon"></i>
+            </button>
           </div>
 
           <!-- Indicador de fortaleza — función de DIEGO -->
@@ -157,7 +159,7 @@
             </div>
             <span class="fortaleza-label" id="fortalezaLabel"></span>
           </div>
-          <div class="alert alert-danger" id="errorPassword" role="alert"></div>
+          <div class="alerta-global alerta-error" id="errorPassword" role="alert"></div>
         </div>
 
         <!-- Confirmar contraseña -->
@@ -166,9 +168,11 @@
           <div class="input-pwd-wrap">
             <input type="password" id="confirmarPassword" name="confirmarPassword" placeholder="Repite tu contraseña"
               autocomplete="new-password">
-            <button type="button" class="btn-ojo" id="ojoConfirm" aria-label="Mostrar contraseña">👁️</button>
+            <button type="button" class="btn-ojo" id="ojoConfirm" aria-label="Mostrar contraseña">
+              <i class="fa-regular fa-eye" id="ojoIcon"></i>
+            </button>
           </div>
-          <div class="alert alert-danger" id="errorConfirmar" role="alert"></div>
+          <div class="alerta-global alerta-errorr" id="errorConfirmar" role="alert"></div>
         </div>
 
         <!-- Checkbox términos y condiciones -->
@@ -179,7 +183,7 @@
             el uso de mis datos para recibir promociones y noticias.
           </label>
         </div>
-        <div class="alert alert-danger" id="errorTerminos" role="alert" style="margin-bottom:16px"></div>
+        <div class="alerta-global alerta-error" id="errorTerminos" role="alert" style="margin-bottom:16px"></div>
 
         <!-- Botones -->
         <div class="btns">
@@ -196,27 +200,27 @@
 
     <!-- ── Columna derecha: beneficios — Tarea de YARIS ────────── -->
     <aside>
-      <div class="beneficios-card">
+      <div class="auth-side-card">
         <h3>Beneficios</h3>
         <p>
           Al registrarte podrás realizar pedidos a domicilio de forma sencilla. Todo lo que necesitas a un solo click
         </p>
 
-        <div class="beneficios-lista">
-          <div class="beneficio-item">
-            <div class="registro-im">
+        <div class="auth-side-lista">
+          <div class="auth-side-item">
+            <div class="auth-side-im">
               <img src="../images/registro.jpeg" alt="RegistroIm">
             </div>
           </div>
-          <div class="beneficio-item">
-            <div class="beneficio-icono">🚚</div>
+          <div class="auth-side-item">
+            <div class="auth-side-icono">🚚</div>
             <div>
               <strong>Pedidos rápidos</strong>
               <span>Facilita tus futuras compras y entregas a domicilio.</span>
             </div>
           </div>
-          <div class="beneficio-item">
-            <div class="beneficio-icono">⭐</div>
+          <div class="auth-side-item">
+            <div class="auth-side-icono">⭐</div>
             <div>
               <strong>Atención personalizada</strong>
               <span>Obtén un servicio cercano y dedicado, ideal para clientes frecuentes.</span>
@@ -232,7 +236,7 @@
     </aside>
 
 
-  </div><!-- /registro-layout -->
+  </div><!-- /auth-layout -->
 
  <!-- Contenedor donde se cargará el Footer -->
 <div id="footer-container"></div>
@@ -242,19 +246,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 
   <!-- JS del proyecto -->
-  <script src="../js/utils.js"></script>
-  <script src="../js/navbar.js"></script>
-  <script src="../js/productos.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/registro.js"></script>
-  <!-- Validaciones del registro  -->
-  <script src="../js/usuario.js"></script>
-
-
-  <script>
-
-
-  </script>
+<script src="../js/utils.js"></script>
+<script src="../js/navbar.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/productos.js"></script>
+<!-- Validaciones del registro  -->
+<script src="../js/auth.js"></script>
+<script src="../js/registro.js"></script>
+  
 
 </body>
 
