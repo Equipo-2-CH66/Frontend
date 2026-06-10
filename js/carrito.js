@@ -311,8 +311,8 @@ function iniciarCarrito() {
           <div class="cart-total">
             Total: <span id="totalAmount">$0.00</span>
           </div>
-          <button class="btn-primary" type="button" onclick="cerrarDrawer()">
-            Finalizar compra
+          <button class="btn-primary" type="button" onclick="window.location.href='pago.html'">
+          Finalizar compra
           </button>
         </div>
       </div>
