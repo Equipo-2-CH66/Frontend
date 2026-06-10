@@ -1,6 +1,6 @@
 # 🏪 ALMIUX — Sistema de Gestión para Tienda de Abarrotes
 
-![Página Principal](./images/readme/almiux-home.png)
+![Página Principal](./images/readme/AlmiuxInicio.png)
 
 > Proyecto desarrollado por el equipo **404 Team Not Found** como parte del Bootcamp Full Stack Java de Generation México.
 
@@ -48,7 +48,7 @@ La plataforma permite administrar productos, usuarios y operaciones relacionadas
 
 ## Página Principal
 
-![Página Principal](./images/readme/almiux-home.png)
+![Página Principal](./images/readme/AlmiuxInicio.png)
 
 ---
 
@@ -58,7 +58,7 @@ Durante el desarrollo se aplicaron metodologías ágiles para la organización, 
 
 ## Tablero Jira
 
-![Tablero Jira](./images/readme/jira-board.png)
+![Tablero Jira](./images/readme/JiraAlmiux.png)
 
 El equipo gestionó historias de usuario, backlog, tareas técnicas y seguimiento de sprints utilizando Jira como herramienta principal de trabajo.
 
