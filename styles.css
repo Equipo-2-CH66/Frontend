@@ -3121,3 +3121,318 @@ footer {
   box-shadow: 0 0 6px rgba(255,127,0,0.4);
   outline: none;
 }
+/* ══════════════════════════════════════════════════════════════════
+   ABARROTES ALMIUX — CSS del Carrito
+══════════════════════════════════════════════════════════════════ */
+
+/* ── Badge del navbar ────────────────────────────────────────────── */
+.nav-cart-btn {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e53e3e;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: none;            /* oculto por defecto; JS pone display:flex */
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 3px;
+  pointer-events: none;
+  animation: badgePop .2s ease;
+}
+
+@keyframes badgePop {
+  0%   { transform: scale(0.5); }
+  70%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ── Overlay oscuro ──────────────────────────────────────────────── */
+#cartOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1090;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+
+#cartOverlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Drawer lateral ──────────────────────────────────────────────── */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  max-width: 100vw;
+  height: 100dvh;          /* dvh cubre el área visible en móvil */
+  background: #fff;
+  box-shadow: -4px 0 24px rgba(0,0,0,.18);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(105%);
+  transition: transform .32s cubic-bezier(.4,0,.2,1);
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+}
+
+.cart-drawer.open {
+  transform: translateX(0);
+}
+
+/* ── Header del drawer ───────────────────────────────────────────── */
+.cart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.cart-header h3 {
+  margin: 0 0 2px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.cart-items-count {
+  font-size: 0.78rem;
+  color: #888;
+  display: block;
+}
+
+#closeCart {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+#closeCart:hover {
+  background: #f5f5f5;
+  color: #222;
+}
+
+/* ── Cuerpo (lista de ítems) ─────────────────────────────────────── */
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+}
+
+/* Estado vacío */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+  min-height: 220px;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.cart-empty span {
+  font-size: 2.8rem;
+  filter: grayscale(1) opacity(.5);
+}
+
+/* ── Ítem individual ─────────────────────────────────────────────── */
+.cart-item {
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: itemSlideIn .2s ease;
+}
+
+@keyframes itemSlideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart-item-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+/* ── Controles de cantidad ───────────────────────────────────────── */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #555;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background .12s, color .12s;
+}
+
+.qty-btn:hover {
+  background: #f0f0f0;
+  color: #111;
+}
+
+.qty-num {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #222;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-item-price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2d7a2d;
+}
+
+/* ── Botón quitar ────────────────────────────────────────────────── */
+.remove-item {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: #c0392b;
+  cursor: pointer;
+  padding: 2px 0;
+  transition: color .15s;
+  align-self: flex-start;
+}
+
+.remove-item:hover {
+  color: #96281b;
+  text-decoration: underline;
+}
+
+/* ── Footer (total + botón checkout) ─────────────────────────────── */
+.cart-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+#totalAmount {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1a6e1a;
+}
+
+/* ── Toast de notificación ───────────────────────────────────────── */
+#cartToast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+
+#cartToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Botón "Añadido" en tarjeta de producto ───────────────────────── */
+.btn-agregar.agregado {
+  background: #2d7a2d;
+  color: #fff;
+  animation: cartBounce .4s ease;
+}
+
+@keyframes cartBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(.9); }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 440px) {
+  .cart-drawer {
+    width: 100vw;
+    border-radius: 0;
+  }
+}

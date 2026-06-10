@@ -119,18 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Cargar Navbar ────────────────────────────────────────────────
   cargarFragmento(
-    `${basePath}/utils/navbar/navbar.html`,
-    'navbar-container',
-    () => {
-      arreglarLinks();
-      arreglarImagenes();
-      arreglarBotones();
-      iniciarNavbar();
-      marcarLinkActivo();
-
-      iniciarContadores();
-      iniciarAnimacionesScroll();
-
+  `${basePath}/utils/navbar/navbar.html`,
+  'navbar-container',
+  () => {
+    arreglarLinks();
+    arreglarImagenes();
+    arreglarBotones();
+    iniciarNavbar();
+    marcarLinkActivo();
+    iniciarContadores();
+    iniciarAnimacionesScroll();
+    if (typeof iniciarCarrito === 'function') iniciarCarrito();
+    
       const userBtn  = document.getElementById('userBtn');
       const userMenu = document.getElementById('userMenu');
 
