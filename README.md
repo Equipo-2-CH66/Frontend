@@ -1,10 +1,15 @@
 🏪 ALMIUX — Sistema de Gestión para Tienda de Abarrotes
 
-Proyecto desarrollado por el equipo 404 Team Not Found como parte del Bootcamp de Desarrollo Full Stack de Generation México.
+
+
+
+Proyecto desarrollado por el equipo 404 Team Not Found como parte del Bootcamp Full Stack Java de Generation México.
 
 📖 Descripción
 
-ALMIUX es una plataforma web desarrollada para la administración y gestión de una tienda de abarrotes. El sistema integra un frontend responsivo para la interacción de los usuarios y un backend desarrollado con Spring Boot que expone una API REST para la gestión de información.
+ALMIUX es una plataforma web desarrollada para la administración y gestión de una tienda de abarrotes.
+
+El proyecto integra un frontend responsivo para la interacción de los usuarios y un backend desarrollado con Spring Boot que expone una API REST para la gestión de información.
 
 La plataforma permite administrar productos, usuarios y operaciones relacionadas con el negocio mediante una arquitectura cliente-servidor, facilitando la organización del inventario y mejorando la experiencia de los clientes.
 
@@ -13,9 +18,12 @@ Frontend
 Diseño responsivo para dispositivos móviles, tablets y escritorio.
 Catálogo de productos organizado por categorías.
 Búsqueda y filtrado dinámico de productos.
-Formularios de registro y autenticación.
+Registro de usuarios.
+Inicio de sesión.
 Página institucional con información del negocio.
 Panel administrativo para gestión de productos.
+Carrito de compras.
+Navegación intuitiva y amigable.
 Backend
 API REST desarrollada con Spring Boot.
 Arquitectura basada en capas.
@@ -23,77 +31,56 @@ Persistencia de datos mediante JPA/Hibernate.
 Gestión de usuarios.
 Gestión de productos.
 Validación de datos.
-Integración con base de datos MySQL.
+Integración con MySQL.
+Manejo de excepciones.
+Endpoints REST para operaciones CRUD.
 🖼️ Capturas del Proyecto
-Página de Inicio
+Página Principal
 
-Agregar captura de pantalla aquí.
 
-![Inicio](./docs/images/inicio.png)
-Catálogo de Productos
 
-Agregar captura de pantalla aquí.
 
-![Productos](./docs/images/productos.png)
-Registro de Usuarios
+📋 Gestión del Proyecto
 
-Agregar captura de pantalla aquí.
+Durante el desarrollo se aplicaron metodologías ágiles para la organización, seguimiento y control de actividades.
 
-![Registro](./docs/images/registro.png)
-Panel Administrativo
+Tablero Jira
 
-Agregar captura de pantalla aquí.
 
-![Admin](./docs/images/admin.png)
-API REST
 
-Agregar captura de Swagger o Postman aquí.
 
-![Swagger](./docs/images/swagger.png)
+El equipo gestionó historias de usuario, backlog, tareas técnicas y seguimiento de sprints utilizando Jira como herramienta principal de trabajo.
+
 🏗️ Arquitectura General
-┌─────────────────────┐
-│      Frontend       │
-│ HTML • CSS • JS     │
-└──────────┬──────────┘
-           │ HTTP
-           ▼
-┌─────────────────────┐
-│ Spring Boot REST API│
-│ Controllers         │
-│ Services            │
-│ Repositories        │
-└──────────┬──────────┘
-           │ JPA
-           ▼
-┌─────────────────────┐
-│       MySQL         │
-│   Base de Datos     │
-└─────────────────────┘
+Frontend (HTML, CSS, JavaScript)
+            │
+            ▼
+     API REST Spring Boot
+            │
+            ▼
+          MySQL
 🛠️ Tecnologías Utilizadas
 Frontend
-Tecnología	Descripción
-HTML5	Estructura del sitio
-CSS3	Estilos y diseño responsivo
-JavaScript ES6+	Interactividad del sistema
-Bootstrap	Componentes y utilidades visuales
+HTML5
+CSS3
+JavaScript (ES6+)
+Bootstrap
 Backend
-Tecnología	Descripción
-Java	Lenguaje principal
-Spring Boot	Framework backend
-Spring Data JPA	Persistencia de datos
-Hibernate	ORM
-Maven	Gestión de dependencias
+Java
+Spring Boot
+Spring Data JPA
+Hibernate
+Maven
 Base de Datos
-Tecnología	Descripción
-MySQL	Base de datos relacional
+MySQL
 Herramientas
-Herramienta	Uso
-Git	Control de versiones
-GitHub	Repositorio del proyecto
-Postman	Pruebas de API
-MySQL Workbench	Administración de base de datos
-VS Code	Desarrollo Frontend
-IntelliJ IDEA	Desarrollo Backend
+Git
+GitHub
+Jira
+Postman
+MySQL Workbench
+VS Code
+IntelliJ IDEA
 📂 Estructura del Proyecto
 ALMIUX/
 │
@@ -109,8 +96,8 @@ ALMIUX/
 │   └── images/
 │
 ├── backend/
-│   ├── src/main/java
-│   ├── src/main/resources
+│   ├── src/main/java/
+│   ├── src/main/resources/
 │   ├── pom.xml
 │   └── application.properties
 │
@@ -133,20 +120,17 @@ PUT	/products/{id}	Actualizar producto
 DELETE	/products/{id}	Eliminar producto
 🗄️ Base de Datos
 
-El sistema utiliza una base de datos relacional en MySQL para almacenar la información de usuarios y productos.
+El sistema utiliza MySQL para almacenar la información relacionada con usuarios, productos y demás recursos del sistema.
 
-Modelo Entidad-Relación
+Aquí podrás agregar posteriormente el diagrama entidad-relación.
 
-Agregar imagen del diagrama ER aquí.
-
-![Modelo ER](./docs/images/diagrama-er.png)
 ⚙️ Instalación y Configuración
 1. Clonar el repositorio
 git clone https://github.com/TU-USUARIO/ALMIUX.git
 cd ALMIUX
-2. Configurar la base de datos
+2. Configurar MySQL
 
-Crear una base de datos en MySQL:
+Crear la base de datos:
 
 CREATE DATABASE almiux_db;
 
@@ -162,19 +146,16 @@ spring.datasource.password=tu_password
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-3. Ejecutar Backend
-
-Desde la carpeta backend:
-
+3. Ejecutar el Backend
 mvn clean install
 mvn spring-boot:run
 
 La API estará disponible en:
 
 http://localhost:8080
-4. Ejecutar Frontend
+4. Ejecutar el Frontend
 
-Abrir el archivo:
+Abrir:
 
 index.html
 
@@ -202,15 +183,17 @@ Interfaz amigable.
 404 Team Not Found
 Integrante	Rol
 Kaleb Torres	Scrum Master · Developer
-Danna Remigio	Developer
 Arturo Ramírez	Developer
+Danna Remigio	Developer
 Yarilis Hernández	Developer
 Zared Ortiz	Developer
 Noé Hernández	Developer
 Diego Quiñónez	Developer
 🎓 Proyecto Académico
 
-Proyecto desarrollado como parte del Bootcamp Full Stack Java de Generation México, aplicando conocimientos de:
+Proyecto desarrollado como parte del Bootcamp Full Stack Java de Generation México.
+
+Durante el desarrollo se aplicaron conocimientos de:
 
 Desarrollo Frontend
 Desarrollo Backend
@@ -218,15 +201,8 @@ APIs REST
 Bases de Datos Relacionales
 Metodologías Ágiles
 Control de Versiones con Git
-📞 Contacto
-
-Para más información sobre el proyecto:
-
-GitHub del proyecto
-Repositorio Backend
-Repositorio Frontend
 📄 Licencia
 
-Este proyecto fue desarrollado con fines académicos y educativos.
+Proyecto desarrollado con fines académicos y educativos.
 
-Hecho en México 🇲🇽 por el equipo 404 Team Not Found
+🇲🇽 Hecho en México por el equipo 404 Team Not Found
