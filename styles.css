@@ -177,15 +177,17 @@ nav {
   display: flex;
   gap: 32px;
   align-items: center;
+
 }
 
 .nav-links a {
   text-decoration: none;
   color: var(--color-muted);
-  font-size: 17px;
+  font-size: 25px;
   font-weight: 500;
   letter-spacing: 0.02em;
   transition: color 0.2s;
+
 }
 
 .nav-links a:hover,
@@ -194,14 +196,31 @@ nav {
   /* Color activo = terracota */
 }
 
+/*CONTENEDOR CARRITO*/
+
 /* Botón CTA del navbar ("Pedir ahora") */
+
 .nav-cta {
   background: var(--color-primary) !important;
   color: var(--color-bg) !important;
-  padding: 8px 20px;
-  border-radius: var(--radius-pill);
+
+  display: inline-flex; /* ✅ igual que el carrito */
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  padding: 0;         /*importante */
+  width: 52px;        /*mismo tamaño que carrito */
+  height: 52px;
+
+  font-size: 25px;    /* usa el mismo que .nav-links a */
+
+  border: none;
+  outline: none;
   cursor: pointer;
 }
+
 
 .nav-cta:hover {
   background: var(--color-primary-dark) !important;
@@ -2460,22 +2479,28 @@ footer {
   line-height: 1.7;
 }
 
-.auth-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;
-  padding: 56px var(--page-padding) 80px;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: start;
-}
+.auth-layout{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      padding: 56px var(--page-padding) 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
 
-.form-card {
-  background: #fff;
-  border-radius: 24px;
-  border: 1.5px solid var(--color-border);
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(44, 26, 14, .06);
+.form-card{
+    background:#fff;
+    border-radius:24px;
+    border:1.5px solid var(--color-border);
+    padding:40px;
+    box-shadow:0 10px 30px rgba(44,26,14,.06);
+
+    /*CONTENEDOR CENTRA*/
+    display: flex;              
+    flex-direction: column;     
+    justify-content: center; 
+
 }
 
 .form-card-title {
@@ -2493,10 +2518,11 @@ footer {
 }
 
 /* ── FORMULARIO ───────────────────────────────────────────────── */
-#authForm {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+#authForm{
+  display:flex;
+  flex-direction:column;
+  /*gap:20px;*/
+  height: 100%
 }
 
 /* 2 columnas */
@@ -2567,24 +2593,24 @@ footer {
 }
 
 /* ── PANEL DERECHO ────────────────────────────────────────────── */
-.auth-side-card {
-  background: var(--color-dark-mid);
-  border-radius: 24px;
-  padding: 40px 34px;
-  color: #fff;
-  position: sticky;
-  top: 110px;
-  overflow: hidden;
+.auth-side-card{
+  background:var(--color-dark-mid);
+  border-radius:24px;
+  padding:40px 34px;
+  color:#fff;
+  position:sticky;
+  top:110px;
+  overflow:hidden;
+  height: 100%; /*CONTENEDOR*/
 }
 
-.auth-side-card::before {
-  content: '🛒';
-  position: absolute;
-  right: -10px;
-  top: -10px;
-  font-size: 140px;
-  opacity: .05;
-  pointer-events: none;
+.auth-side-card::before{
+  position:absolute;
+  right:-10px;
+  top:-10px;
+  font-size:140px;
+  opacity:.05;
+  pointer-events:none;
 }
 
 .auth-side-card h3 {
@@ -2662,6 +2688,19 @@ footer {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+/* CONTENEDORES */
+
+.auth-container {
+  display: flex;
+  align-items: stretch;
+  gap: 30px;
+}
+
+.auth-form,
+.auth-side-card {
+  flex: 1;
 }
 
 /* Alertas globales */
@@ -3208,40 +3247,524 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .auth-side-card {
-    position: static;
+    .fila-2{
+        grid-template-columns:1fr;
+    
+      }
+   
+}
+
+
+
+/* Contenedor principal de la sección */
+.promo-page-header {
+  padding: 2rem;
+  background-color: #f9f9f9; /* opcional */
+}
+
+/* Contenido en fila: texto a la izquierda, imagen a la derecha */
+.promo-content {
+  display: flex;
+  align-items: center;        /* centra verticalmente */
+  justify-content: space-between;
+}
+
+/* Bloque de texto */
+.promo-text {
+  flex: 1;                    /* ocupa todo el espacio disponible */
+  max-width: 70%;             /* limita ancho del texto */
+}
+
+/* Imagen a la derecha, más grande y con esquinas redondeadas */
+.promo-img {
+  width: 300px;               /* tamaño más grande */
+  height: auto;               /* mantiene proporción */
+  margin-left: 1rem;          /* separación respecto al texto */
+  border-radius: 15px;        /* esquinas redondeadas */
+  object-fit: cover;          /* asegura que se ajuste bien */
+}
+
+/* Estilos de los textos */
+.section-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+.promo-page-title {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: #333;
+}
+
+.promo-page-sub {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+}
+
+/* Inputs del formulario de pago */
+.form-group input {
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;   /* borde naranja */
+  border-radius: 8px;          /* esquinas redondeadas */
+  font-size: 1rem;
+  color: #333;                 /* texto oscuro */
+  background-color: #fdfdfd;   /* fondo blanco suave */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al enfocar */
+.form-group input:focus {
+  border-color: #e66a00;       /* borde más oscuro al enfocar */
+  box-shadow: 0 0 6px rgba(255,127,0,0.4); /* resplandor naranja */
+  outline: none;
+}
+
+/* Etiquetas de los campos del formulario */
+.form-group label {
+  font-weight: 600;       /* un poco más grueso para destacar */
+  margin-bottom: 0.5rem;
+  color: #000000;         /* negro sólido */
+  font-size: 1rem;
+}
+
+/* Inputs del formulario de pago */
+.form-group input {
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;   /* borde naranja */
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000;                 /* texto negro */
+  background-color: #fff;      /* fondo blanco fijo */
+}
+
+/* Al enfocar (cuando escribes dentro) */
+.form-group input:focus {
+  background-color: #fff;      /* sigue blanco */
+  color: #000;                 /* texto negro */
+  border-color: #e66a00;       /* borde más oscuro */
+  box-shadow: 0 0 6px rgba(255,127,0,0.4);
+  outline: none;
+}
+
+/* Caja blanca del formulario */
+.pago-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 400px;   /* ancho máximo del formulario */
+  margin: 0 auto;     /* centrado horizontal */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Etiquetas */
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #000;        /* negro sólido */
+}
+
+/* Inputs */
+.form-group input {
+  width: 100%;        /* ocupa el ancho del formulario, no de la página */
+  max-width: 350px;   /* límite para que no se extienda demasiado */
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #e66a00;
+  box-shadow: 0 0 6px rgba(255,127,0,0.4);
+  outline: none;
+}
+/* ══════════════════════════════════════════════════════════════════
+   ABARROTES ALMIUX — CSS del Carrito
+══════════════════════════════════════════════════════════════════ */
+
+/* ── Badge del navbar ────────────────────────────────────────────── */
+.nav-cart-btn {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e53e3e;
+  color: #fff;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: none;            /* oculto por defecto; JS pone display:flex */
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 3px;
+  pointer-events: none;
+  animation: badgePop .2s ease;
+}
+
+@keyframes badgePop {
+  0%   { transform: scale(0.5); }
+  70%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ── Overlay oscuro ──────────────────────────────────────────────── */
+#cartOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1090;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+
+#cartOverlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Drawer lateral ──────────────────────────────────────────────── */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  max-width: 100vw;
+  height: 100dvh;          /* dvh cubre el área visible en móvil */
+  background: #fff;
+  box-shadow: -4px 0 24px rgba(0,0,0,.18);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(105%);
+  transition: transform .32s cubic-bezier(.4,0,.2,1);
+  border-radius: 16px 0 0 16px;
+  overflow: hidden;
+}
+
+.cart-drawer.open {
+  transform: translateX(0);
+}
+
+/* ── Header del drawer ───────────────────────────────────────────── */
+.cart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.cart-header h3 {
+  margin: 0 0 2px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.cart-items-count {
+  font-size: 0.78rem;
+  color: #888;
+  display: block;
+}
+
+#closeCart {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+#closeCart:hover {
+  background: #f5f5f5;
+  color: #222;
+}
+
+/* ── Cuerpo (lista de ítems) ─────────────────────────────────────── */
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+}
+
+/* Estado vacío */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+  min-height: 220px;
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.cart-empty span {
+  font-size: 2.8rem;
+  filter: grayscale(1) opacity(.5);
+}
+
+/* ── Ítem individual ─────────────────────────────────────────────── */
+.cart-item {
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  animation: itemSlideIn .2s ease;
+}
+
+@keyframes itemSlideIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart-item-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+/* ── Controles de cantidad ───────────────────────────────────────── */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #555;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background .12s, color .12s;
+}
+
+.qty-btn:hover {
+  background: #f0f0f0;
+  color: #111;
+}
+
+.qty-num {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #222;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-item-price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2d7a2d;
+}
+
+/* ── Botón quitar ────────────────────────────────────────────────── */
+.remove-item {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: #c0392b;
+  cursor: pointer;
+  padding: 2px 0;
+  transition: color .15s;
+  align-self: flex-start;
+}
+
+.remove-item:hover {
+  color: #96281b;
+  text-decoration: underline;
+}
+
+/* ── Footer (total + botón checkout) ─────────────────────────────── */
+.cart-footer {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+#totalAmount {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1a6e1a;
+}
+
+/* ── Toast de notificación ───────────────────────────────────────── */
+#cartToast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 0.87rem;
+  font-weight: 500;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+
+#cartToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Botón "Añadido" en tarjeta de producto ───────────────────────── */
+.btn-agregar.agregado {
+  background: #2d7a2d;
+  color: #fff;
+  animation: cartBounce .4s ease;
+}
+
+@keyframes cartBounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(.9); }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 440px) {
+  .cart-drawer {
+    width: 100vw;
+    border-radius: 0;
   }
 }
 
-@media(max-width:700px) {
-  .auth-layout {
-    padding: 36px var(--page-padding) 60px;
-  }
-
-  .form-card,
-  .auth-side-card {
-    padding: 26px 20px;
-  }
-
-  .fila-2 {
-    grid-template-columns: 1fr;
-  }
+/* Variables de tipografía */
+:root {
+  --font-display: 'Fraunces', serif;   /* títulos */
+  --font-body: 'DM Sans', sans-serif; /* cuerpo */
 }
 
-/* Molde circular para uniformar todas las categorías */
-.cat-card img {
-  width: 140px !important;
-  /* Ajusta el ancho al tamaño que te guste */
-  height: 140px !important;
-  /* Debe ser idéntico al ancho para hacer un círculo */
-  border-radius: 50% !important;
-  /* Esto las vuelve redondas por completo */
-  object-fit: cover !important;
-  /* ¡Esta es la clave! Hace que la imagen llene el círculo sin deformarse */
-  background-color: #ffffff;
-  /* Le da un fondo blanco limpio a las que no tienen color */
-  border: 1px solid var(--color-border);
-  /* Opcional: un borde sutil para que se vean uniformes */
-  margin-bottom: 15px;
-  /* Separa la imagen del texto de abajo */
+/* Sección de pago */
+.pago {
+  display: flex;
+  flex-direction: column;   /* título y formulario en columna */
+  align-items: center;      /* centra horizontalmente */
+  justify-content: center;  /* centra verticalmente */
+  min-height: 80vh;         /* altura mínima para centrar */
+  text-align: center;       /* centra el texto */
+  font-family: var(--font-body); /* tipografía del cuerpo */
+}
+
+/* Título y subtítulo */
+.pago h1 {
+  font-family: var(--font-display); /* tipografía Fraunces */
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #000;                      /* negro sólido */
+}
+
+.pago p {
+  font-family: var(--font-body);    /* tipografía DM Sans */
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Caja blanca del formulario */
+.pago-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 400px;   /* ancho limitado tipo tarjeta */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Sección de pago */
+.pago {
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* centra horizontalmente */
+  justify-content: center;  /* centra verticalmente */
+  min-height: 80vh;         /* altura mínima para centrar */
+  text-align: center;
+  font-family: var(--font-body);
+  margin-bottom: 4rem;      /* espacio extra antes del footer */
+}
+
+.pago p {
+  font-family: var(--font-body);   /* tipografía DM Sans */
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: var(--color-dark-mid);    /* aplica el color de la variable */
+  text-align: center;              /* centrado con el formulario */
 }

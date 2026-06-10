@@ -11,9 +11,19 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
-
+//CAMBIOOOO
 function obtenerBasePath() {
-  return window.location.pathname.includes('/usuario/') ? '../' : './';
+  const ruta = window.location.pathname;
+
+  if (ruta.includes('/usuario/')) {
+    return '../';
+  }
+
+  if (ruta.includes('/utils/footer/')) {
+    return '../../';
+  }
+
+  return './';
 }
 
 function cargarFragmento(url, elementoId, callback) {

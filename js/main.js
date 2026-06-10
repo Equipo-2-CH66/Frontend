@@ -115,22 +115,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   iniciarCategoriasHome();
 
-  const basePath = obtenerBasePath().replace('/', '');
+  //CAMBIOOOO
+  const basePath = obtenerBasePath();
 
   // ── Cargar Navbar ────────────────────────────────────────────────
   cargarFragmento(
-    `${basePath}/utils/navbar/navbar.html`,
-    'navbar-container',
-    () => {
-      arreglarLinks();
-      arreglarImagenes();
-      arreglarBotones();
-      iniciarNavbar();
-      marcarLinkActivo();
-
-      iniciarContadores();
-      iniciarAnimacionesScroll();
-
+  `${basePath}/utils/navbar/navbar.html`,
+  'navbar-container',
+  () => {
+    arreglarLinks();
+    arreglarImagenes();
+    arreglarBotones();
+    iniciarNavbar();
+    marcarLinkActivo();
+    iniciarContadores();
+    iniciarAnimacionesScroll();
+    if (typeof iniciarCarrito === 'function') iniciarCarrito();
+    
       const userBtn  = document.getElementById('userBtn');
       const userMenu = document.getElementById('userMenu');
 
@@ -154,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Cargar Footer ────────────────────────────────────────────────
   cargarFragmento(
-    `${basePath}/utils/footer/footer.html`,
-    'footer-container',
+  `${basePath}utils/footer/footer.html`,
+  'footer-container',
     () => {
       arreglarLinks();
       arreglarImagenes();
