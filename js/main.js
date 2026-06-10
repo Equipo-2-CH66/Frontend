@@ -115,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   iniciarCategoriasHome();
 
-  const basePath = obtenerBasePath().replace('/', '');
+  //CAMBIOOOO
+  const basePath = obtenerBasePath();
 
   // ── Cargar Navbar ────────────────────────────────────────────────
   cargarFragmento(
@@ -154,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Cargar Footer ────────────────────────────────────────────────
   cargarFragmento(
-    `${basePath}/utils/footer/footer.html`,
-    'footer-container',
+  `${basePath}utils/footer/footer.html`,
+  'footer-container',
     () => {
       arreglarLinks();
       arreglarImagenes();
