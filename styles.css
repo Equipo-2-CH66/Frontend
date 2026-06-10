@@ -2982,5 +2982,142 @@ footer {
 
     .fila-2{
         grid-template-columns:1fr;
-    }
+    
+      }
+   
+}
+
+
+
+/* Contenedor principal de la sección */
+.promo-page-header {
+  padding: 2rem;
+  background-color: #f9f9f9; /* opcional */
+}
+
+/* Contenido en fila: texto a la izquierda, imagen a la derecha */
+.promo-content {
+  display: flex;
+  align-items: center;        /* centra verticalmente */
+  justify-content: space-between;
+}
+
+/* Bloque de texto */
+.promo-text {
+  flex: 1;                    /* ocupa todo el espacio disponible */
+  max-width: 70%;             /* limita ancho del texto */
+}
+
+/* Imagen a la derecha, más grande y con esquinas redondeadas */
+.promo-img {
+  width: 300px;               /* tamaño más grande */
+  height: auto;               /* mantiene proporción */
+  margin-left: 1rem;          /* separación respecto al texto */
+  border-radius: 15px;        /* esquinas redondeadas */
+  object-fit: cover;          /* asegura que se ajuste bien */
+}
+
+/* Estilos de los textos */
+.section-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+.promo-page-title {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: #333;
+}
+
+.promo-page-sub {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+}
+
+/* Inputs del formulario de pago */
+.form-group input {
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;   /* borde naranja */
+  border-radius: 8px;          /* esquinas redondeadas */
+  font-size: 1rem;
+  color: #333;                 /* texto oscuro */
+  background-color: #fdfdfd;   /* fondo blanco suave */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al enfocar */
+.form-group input:focus {
+  border-color: #e66a00;       /* borde más oscuro al enfocar */
+  box-shadow: 0 0 6px rgba(255,127,0,0.4); /* resplandor naranja */
+  outline: none;
+}
+
+/* Etiquetas de los campos del formulario */
+.form-group label {
+  font-weight: 600;       /* un poco más grueso para destacar */
+  margin-bottom: 0.5rem;
+  color: #000000;         /* negro sólido */
+  font-size: 1rem;
+}
+
+/* Inputs del formulario de pago */
+.form-group input {
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;   /* borde naranja */
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000;                 /* texto negro */
+  background-color: #fff;      /* fondo blanco fijo */
+}
+
+/* Al enfocar (cuando escribes dentro) */
+.form-group input:focus {
+  background-color: #fff;      /* sigue blanco */
+  color: #000;                 /* texto negro */
+  border-color: #e66a00;       /* borde más oscuro */
+  box-shadow: 0 0 6px rgba(255,127,0,0.4);
+  outline: none;
+}
+
+/* Caja blanca del formulario */
+.pago-form {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  width: 100%;
+  max-width: 400px;   /* ancho máximo del formulario */
+  margin: 0 auto;     /* centrado horizontal */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Etiquetas */
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #000;        /* negro sólido */
+}
+
+/* Inputs */
+.form-group input {
+  width: 100%;        /* ocupa el ancho del formulario, no de la página */
+  max-width: 350px;   /* límite para que no se extienda demasiado */
+  padding: 0.8rem;
+  border: 2px solid #ff7f00;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000;
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #e66a00;
+  box-shadow: 0 0 6px rgba(255,127,0,0.4);
+  outline: none;
 }
