@@ -17,63 +17,7 @@ const PRODUCTOS = [];
 })();
 
 
-/* ══════════════════════════════════════════════════════════════════
-   CARRITO (persiste en localStorage)
-══════════════════════════════════════════════════════════════════ */
 
-let carrito = [];
-
-(function inicializarCarrito() {
-  try {
-    carrito = JSON.parse(localStorage.getItem('almiux_carrito')) || [];
-  } catch (_) {
-    carrito = [];
-  }
-})();
-
-function guardarCarrito() {
-  localStorage.setItem('almiux_carrito', JSON.stringify(carrito));
-}
-
-function actualizarUICarrito() {
-  const total           = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-  const carritoCount    = document.getElementById('carritoCount');
-  const carritoFlotante = document.getElementById('carritoFlotante');
-  if (carritoCount)    carritoCount.textContent = total;
-  if (carritoFlotante) carritoFlotante.style.display = total > 0 ? 'flex' : 'none';
-}
-
-function agregarAlCarrito(boton, nombre) {
-  const idx = carrito.findIndex(item => item.nombre === nombre);
-  if (idx >= 0) {
-    carrito[idx].cantidad++;
-  } else {
-    carrito.push({ nombre, cantidad: 1 });
-  }
-  guardarCarrito();
-  actualizarUICarrito();
-
-  const textoOriginal = boton.textContent;
-  boton.textContent = '✓ Agregado';
-  boton.classList.add('agregado');
-  boton.disabled = true;
-  setTimeout(() => {
-    boton.textContent = textoOriginal;
-    boton.classList.remove('agregado');
-    boton.disabled = false;
-  }, 1500);
-}
-
-function cerrarCarrito() {
-  const carritoFlotante = document.getElementById('carritoFlotante');
-  if (carritoFlotante) carritoFlotante.style.display = 'none';
-}
-
-function vaciarCarrito() {
-  carrito = [];
-  guardarCarrito();
-  actualizarUICarrito();
-}
 
 
 /* ══════════════════════════════════════════════════════════════════
@@ -272,4 +216,9 @@ function revisarFiltroURL() {
       document.getElementById('productsGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 300);
   }
+}
+
+
+if(typeof actualizarContadorGlobalCarrito==='function'){
+  actualizarContadorGlobalCarrito();
 }
