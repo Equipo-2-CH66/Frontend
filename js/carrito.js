@@ -258,6 +258,81 @@ function mostrarToast(mensaje) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   finalizarCompra()
+   Crea el pedido en el backend con los ítems del carrito.
+   Requiere sesión activa (sessionStorage almiux_sesion).
+══════════════════════════════════════════════════════════════════ */
+async function finalizarCompra() {
+  /* No procede si el carrito está vacío */
+  const carrito = leerCarrito();
+  if (carrito.length === 0) {
+    mostrarToast('Tu carrito está vacío');
+    return;
+  }
+
+  /* Lee la sesión activa para obtener el id del usuario en el backend */
+  let sesion = null;
+  try { sesion = JSON.parse(sessionStorage.getItem('almiux_sesion')); } catch (_) {}
+
+  /* Sin id de backend no se puede crear la orden; redirige a pago.html como fallback */
+  if (!sesion?.id) {
+    window.location.href = (typeof obtenerBasePath === 'function' ? obtenerBasePath() : './') + 'pago.html';
+    return;
+  }
+
+  /* Calcula el total sumando precio × cantidad de cada ítem */
+  const total = carrito.reduce((s, i) => s + (i.precio * i.qty), 0);
+
+  /* Deshabilita el botón mientras se procesa para evitar pedidos duplicados */
+  const btnFin = document.querySelector('#cartFooter .btn-primary');
+  if (btnFin) { btnFin.disabled = true; btnFin.textContent = 'Procesando…'; }
+
+  try {
+    /* Crea el pedido cabecera con estatus inicial PENDIENTE */
+    const orden = await PedidosAPI.create({
+      estatus:          'PENDIENTE',
+      total:            total.toFixed(2),               /* BigDecimal en el backend */
+      direccionEntrega: sesion.direccion || '',
+      telefonoContacto: sesion.telefono  || '',
+      notas:            '',
+      fechaPedido:      new Date().toISOString().slice(0, 19), /* LocalDateTime sin zona */
+      user:             { id: sesion.id },              /* Referencia al usuario por id */
+    });
+
+    /* Crea un detalle (OrderDetail) por cada ítem del carrito en paralelo */
+    await Promise.all(carrito.map(item =>
+      DetallesAPI.create(orden.idPedido, {
+        cantidad:       item.qty,
+        precioUnitario: item.precio,
+        subtotal:       (item.precio * item.qty).toFixed(2),
+        /* Solo vincula al producto si fue cargado desde el backend y tiene id */
+        producto:       item.id ? { id: item.id } : null,
+        nombreProducto: item.nombre,
+        order:          { idPedido: orden.idPedido },
+      })
+    ));
+
+    /* Vacía el carrito del localStorage tras confirmar la orden en el backend */
+    localStorage.removeItem(CARRITO_KEY);
+    actualizarContadorGlobalCarrito();
+    cerrarDrawer();
+    mostrarToast(`✓ Pedido #${orden.idPedido} confirmado`);
+
+    /* Redirige al historial de pedidos del usuario */
+    setTimeout(() => {
+      const base = typeof obtenerBasePath === 'function' ? obtenerBasePath() : './';
+      window.location.href = base + 'usuario/mis-pedidos.html';
+    }, 1800);
+
+  } catch (err) {
+    mostrarToast('Error al procesar el pedido. Intenta de nuevo.');
+    console.error(err);
+  } finally {
+    if (btnFin) { btnFin.disabled = false; btnFin.textContent = 'Finalizar compra'; }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    Helper escapeHtml (por si utils.js no está cargado)
 ══════════════════════════════════════════════════════════════════ */
 if (typeof escapeHtml === 'undefined') {
@@ -311,7 +386,7 @@ function iniciarCarrito() {
           <div class="cart-total">
             Total: <span id="totalAmount">$0.00</span>
           </div>
-          <button class="btn-primary" type="button" onclick="cerrarDrawer()">
+          <button class="btn-primary" type="button" onclick="finalizarCompra()">
             Finalizar compra
           </button>
         </div>

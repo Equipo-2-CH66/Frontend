@@ -830,3 +830,183 @@ window.verDetallePedido  = verDetallePedido;
 window.eliminarPedido    = eliminarPedido;
 window.cambiarEstadoPedido = cambiarEstadoPedido;
 window.selectColor       = selectColor;
+
+/* ═══════════════════════════════════════════════════════════════
+   SINCRONIZACIÓN CON BACKEND
+   Carga datos desde la API y los refleja en localStorage para que
+   los renders existentes funcionen sin cambios.
+═══════════════════════════════════════════════════════════════ */
+
+async function sincronizarDesdeAPI() {
+  try {
+    const [productos, categorias, pedidos, usuarios] = await Promise.allSettled([
+      ProductosAPI.getAll(),
+      CategoriasAPI.getAll(),
+      PedidosAPI.getAll(),
+      UsuariosAPI.getAll(),
+    ]);
+
+    if (categorias.status === 'fulfilled') {
+      const cats = categorias.value.map(c => ({
+        id:     c.id,
+        slug:   c.slug || c.nombre.toLowerCase().replace(/\s+/g, '-'),
+        nombre: c.nombre,
+        icono:  c.icono || '📦',
+        color:  '#D45F1A',
+        descripcion: c.descripcion || '',
+      }));
+      saveCategorias(cats);
+    }
+
+    if (productos.status === 'fulfilled') {
+      const cats = getCategorias();
+      const catMap = {};
+      cats.forEach(c => { catMap[c.id] = c; });
+
+      const prods = productos.value.map(p => {
+        const cat = catMap[p.categoria?.id] || {};
+        return {
+          id:            p.id,
+          _backendId:    p.id,
+          nombre:        p.nombre,
+          desc:          p.descripcion,
+          precio:        parseFloat(p.precioFinal ?? p.precio) || 0,
+          precioOriginal:p.enOferta ? parseFloat(p.precio) : null,
+          icono:         p.icono || cat.icono || '📦',
+          imagen:        null,
+          cat:           cat.slug || 'otros',
+          catLabel:      cat.nombre || 'General',
+          oferta:        !!p.enOferta,
+          badge:         p.enOferta ? `-${p.descuentoPct ?? ''}%` : null,
+          activo:        p.activo !== false,
+          creadoEn:      p.fechaCreacion
+            ? new Date(p.fechaCreacion).toLocaleDateString('es-MX')
+            : '—',
+        };
+      });
+      saveProductos(prods);
+    }
+
+    if (pedidos.status === 'fulfilled') {
+      const lista = pedidos.value.map(p => ({
+        id:       p.idPedido,
+        cliente:  p.user ? `${p.user.nombres || ''} ${p.user.apellidos || ''}`.trim() : '—',
+        email:    p.user?.email || '—',
+        total:    parseFloat(p.total) || 0,
+        estado:   (p.estatus || 'PENDIENTE').toLowerCase().replace('_', ' '),
+        items:    [],
+        fecha:    p.fechaPedido || '',
+        direccion:p.direccionEntrega || '',
+      }));
+      savePedidos(lista);
+    }
+
+    if (usuarios.status === 'fulfilled') {
+      const stored = usuarios.value.map(u => ({
+        ...u,
+        nombres:  u.nombres,
+        apellidos:u.apellidos,
+        email:    u.email,
+        rol:      u.rol,
+        id:       u.id,
+      }));
+      localStorage.setItem('almiux_usuarios', JSON.stringify(stored));
+    }
+  } catch (_) {
+    /* Backend no disponible — los datos de localStorage ya están cargados */
+  }
+}
+
+/* Sobrescribir guardarProducto para también llamar al backend */
+const _guardarProductoOriginal = guardarProducto;
+window.guardarProducto = async function() {
+  await _guardarProductoOriginal();
+
+  const prods = getProductos();
+  const prod  = prods[editingProdIndex >= 0 ? editingProdIndex : prods.length - 1];
+  const cats  = getCategorias();
+  const catObj = cats.find(c => c.slug === prod?.cat);
+
+  if (!prod || !catObj?.id) return;
+
+  const payload = {
+    nombre:       prod.nombre,
+    descripcion:  prod.desc,
+    icono:        prod.icono || '📦',
+    precio:       prod.precioOriginal || prod.precio,
+    precioFinal:  prod.precio,
+    enOferta:     prod.oferta,
+    descuentoPct: prod.oferta ? parseInt((prod.badge || '0').replace(/\D/g, '')) : 0,
+    activo:       true,
+    fechaCreacion:new Date().toISOString().slice(0, 19),
+    categoria:    { id: catObj.id },
+  };
+
+  try {
+    if (prod._backendId) {
+      await ProductosAPI.update(prod._backendId, payload);
+    } else {
+      const creado = await ProductosAPI.create(payload);
+      prod._backendId = creado.id;
+      saveProductos(getProductos());
+    }
+  } catch (_) {}
+};
+
+/* Sobrescribir guardarCategoria para también llamar al backend */
+const _guardarCatOriginal = guardarCategoria;
+window.guardarCategoria = async function() {
+  _guardarCatOriginal();
+
+  const cats = getCategorias();
+  const cat  = cats[editingCatIndex >= 0 ? editingCatIndex : cats.length - 1];
+  if (!cat) return;
+
+  const payload = {
+    nombre:      cat.nombre,
+    slug:        cat.slug,
+    icono:       cat.icono,
+    descripcion: cat.descripcion || cat.nombre,
+  };
+
+  try {
+    if (cat.id) {
+      await CategoriasAPI.update(cat.id, payload);
+    } else {
+      const creada = await CategoriasAPI.create(payload);
+      cat.id = creada.id;
+      saveCategorias(getCategorias());
+    }
+  } catch (_) {}
+};
+
+/* Sobrescribir cambiarEstadoPedido para actualizar en el backend */
+const _cambiarEstadoOriginal = cambiarEstadoPedido;
+window.cambiarEstadoPedido = async function(index, estado) {
+  _cambiarEstadoOriginal(index, estado);
+
+  const pedido = getPedidos()[index];
+  if (!pedido?.id) return;
+
+  const ESTATUS_MAP = {
+    'pendiente':   'PENDIENTE',
+    'en proceso':  'EN_PROCESO',
+    'enviado':     'ENVIADO',
+    'completado':  'COMPLETADO',
+    'cancelado':   'CANCELADO',
+  };
+
+  try {
+    await PedidosAPI.update(pedido.id, {
+      estatus: ESTATUS_MAP[estado] || estado.toUpperCase(),
+    });
+  } catch (_) {}
+};
+
+/* Al mostrar el dashboard sincronizar con el backend */
+const _showDashOriginal = showDashboard;
+window.showDashboard = async function() {
+  _showDashOriginal();
+  await sincronizarDesdeAPI();
+  refreshAll();
+};
