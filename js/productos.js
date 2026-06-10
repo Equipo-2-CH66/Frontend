@@ -5,16 +5,53 @@
    Requiere: utils.js
 ══════════════════════════════════════════════════════════════════ */
 
-/* ── Datos de productos (admin via localStorage) ─────────────────── */
-
+/* Array global que alimenta renderizarProductos(); se llena desde el backend */
 const PRODUCTOS = [];
 
-(function cargarProductosAdmin() {
+/* Descarga productos y categorías del backend y normaliza al formato interno */
+async function cargarProductosDesdeAPI() {
   try {
-    const adminProds = JSON.parse(localStorage.getItem('almiux_productos_admin')) || [];
-    adminProds.forEach(p => PRODUCTOS.push(p));
-  } catch (_) {}
-})();
+    /* Obtiene ambas listas en paralelo para reducir tiempo de carga */
+    const [productos, categorias] = await Promise.all([
+      ProductosAPI.getAll(),
+      CategoriasAPI.getAll(),
+    ]);
+
+    /* Crea un mapa id→categoría para buscar en O(1) al iterar productos */
+    const catMap = {};
+    categorias.forEach(c => { catMap[c.id] = c; });
+
+    productos.forEach(p => {
+      /* Omite productos marcados como inactivos en el backend */
+      if (p.activo === false) return;
+      /* Resuelve la categoría usando el mapa; usa el objeto embebido como respaldo */
+      const cat = catMap[p.categoria?.id] || p.categoria || {};
+      /* Normaliza el objeto del backend al shape que usan renderizarProductos y el carrito */
+      PRODUCTOS.push({
+        id:             p.id,                                          /* ID del backend para poder actualizar/eliminar */
+        nombre:         p.nombre,
+        desc:           p.descripcion,
+        /* Usa precioFinal si hay descuento; si no, usa el precio base */
+        precio:         parseFloat(p.precioFinal ?? p.precio) || 0,
+        /* Solo muestra precio original tachado si el producto está en oferta */
+        precioOriginal: p.enOferta ? parseFloat(p.precio) : null,
+        icono:          p.icono || '🛒',
+        imagen:         null,                                          /* Las imágenes se sirven como icono de texto */
+        cat:            cat.slug    || 'otros',
+        catLabel:       cat.nombre  || 'General',
+        oferta:         !!p.enOferta,
+        /* Badge visible en la tarjeta; cadena vacía si no hay oferta */
+        badge:          p.enOferta ? `${p.descuentoPct ?? ''}% OFF`.trim() : '',
+      });
+    });
+  } catch (_) {
+    /* Backend no disponible — carga los productos guardados por el panel admin */
+    try {
+      const adminProds = JSON.parse(localStorage.getItem('almiux_productos_admin')) || [];
+      adminProds.forEach(p => PRODUCTOS.push(p));
+    } catch (__) {}
+  }
+}
 
 
 
@@ -222,3 +259,22 @@ function revisarFiltroURL() {
 if(typeof actualizarContadorGlobalCarrito==='function'){
   actualizarContadorGlobalCarrito();
 }
+
+/* ── Inicialización con datos del backend ────────────────────────── */
+/* Solo se ejecuta en páginas que tienen el grid de productos */
+document.addEventListener('DOMContentLoaded', async () => {
+  if (document.getElementById('productsGrid')) {
+    /* Primero carga los datos para que renderizarProductos tenga algo que mostrar */
+    await cargarProductosDesdeAPI();
+    /* Dibuja las tarjetas en el DOM */
+    renderizarProductos();
+    /* Conecta los botones de filtro por categoría */
+    iniciarFiltros();
+    /* Conecta el input de búsqueda en tiempo real */
+    iniciarBusqueda();
+    /* Aplica el filtro si la URL tiene ?filtro=... (viene desde el home) */
+    revisarFiltroURL();
+  }
+  /* Siempre inicializa las tarjetas de categoría del home */
+  iniciarCategoriasHome();
+});

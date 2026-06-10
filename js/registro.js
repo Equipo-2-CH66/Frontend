@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fConfirmar.input?.addEventListener('blur', vConfirmar);
 
   /* ── Submit ─────────────────────────────────────────────── */
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
     /* Ejecutar TODAS las validaciones para mostrar todos los errores */
@@ -103,31 +103,60 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    /* Guardar en localStorage */
+    /* Construye el payload con la forma que espera el backend (modelo User) */
+    const payload = {
+      nombres:         fNombres.valor.trim(),
+      apellidos:       fApellidos.valor.trim(),
+      /* Normaliza el email a minúsculas para evitar duplicados en la BD */
+      email:           fEmail.valor.trim().toLowerCase(),
+      telefono:        fTelefono.valor.trim(),
+      fechaNacimiento: fFecha.input.value,
+      genero:          document.getElementById('genero')?.value || '',
+      direccion:       fDireccion.valor.trim(),
+      password:        fPassword.valor,
+      /* Todos los registros públicos son CLIENTE; ADMIN se asigna desde el panel */
+      rol:             'CLIENTE',
+      /* ISO 8601 sin zona horaria para que Spring lo parsee como LocalDateTime */
+      fechaRegistro:   new Date().toISOString().slice(0, 19),
+    };
+
+    /* Deshabilita el botón para evitar doble envío */
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Registrando…'; }
+
     try {
-      AlmiuxStorage.agregarUsuario({
-        nombres:         fNombres.valor.trim(),
-        apellidos:       fApellidos.valor.trim(),
-        email:           fEmail.valor.trim().toLowerCase(),
-        telefono:        fTelefono.valor.trim(),
-        fechaNacimiento: fFecha.input.value,
-        genero:          document.getElementById('genero')?.value || '',
-        direccion:       fDireccion.valor.trim(),
-        password:        fPassword.valor,
-      });
-
-      alerta.exito('¡Cuenta creada exitosamente! Redirigiendo al inicio de sesión…');
-      form.reset();
-      form.querySelectorAll('.input-ok').forEach(el => el.classList.remove('input-ok'));
-      const wrap = document.getElementById('fortalezaWrap');
-      if (wrap) wrap.style.display = 'none';
-
-      setTimeout(() => { window.location.href = 'login.html'; }, 2000);
-
-    } catch (err) {
-      alerta.error(err.message);
-      fEmail.error(err.message);
+      /* Llama a POST /api/v1.0/users; lanza error si el servidor responde ≥ 400 */
+      await UsuariosAPI.create(payload);
+    } catch (apiErr) {
+      if (btn) { btn.disabled = false; btn.textContent = 'Crear cuenta'; }
+      if (apiErr.status === 409) {
+        /* 409 Conflict: el correo ya existe en la base de datos */
+        alerta.error('Este correo ya está registrado.');
+        fEmail.error('Este correo ya está registrado.');
+      } else {
+        /* Cualquier otro error (red caída, servidor apagado): guardar localmente */
+        try {
+          AlmiuxStorage.agregarUsuario({ ...payload });
+        } catch (localErr) {
+          alerta.error(localErr.message);
+          fEmail.error(localErr.message);
+          return;
+        }
+      }
+      if (apiErr.status === 409) return;
     }
+
+    /* Guarda también en localStorage para que el login offline funcione */
+    try { AlmiuxStorage.agregarUsuario({ ...payload }); } catch (_) {}
+
+    alerta.exito('¡Cuenta creada exitosamente! Redirigiendo al inicio de sesión…');
+    form.reset();
+    form.querySelectorAll('.input-ok').forEach(el => el.classList.remove('input-ok'));
+    const wrap = document.getElementById('fortalezaWrap');
+    if (wrap) wrap.style.display = 'none';
+    if (btn) { btn.disabled = false; btn.textContent = 'Crear cuenta'; }
+
+    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
   });
 
   /* ── Limpiar ─────────────────────────────────────────────── */

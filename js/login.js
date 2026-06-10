@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── Submit ─────────────────────────────────────────────── */
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     alerta.limpiar();
 
@@ -67,41 +67,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setSpinner(true);
 
-    setTimeout(() => {
-      const email    = fEmail.valor.trim().toLowerCase();
-      const password = fPassword.valor;
+    const email    = fEmail.valor.trim().toLowerCase();
+    const password = fPassword.valor;
 
-      /* 2. Verificar credenciales contra localStorage */
-      const usuario = AlmiuxStorage.autenticar(email, password);
-      setSpinner(false);
+    let usuario = null;
 
-      if (!usuario) {
-        /* Mostrar error de credenciales inválidas */
+    /* 2a. Intentar autenticación contra el backend */
+    try {
+      /* Busca el usuario por email; si no existe el backend devuelve 404 */
+      const userBackend = await UsuariosAPI.getByEmail(email);
+      /* El backend no expone endpoint de login; comparamos la contraseña en cliente */
+      if (userBackend && userBackend.password === password) {
+        /* Contraseña correcta: usa el objeto del backend como usuario autenticado */
+        usuario = userBackend;
+      } else if (userBackend) {
+        /* El email existe pero la contraseña no coincide: error definitivo */
+        setSpinner(false);
         alerta.error('Nombre de usuario o contraseña inválidos.');
         fEmail.error('Verifica tu correo electrónico.');
         fPassword.error('Verifica tu contraseña.');
         return;
       }
+      /* Si userBackend es null, el email no existe en el backend → probar localStorage */
+    } catch (_) {
+      /* Backend no disponible (red caída, servidor apagado) → caer en localStorage */
+    }
 
-      /* 3. Sesión correcta */
-      AlmiuxStorage.iniciarSesion(usuario);
+    /* 2b. Fallback localStorage: autentica con los datos guardados al registrarse */
+    if (!usuario) {
+      usuario = AlmiuxStorage.autenticar(email, password);
+    }
 
-      /* Recordarme */
-      const recordar = document.getElementById('recordarme');
-      if (recordar?.checked) {
-        localStorage.setItem('almiux_recordar_email', email);
+    setSpinner(false);
+
+    /* Si tras ambos intentos no hay usuario, las credenciales son inválidas */
+    if (!usuario) {
+      alerta.error('Nombre de usuario o contraseña inválidos.');
+      fEmail.error('Verifica tu correo electrónico.');
+      fPassword.error('Verifica tu contraseña.');
+      return;
+    }
+
+    /* 3. Sesión correcta — persiste el id del backend para llamadas futuras a la API */
+    const sesionData = {
+      id:      usuario.id      ?? null,      /* null si vino de localStorage sin ID */
+      email:   usuario.email   ?? email,
+      nombres: usuario.nombres ?? usuario.nombres,
+      rol:     usuario.rol     ?? 'CLIENTE', /* ADMIN redirige al panel de admin */
+    };
+    /* Sesión extendida con el ID para que perfil.js y carrito puedan usarla */
+    sessionStorage.setItem('almiux_sesion', JSON.stringify(sesionData));
+    /* También guarda en el formato original de AlmiuxStorage por compatibilidad */
+    AlmiuxStorage.iniciarSesion(usuario);
+
+    /* Recordarme: guarda el email para precargarlo en el próximo login */
+    const recordar = document.getElementById('recordarme');
+    if (recordar?.checked) {
+      localStorage.setItem('almiux_recordar_email', email);
+    } else {
+      localStorage.removeItem('almiux_recordar_email');
+    }
+
+    alerta.exito(`¡Bienvenido/a, ${sesionData.nombres}! Redirigiendo…`);
+
+    /* 4. Redirige al panel de admin si el rol es ADMIN; si no, al home */
+    setTimeout(() => {
+      if (sesionData.rol === 'ADMIN') {
+        window.location.href = obtenerBasePath() + 'admin/index.html';
       } else {
-        localStorage.removeItem('almiux_recordar_email');
-      }
-
-      alerta.exito(`¡Bienvenido/a, ${usuario.nombres}! Redirigiendo…`);
-
-      /* 4. Redirigir a index.html (nivel superior) */
-      setTimeout(() => {
         window.location.href = obtenerBasePath() + 'index.html';
-      }, 1500);
-
-    }, 600);
+      }
+    }, 1500);
   });
 
   /* ── Precargar email si "Recordarme" estaba activo ──────── */
