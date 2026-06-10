@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Cargar Navbar ────────────────────────────────────────────────
   cargarFragmento(
-  `${basePath}utils/navbar/navbar.html`,
+  `${basePath}/utils/navbar/navbar.html`,
   'navbar-container',
   () => {
     arreglarLinks();

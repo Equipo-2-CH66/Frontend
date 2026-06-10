@@ -1,273 +1,307 @@
-# 🏪 Abarrotes Almiux — Sitio Web
+# 🏪 ALMIUX — Sistema de Gestión para Tienda de Abarrotes
 
-> Proyecto final del Bootcamp **Generation México** · Equipo **404 Team Not Found**
+![Página Principal](./images/readme/AlmiuxInicio.png)
 
-<!-- ============================================================
-     IMAGEN SUGERIDA #1
-     Captura de pantalla del hero de index.html en desktop.
-     Reemplaza la línea de abajo con tu imagen:
-     ![Hero de inicio](./images/readme/screenshot-hero.png)
-     ============================================================ -->
-![Banner del proyecto](https://via.placeholder.com/1100x400?text=📸+Agrega+aquí+un+screenshot+del+hero+de+inicio)
+> Proyecto desarrollado por el equipo **404 Team Not Found** como parte del Bootcamp Full Stack Java de Generation México.
 
 ---
 
-## 📋 Tabla de contenidos
+# 📖 Descripción
 
-- [Descripción](#descripción)
-- [Páginas del proyecto](#páginas-del-proyecto)
-- [Estructura de archivos](#estructura-de-archivos)
-- [Tecnologías usadas](#tecnologías-usadas)
-- [Funcionalidades](#funcionalidades)
-- [Equipo](#equipo)
-- [Cómo correr el proyecto](#cómo-correr-el-proyecto)
+ALMIUX es una plataforma web desarrollada para la administración y gestión de una tienda de abarrotes.
+
+El proyecto integra un frontend responsivo para la interacción de los usuarios y un backend desarrollado con Spring Boot que expone una API REST para la gestión de información.
+
+La plataforma permite administrar productos, usuarios y operaciones relacionadas con el negocio mediante una arquitectura cliente-servidor, facilitando la organización del inventario y mejorando la experiencia de los clientes.
 
 ---
 
-## Descripción
+# 🚀 Características Principales
 
-**Abarrotes Almiux** es el sitio web de una tienda de abarrotes familiar ubicada en Tizayuca, Hidalgo. El sitio permite a los clientes explorar el catálogo de productos, conocer la historia de la tienda, registrarse como usuarios y contactar al negocio. Cuenta además con un panel de administración para gestionar el inventario.
+## Frontend
 
-El proyecto fue desarrollado como entrega final del bootcamp de Generation México, usando únicamente HTML, CSS y JavaScript vanilla, sin frameworks de frontend.
+* Diseño responsivo para dispositivos móviles, tablets y escritorio.
+* Catálogo de productos organizado por categorías.
+* Búsqueda y filtrado dinámico de productos.
+* Registro de usuarios.
+* Inicio de sesión.
+* Página institucional con información del negocio.
+* Panel administrativo para gestión de productos.
+* Carrito de compras.
+* Navegación intuitiva y amigable.
 
-<!-- ============================================================
-     IMAGEN SUGERIDA #2
-     Vista general del sitio en distintos dispositivos (mockup responsive).
-     ![Mockup responsive](./images/readme/mockup-responsive.png)
-     ============================================================ -->
+## Backend
 
----
+* API REST desarrollada con Spring Boot.
+* Arquitectura basada en capas.
+* Persistencia de datos mediante JPA/Hibernate.
+* Gestión de usuarios.
+* Gestión de productos.
+* Validación de datos.
+* Integración con MySQL.
+* Manejo de excepciones.
+* Endpoints REST para operaciones CRUD.
 
-## Páginas del proyecto
-
-### 🏠 `index.html` — Inicio
-
-Página principal del sitio. Contiene el hero de bienvenida con la ilustración del anaquel animada, una franja de estadísticas con contadores animados, el grid de categorías y el banner de ofertas de temporada.
-
-<!-- ============================================================
-     IMAGEN SUGERIDA #3
-     Screenshot de index.html completo (desktop).
-     ![Página de inicio](./images/readme/screenshot-index.png)
-     ============================================================ -->
-
----
-
-### 🛒 `productos.html` — Catálogo de productos
-
-Muestra todos los productos disponibles en un grid de tarjetas. Incluye barra de búsqueda en tiempo real y filtros por categoría. Soporta parámetros en la URL para preseleccionar un filtro (ej: `productos.html?filtro=ofertas`).
-
-<!-- ============================================================
-     IMAGEN SUGERIDA #4
-     Screenshot del grid de productos con los filtros visibles.
-     ![Catálogo de productos](./images/readme/screenshot-productos.png)
-     ============================================================ -->
-
-**Categorías disponibles:**
-- 🥩 Carnes y embutidos
-- 🧴 Limpieza y hogar
-- 🥛 Lácteos y huevo
-- 🍞 Panadería
-- 🥤 Bebidas
-- 🫙 Enlatados y conservas
-- 🌶️ Chiles y especias
-- 🍬 Dulces y botanas
+![Backend](./images/readme/spring.jpeg)
 
 ---
 
-### 🏠 `nosotros.html` — Acerca de nosotros
+# 🖼️ Capturas del Proyecto
 
-Historia de la tienda, datos destacados, tarjetas de valores (Confianza, Frescura, Comunidad, Rapidez), sección del equipo de colaboradores, sección del equipo de desarrollo y formulario de contacto con mapa de Google Maps.
+## Página Principal
 
-<!-- ============================================================
-     IMAGEN SUGERIDA #5
-     Screenshot de la sección de historia o valores.
-     ![Nosotros](./images/readme/screenshot-nosotros.png)
-     ============================================================ -->
+![Página Principal](./images/readme/AlmiuxInicio.png)
 
 ---
 
-### 👤 `registro.html` — Registro de usuarios
+# 📋 Gestión del Proyecto
 
-Formulario de registro de nuevos clientes. Incluye validaciones en tiempo real y al enviar, alertas de Bootstrap para errores y éxito, indicador de fortaleza de contraseña y generación de un objeto JSON con los datos del usuario al completar el registro.
+Durante el desarrollo se aplicaron metodologías ágiles para la organización, seguimiento y control de actividades.
 
-<!-- ============================================================
-     IMAGEN SUGERIDA #6
-     Screenshot del formulario de registro con el panel de beneficios.
-     ![Registro de usuarios](./images/readme/screenshot-registro.png)
-     ============================================================ -->
+## Tablero Jira
 
-**Campos del formulario:**
-| Campo | Validación |
-|---|---|
-| Nombre(s) | Obligatorio |
-| Apellidos | Obligatorio |
-| Correo electrónico | Obligatorio · Formato válido |
-| Teléfono | Obligatorio · Exactamente 10 dígitos |
-| Fecha de nacimiento | Obligatorio · Mayor de 18 años |
-| Género | Opcional |
-| Dirección | Obligatorio |
-| Contraseña | Obligatorio · Mínimo 8 caracteres · Al menos 1 número |
-| Confirmar contraseña | Debe coincidir con la contraseña |
-| Términos y condiciones | Debe aceptarse para enviar |
+![Tablero Jira](./images/readme/JiraAlmiux.png)
+
+El equipo gestionó historias de usuario, backlog, tareas técnicas y seguimiento de sprints utilizando Jira como herramienta principal de trabajo.
 
 ---
 
-### 🔧 `admin.html` — Panel de administración
+# 🏗️ Arquitectura General
 
-Página interna para que la dueña de la tienda registre nuevos productos. Incluye un formulario con selector de ícono (emoji), previsualización en tiempo real de cómo quedará la tarjeta del producto, validaciones de campos y generación del objeto JSON del producto al guardar.
-
-<!-- ============================================================
-     IMAGEN SUGERIDA #7
-     Screenshot del panel de admin con el formulario y la previsualización.
-     ![Panel de administración](./images/readme/screenshot-admin.png)
-     ============================================================ -->
-
-**Campos del producto:**
-| Campo | Validación |
-|---|---|
-| Nombre | Obligatorio |
-| Descripción | Obligatorio |
-| Categoría | Obligatorio · Debe seleccionarse |
-| Precio (MXN) | Obligatorio · Mayor a $0 |
-| En oferta | Opcional (checkbox) |
-| Descuento (%) | Requerido si hay oferta · Entre 1% y 99% |
-| Ícono | Obligatorio · Seleccionar del grid de emojis |
-
----
-
-## Estructura de archivos
-
+```text
+Frontend (HTML, CSS, JavaScript)
+            │
+            ▼
+     API REST Spring Boot
+            │
+            ▼
+          MySQL
 ```
-abarrotes-almiux/
+
+---
+
+# 🛠️ Tecnologías Utilizadas
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript (ES6+)
+* Bootstrap
+
+## Backend
+
+* Java
+* Spring Boot
+* Spring Data JPA
+* Hibernate
+* Maven
+
+## Base de Datos
+
+* MySQL
+
+## Herramientas
+
+* Git
+* GitHub
+* Jira
+* Postman
+* MySQL Workbench
+* VS Code
+* IntelliJ IDEA
+
+---
+
+# 📂 Estructura del Proyecto
+
+```text
+ALMIUX/
 │
-├── index.html          → Página de inicio
-├── productos.html      → Catálogo de productos con filtros
-├── nosotros.html       → Historia, valores, equipo y contacto
-├── registro.html       → Registro de nuevos usuarios
-├── admin.html          → Panel de administración de productos
+├── frontend/
+│   ├── index.html
+│   ├── productos.html
+│   ├── nosotros.html
+│   ├── login.html
+│   ├── registro.html
+│   ├── admin.html
+│   ├── css/
+│   ├── js/
+│   └── images/
 │
-├── styles.css          → Todos los estilos del proyecto
-├── main.js             → Interactividad global (navbar, filtros, carrito)
+├── backend/
+│   ├── src/main/java/
+│   ├── src/main/resources/
+│   ├── pom.xml
+│   └── application.properties
 │
-└── images/
-    ├── Almiux_Logo_Sin_Fondo.png
-    ├── Almiux_tienda.jpeg
-    ├── Alma.jpeg
-    ├── Arturo_dev.jpeg
-    ├── Confianza.png
-    ├── Frescura.png
-    ├── Comunidad.png
-    ├── Rapidez.png
-    ├── KALEB.png
-    ├── DANNA.png
-    ├── ARTURO.jpeg
-    ├── ZARED.png
-    ├── YARIS.png
-    ├── DIEGO.png
-    ├── NOE.jpeg
-    └── imagenes-bebidas/   → Imágenes de productos de bebidas
+└── README.md
 ```
 
 ---
 
-## Tecnologías usadas
+# 🔌 API REST
 
-| Tecnología | Uso |
-|---|---|
-| **HTML5** | Estructura de todas las páginas |
-| **CSS3** | Estilos, variables CSS, animaciones, responsive |
-| **JavaScript (ES6+)** | Interactividad, validaciones, generación de JSON |
-| **Bootstrap 4.4** | Alertas en formularios de registro y admin |
-| **Google Fonts** | Fuentes Fraunces (títulos) y DM Sans (cuerpo) |
-| **Formspree** | Envío del formulario de contacto |
-| **Google Maps Embed** | Mapa de ubicación de la tienda |
+## Usuarios
 
----
-
-## Funcionalidades
-
-### Globales (todas las páginas)
-- Navbar sticky con efecto de ocultar/mostrar al hacer scroll
-- Menú hamburguesa para dispositivos móviles
-- Link activo marcado automáticamente según la página actual
-- Animaciones de entrada al hacer scroll (`reveal`)
-- Diseño responsive: desktop · tablet · móvil
-
-### Inicio (`index.html`)
-- Contador animado en la franja de estadísticas
-- Grid de categorías con navegación a productos con filtro preseleccionado
-- Scroll suave al banner de ofertas
-
-### Productos (`productos.html`)
-- Filtros por categoría en tiempo real
-- Búsqueda de productos por nombre en tiempo real
-- Soporte para filtro vía parámetro en la URL (`?filtro=...`)
-- Carrito flotante con contador de productos
-
-### Registro (`registro.html`)
-- Validación campo por campo en tiempo real (evento `blur`)
-- Validación completa al hacer submit
-- Alertas de Bootstrap para errores individuales y error global
-- Indicador de fortaleza de contraseña (débil / regular / fuerte)
-- Botón para mostrar/ocultar contraseña
-- Generación del objeto JSON del usuario al registrarse exitosamente
-
-### Admin (`admin.html`)
-- Previsualización en tiempo real de la tarjeta del producto
-- Selector de ícono con grid de emojis
-- Campo de descuento que aparece solo si el producto está en oferta
-- Generación y copia del objeto JSON del producto
-- Botón para limpiar el formulario
+| Método | Endpoint       | Descripción                |
+| ------ | -------------- | -------------------------- |
+| GET    | `/users`       | Obtener todos los usuarios |
+| GET    | `/users/{id}`  | Obtener usuario por ID     |
+| GET    | `/users/email` | Buscar usuario por correo  |
+| POST   | `/users`       | Crear usuario              |
+| PUT    | `/users/{id}`  | Actualizar usuario         |
+| DELETE | `/users/{id}`  | Eliminar usuario           |
 
 ---
 
-## Equipo
+## Productos
 
-**404 Team Not Found** · Generación [número de generación]
-
-<!-- ============================================================
-     IMAGEN SUGERIDA #8
-     Foto grupal del equipo o grid con las fotos de perfil de cada integrante.
-     ![Equipo 404 Team Not Found](./images/readme/foto-equipo.png)
-     ============================================================ -->
-
-| Integrante | Rol |
-|---|---|
-| **Kaleb Torres** | Developer · Scrum Master |
-| **Danna Remigio** | Developer |
-| **Arturo Ramírez** | Developer |
-| **Yarilis Hernández** | Developer |
-| **Zared Ortiz** | Developer |
-| **Noé Hernández** | Developer |
-| **Diego Quiñónez** | Developer |
+| Método | Endpoint         | Descripción             |
+| ------ | ---------------- | ----------------------- |
+| GET    | `/products`      | Obtener productos       |
+| GET    | `/products/{id}` | Obtener producto por ID |
+| POST   | `/products`      | Crear producto          |
+| PUT    | `/products/{id}` | Actualizar producto     |
+| DELETE | `/products/{id}` | Eliminar producto       |
 
 ---
 
-## Cómo correr el proyecto
+# 🗄️ Base de Datos
 
-Este es un proyecto de frontend puro, no requiere instalación de dependencias ni servidor especial.
+El sistema utiliza MySQL para almacenar la información relacionada con usuarios, productos y demás recursos del sistema.
 
-**Opción 1 — Abrir directamente en el navegador:**
-```
-Descarga o clona el repositorio y abre index.html en tu navegador.
-```
+![Entidad-Relacion](./images/readme/Entidad.jpeg)
 
-**Opción 2 — Con Live Server (recomendado para desarrollo):**
-```
-1. Instala la extensión Live Server en VS Code
-2. Clic derecho sobre index.html
-3. Selecciona "Open with Live Server"
-```
+---
 
-**Opción 3 — Clonar el repositorio:**
+# ⚙️ Instalación y Configuración
+
+## 1. Clonar el repositorio
+
 ```bash
-git clone https://github.com/[usuario]/[repositorio].git
-cd [repositorio]
+git clone https://github.com/TU-USUARIO/ALMIUX.git
+cd ALMIUX
 ```
-
-> **Nota:** Para que el formulario de contacto funcione correctamente, reemplaza el endpoint de Formspree en `contacto.html` con tu propio ID de formulario en [formspree.io](https://formspree.io).
 
 ---
 
-*© 2026 · Abarrotes Almiux · Hecho en México con ❤️*
-*Proyecto académico — Generation México Bootcamp*
+## 2. Configurar MySQL
+
+Crear la base de datos:
+
+```sql
+CREATE DATABASE almiux_db;
+```
+
+Configurar las credenciales en:
+
+```properties
+src/main/resources/application.properties
+```
+
+Ejemplo:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/almiux_db
+spring.datasource.username=root
+spring.datasource.password=tu_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+---
+
+## 3. Ejecutar el Backend
+
+```bash
+mvn clean install
+mvn spring-boot:run
+```
+
+La API estará disponible en:
+
+```text
+http://localhost:8080
+```
+
+---
+
+## 4. Ejecutar el Frontend
+
+Abrir:
+
+```text
+index.html
+```
+
+o utilizar la extensión **Live Server** de VS Code.
+
+---
+
+# 📋 Funcionalidades
+
+## Gestión de Usuarios
+
+* Registro de usuarios.
+* Consulta de usuarios.
+* Actualización de información.
+* Eliminación de registros.
+* Validación de datos.
+
+## Gestión de Productos
+
+* Alta de productos.
+* Consulta de productos.
+* Actualización de productos.
+* Eliminación de productos.
+* Clasificación por categorías.
+
+## Experiencia de Usuario
+
+* Diseño responsivo.
+* Navegación intuitiva.
+* Formularios validados.
+* Interfaz amigable.
+
+---
+
+# 👥 Equipo de Desarrollo
+
+## 404 Team Not Found
+
+| Integrante        | Rol                       |
+| ----------------- | ------------------------  |
+| Kaleb Torres      | Scrum Master · Developer  |
+| Arturo Ramírez    | Frontend Developer        |
+| Danna Remigio     | Frontend Developer        |
+| Yarilis Hernández | Frontend Developer        |
+| Zared Ortiz       | Backend Developer         |
+| Noé Hernández     | QA Tester                 |
+| Diego Quiñónez    | Backend Developer         |
+
+---
+
+# 🎓 Proyecto Académico
+
+Proyecto desarrollado como parte del Bootcamp Full Stack Java de Generation México.
+
+Durante el desarrollo se aplicaron conocimientos de:
+
+* Desarrollo Frontend
+* Desarrollo Backend
+* APIs REST
+* Bases de Datos Relacionales
+* Metodologías Ágiles
+* Control de Versiones con Git
+
+---
+
+# 📄 Licencia
+
+Proyecto desarrollado con fines académicos y educativos.
+
+---
+
+## 🇲🇽 Hecho en México por el equipo 404 Team Not Found

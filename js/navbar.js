@@ -11,21 +11,14 @@ function iniciarNavbar() {
 
   if (!navbar) return;
 
-let ultimoScroll = window.scrollY;
-window.addEventListener('scroll', () => {
+  let ultimoScroll = 0;
+  window.addEventListener('scroll', () => {
     const scrollActual = window.scrollY;
-    // Ocultar al bajar
-    if (scrollActual > ultimoScroll && scrollActual > 100) {
-        navbar.classList.add('navbar-hidden');
-    }
-    // Mostrar al subir aunque sea unos píxeles
-    else {
-
-        navbar.classList.remove('navbar-hidden');
-    }
-
+    navbar.style.transform = (scrollActual > ultimoScroll && scrollActual > 80)
+      ? 'translateY(-100%)'
+      : 'translateY(0)';
     ultimoScroll = scrollActual;
-});
+  });
 
   if (!hamburger || !navLinks) return;
 
@@ -51,3 +44,19 @@ function marcarLinkActivo() {
     }
   });
 }
+
+
+
+
+function actualizarContadorGlobalCarrito(){
+ let carrito=[];
+ try{carrito=JSON.parse(localStorage.getItem('almiux_carrito'))||[]}catch(e){}
+ const total=carrito.reduce((s,i)=>s+(i.qty ?? i.cantidad ?? 0),0);
+ const badge=document.getElementById('cartCount');
+ if(!badge) return;
+ badge.textContent=total;
+ badge.style.display=total>0?'flex':'none';
+}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(actualizarContadorGlobalCarrito,300));
+window.addEventListener('storage',actualizarContadorGlobalCarrito);
+
