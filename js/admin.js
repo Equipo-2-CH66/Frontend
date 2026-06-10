@@ -1,506 +1,832 @@
 /* ═══════════════════════════════════════════════════════════════
-   HELPERS
+   ADMIN.JS — Panel de administración de Abarrotes Almiux
 ═══════════════════════════════════════════════════════════════ */
 
-const $ = id => document.getElementById(id);
+/* ─── Credenciales del administrador ───────────────────────────
+   La contraseña se guarda en localStorage como base64 igual que
+   los usuarios normales. Si no existe, se crea al inicio.
+─────────────────────────────────────────────────────────────── */
+const ADMIN_STORAGE_KEY = 'almiux_admin_creds';
+const DEFAULT_ADMIN = { email: 'admin@almiux.com', password: btoa('Admin1234') };
 
-function toggleError(campoId, mensajeId, mostrar) {
-    $(campoId)?.classList.toggle('campo-error', mostrar);
-    $(mensajeId)?.classList.toggle('visible', mostrar);
+function getAdminCreds() {
+  try { return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEY)) || DEFAULT_ADMIN; }
+  catch { return DEFAULT_ADMIN; }
 }
+
+function checkAdminCreds(email, password) {
+  const creds = getAdminCreds();
+  return email.toLowerCase() === creds.email.toLowerCase() &&
+         atob(creds.password) === password;
+}
+
+/* ─── Sesión admin (sessionStorage) ────────────────────────── */
+const ADMIN_SESSION_KEY = 'almiux_admin_sesion';
+
+function getAdminSession() {
+  try { return JSON.parse(sessionStorage.getItem(ADMIN_SESSION_KEY)) || null; }
+  catch { return null; }
+}
+
+function setAdminSession(email) {
+  sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ email, ts: Date.now() }));
+}
+
+function clearAdminSession() {
+  sessionStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+/* ─── Storage helpers ───────────────────────────────────────── */
+const PROD_KEY  = 'almiux_productos_admin';
+const CAT_KEY   = 'almiux_categorias_admin';
+const ORDER_KEY = 'almiux_pedidos';
+
+function getProductos() {
+  try { return JSON.parse(localStorage.getItem(PROD_KEY)) || []; } catch { return []; }
+}
+function saveProductos(list) { localStorage.setItem(PROD_KEY, JSON.stringify(list)); }
+
+function getCategorias() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CAT_KEY));
+    return saved || DEFAULT_CATS.slice();
+  } catch { return DEFAULT_CATS.slice(); }
+}
+function saveCategorias(list) { localStorage.setItem(CAT_KEY, JSON.stringify(list)); }
+
+function getUsuarios() {
+  try { return JSON.parse(localStorage.getItem('almiux_usuarios')) || []; } catch { return []; }
+}
+
+function getPedidos() {
+  try { return JSON.parse(localStorage.getItem(ORDER_KEY)) || []; } catch { return []; }
+}
+function savePedidos(list) { localStorage.setItem(ORDER_KEY, JSON.stringify(list)); }
+
+/* ─── Categorías por defecto ────────────────────────────────── */
+const DEFAULT_CATS = [
+  { slug: 'carnes',    nombre: 'Carnes',           icono: '🥩', color: '#dc3545' },
+  { slug: 'lacteos',   nombre: 'Lácteos',           icono: '🥛', color: '#6f42c1' },
+  { slug: 'bebidas',   nombre: 'Bebidas',            icono: '🧃', color: '#0d6efd' },
+  { slug: 'enlatados', nombre: 'Enlatados',          icono: '🥫', color: '#fd7e14' },
+  { slug: 'limpieza',  nombre: 'Limpieza',           icono: '🧹', color: '#20c997' },
+  { slug: 'panaderia', nombre: 'Panadería',          icono: '🥖', color: '#e9a225' },
+  { slug: 'especias',  nombre: 'Especias',           icono: '🌶️', color: '#d63384' },
+  { slug: 'botanas',   nombre: 'Botanas',            icono: '🍿', color: '#198754' },
+  { slug: 'abarrotes', nombre: 'Abarrotes',          icono: '🛒', color: '#D45F1A' },
+  { slug: 'higiene',   nombre: 'Higiene personal',   icono: '🧴', color: '#0dcaf0' },
+];
+
+const COLORS_PALETTE = [
+  '#D45F1A','#dc3545','#fd7e14','#e9a225','#198754',
+  '#20c997','#0d6efd','#6f42c1','#d63384','#0dcaf0',
+  '#2C1A0E','#7A4A26','#495057','#343a40',
+];
 
 /* ═══════════════════════════════════════════════════════════════
-   VALIDACIÓN
+   BOOTSTRAP — arranque al cargar el DOM
 ═══════════════════════════════════════════════════════════════ */
-
-function validarFormulario() {
-
-    let esValido = true;
-
-    const campos = [
-        {
-            id: 'nombre',
-            error: 'error-nombre',
-            valido: $('nombre').value.trim() !== ''
-        },
-        {
-            id: 'descripcion',
-            error: 'error-descripcion',
-            valido: $('descripcion').value.trim() !== ''
-        },
-        {
-            id: 'categoria',
-            error: 'error-categoria',
-            valido: $('categoria').value !== ''
-        },
-        {
-            id: 'precio',
-            error: 'error-precio',
-            valido: parseFloat($('precio').value) > 0
-        }
-    ];
-
-    campos.forEach(campo => {
-        toggleError(campo.id, campo.error, !campo.valido);
-
-        if (!campo.valido) {
-            esValido = false;
-        }
-    });
-
-    // Validar descuento solo si hay oferta
-    if ($('oferta').checked) {
-
-        const descuento = parseInt($('descuento').value);
-
-        const valido =
-            !isNaN(descuento) &&
-            descuento >= 1 &&
-            descuento <= 99;
-
-        toggleError(
-            'descuento',
-            'error-descuento',
-            !valido
-        );
-
-        if (!valido) {
-            esValido = false;
-        }
-
-    } else {
-
-        toggleError(
-            'descuento',
-            'error-descuento',
-            false
-        );
-    }
-
-    return esValido;
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   MOSTRAR / OCULTAR DESCUENTO
-═══════════════════════════════════════════════════════════════ */
-
-$('oferta')?.addEventListener('change', () => {
-
-    $('descuentoGroup')?.classList.toggle(
-        'visible',
-        $('oferta').checked
-    );
-
-    if (!$('oferta').checked) {
-        $('descuento').value = '';
-    }
-
-    actualizarPreview();
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   EVENTOS PREVIEW
-═══════════════════════════════════════════════════════════════ */
-
-[
-    'nombre',
-    'descripcion',
-    'categoria',
-    'precio',
-    'descuento',
-    'imagen'
-].forEach(id => {
-
-    $(id)?.addEventListener('input', actualizarPreview);
-    $(id)?.addEventListener('change', actualizarPreview);
-
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   PREVIEW
-═══════════════════════════════════════════════════════════════ */
-
-const etiquetas = {
-    lacteos: 'Lácteos',
-    bebidas: 'Bebidas',
-    enlatados: 'Enlatados',
-    carnes: 'Carnes',
-    limpieza: 'Limpieza',
-    panaderia: 'Panadería',
-    especias: 'Especias',
-    botanas: 'Botanas',
-    abarrotes: 'Abarrotes',
-    higiene: 'Higiene personal'
-};
-
-function crearHTMLPreview({
-    imagen,
-    categoria,
-    nombre,
-    descripcion,
-    precioFinal,
-    precioOriginalHTML,
-    badgeHTML
-}) {
-
-    return `
-        ${imagen}
-
-        <div class="preview-info">
-
-            <p class="preview-cat">
-                ${etiquetas[categoria] || 'Categoría'}
-            </p>
-
-            <p class="preview-name">
-                ${nombre || 'Nombre del producto'}
-            </p>
-
-            <p class="preview-desc">
-                ${descripcion || 'Descripción del producto'}
-            </p>
-
-            <div>
-
-                <span class="preview-price">
-                    ${
-                        !isNaN(precioFinal)
-                            ? `$${precioFinal.toFixed(2)}`
-                            : '$0.00'
-                    }
-                </span>
-
-                ${precioOriginalHTML}
-                ${badgeHTML}
-
-            </div>
-
-        </div>
-    `;
-}
-
-function actualizarPreview() {
-
-    const nombre = $('nombre').value.trim();
-    const descripcion = $('descripcion').value.trim();
-    const categoria = $('categoria').value;
-    const precio = parseFloat($('precio').value);
-
-    const enOferta = $('oferta').checked;
-    const descuento = parseInt($('descuento').value);
-
-    const imagenInput = $('imagen');
-    const card = $('previewCard');
-
-    // Placeholder
-    if (!nombre && !descripcion && isNaN(precio)) {
-
-        card.innerHTML = `
-            <p class="preview-placeholder">
-                Llena el formulario para ver la previsualización aquí.
-            </p>
-        `;
-
-        return;
-    }
-
-    // Precios
-    let precioFinal = precio;
-    let precioOriginalHTML = '';
-    let badgeHTML = '';
-
-    if (
-        enOferta &&
-        !isNaN(descuento) &&
-        !isNaN(precio)
-    ) {
-
-        precioFinal =
-            precio - (precio * descuento / 100);
-
-        precioOriginalHTML = `
-            <span class="preview-original">
-                $${precio.toFixed(2)}
-            </span>
-        `;
-
-        badgeHTML = `
-            <span class="preview-badge">
-                -${descuento}%
-            </span>
-        `;
-    }
-
-    // Imagen default
-    let imagenHTML = `
-        <div class="preview-image-placeholder">
-            🛒
-        </div>
-    `;
-
-    // Si hay imagen
-    if (imagenInput.files?.[0]) {
-
-        const reader = new FileReader();
-
-        reader.onload = e => {
-
-            imagenHTML = `
-                <img
-                    src="${e.target.result}"
-                    alt="Producto"
-                    class="preview-image"
-                >
-            `;
-
-            card.innerHTML = crearHTMLPreview({
-                imagen: imagenHTML,
-                categoria,
-                nombre,
-                descripcion,
-                precioFinal,
-                precioOriginalHTML,
-                badgeHTML
-            });
-        };
-
-        reader.readAsDataURL(imagenInput.files[0]);
-
-        return;
-    }
-
-    // Render normal
-    card.innerHTML = crearHTMLPreview({
-        imagen: imagenHTML,
-        categoria,
-        nombre,
-        descripcion,
-        precioFinal,
-        precioOriginalHTML,
-        badgeHTML
-    });
-}
- //STORAGE — guardar y leer productos del admin en localStorage
-
-const STORAGE_KEY = 'almiux_productos_admin';
-function obtenerProductosAdmin() {
-    try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch {
-        return [];
-    }
-}
- 
-function guardarProductosAdmin(lista) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   SUBMIT — crear objeto, guardarlo y mostrar JSON + tarjetas
-═══════════════════════════════════════════════════════════════ */
- 
-$('formProducto')?.addEventListener('submit', async function (e) {
-    e.preventDefault();
- 
-    // Ocultar alertas previas
-    $('alertaError')?.classList.remove('show');
-    $('alertaExito')?.classList.remove('show');
- 
-    // Validar con la función
-    if (!validarFormulario()) {
-        $('alertaError')?.classList.add('show');
-        return;
-    }
- 
-    // Leer valores del formulario
-    const nombre      = $('nombre').value.trim();
-    const descripcion = $('descripcion').value.trim();
-    const categoria   = $('categoria').value;
-    const precio      = parseFloat($('precio').value);
-    const enOferta    = $('oferta').checked;
-    const descuento   = parseInt($('descuento').value) || 0;
-    const imagenInput = $('imagen');
- 
-    // Leer imagen como base64 (para persistir en localStorage)
-    let imagenBase64 = null;
-    if (imagenInput?.files?.length > 0) {
-        imagenBase64 = await new Promise((res, rej) => {
-            const reader = new FileReader();
-            reader.onload  = () => res(reader.result);
-            reader.onerror = () => rej();
-            reader.readAsDataURL(imagenInput.files[0]);
-        });
-    }
- 
-    // Calcular precio final
-    const precioFinal    = enOferta && descuento > 0
-        ? parseFloat((precio * (1 - descuento / 100)).toFixed(2))
-        : precio;
-    const precioOriginal = enOferta && descuento > 0 ? precio : null;
- 
-    // Construir objeto producto 
-    const producto = {
-        id:            `prod_${Date.now()}`,
-        nombre,
-        desc:          descripcion,
-        cat:           categoria,
-        catLabel:      etiquetas[categoria] || categoria,
-        precio:        precioFinal,
-        precioOriginal,
-        oferta:        enOferta,
-        badge:         enOferta && descuento > 0 ? `-${descuento}%` : (enOferta ? 'Oferta' : null),
-        icono:         '📦',
-        imagen:        imagenBase64,
-        creadoEn:      new Date().toLocaleDateString('es-MX', {
-                           year: 'numeric', month: '2-digit', day: '2-digit'
-                       }),
-    };
- 
-    // Guardar en localStorage
-    const lista = obtenerProductosAdmin();
-    lista.push(producto);
-    guardarProductosAdmin(lista);
- 
-    // También inyectar en el arreglo global de main.js si existe
-    if (typeof PRODUCTOS !== 'undefined') {
-        PRODUCTOS.push(producto);
-    }
- 
-    // Mostrar JSON (sin el base64 de imagen para que sea legible)
-    const paraJSON = { ...producto, imagen: producto.imagen ? '[imagen cargada]' : null };
-    const jsonBlock = $('jsonBlock');
-    if (jsonBlock) {
-        jsonBlock.innerHTML = `<code>${JSON.stringify(paraJSON, null, 2)
-            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>`;
-    }
-    $('btnCopy') && ($('btnCopy').style.display = 'inline-flex');
- 
-    // Alerta de éxito
-    $('alertaExito')?.classList.add('show');
- 
-    // Re-renderizar grid de productos creados
-    renderizarTarjetasAdmin();
-    actualizarContadorAdmin();
- 
-    // Reset del formulario
-    this.reset();
-    $('descuentoGroup')?.classList.remove('visible');
-    actualizarPreview();
- 
-    // Scroll al JSON
-    jsonBlock?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
- 
-/* ═══════════════════════════════════════════════════════════════
-   COPIAR JSON
-═══════════════════════════════════════════════════════════════ */
- 
-function copiarJSON() {
-    const texto = $('jsonBlock')?.innerText || '';
-    navigator.clipboard.writeText(texto).then(() => {
-        const btn = $('btnCopy');
-        if (!btn) return;
-        const orig = btn.textContent;
-        btn.textContent = '✅ ¡Copiado!';
-        setTimeout(() => { btn.textContent = orig; }, 1500);
-    }).catch(() => alert('No se pudo copiar. Selecciona el texto manualmente.'));
-}
- 
-/* ═══════════════════════════════════════════════════════════════
-   GRID DE PRODUCTOS CREADOS (sección debajo del formulario)
-═══════════════════════════════════════════════════════════════ */
- 
-function renderizarTarjetasAdmin() {
-    const contenedor = $('productosAdminGrid');
-    if (!contenedor) return;
- 
-    const lista = obtenerProductosAdmin();
- 
-    if (lista.length === 0) {
-        contenedor.innerHTML = `
-            <p style="color:var(--color-muted);font-size:14px;grid-column:1/-1;
-                      text-align:center;padding:40px 0;">
-                Aún no has creado ningún producto. ¡Usa el formulario de arriba!
-            </p>`;
-        return;
-    }
- 
-    contenedor.innerHTML = '';
- 
-    lista.forEach((p, index) => {
- 
-        // Imagen o ícono
-        const imgHTML = p.imagen
-            ? `<img src="${p.imagen}" alt="${p.nombre}"
-                    style="width:100%;height:140px;object-fit:cover;
-                           border-radius:8px 8px 0 0;">`
-            : `<div class="preview-image-placeholder">${p.icono || '📦'}</div>`;
- 
-        // Badge de oferta
-        const badgeHTML = p.badge
-            ? `<span class="prod-badge">${p.badge}</span>`
-            : '';
- 
-        // Precio original tachado
-        const precioOrigHTML = p.precioOriginal
-            ? `<span class="prod-original">$${p.precioOriginal.toFixed(2)}</span>`
-            : '';
- 
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.style.position = 'relative';
-        card.innerHTML = `
-            <div class="prod-img-wrap">
-                ${imgHTML}
-                ${badgeHTML}
-            </div>
-            <div class="prod-info">
-                <p class="prod-cat-tag">${p.catLabel || p.cat}</p>
-                <h3 class="prod-name">${p.nombre}</h3>
-                <p class="prod-desc">${p.desc}</p>
-                <div class="prod-prices">
-                    <span class="prod-price">$${p.precio.toFixed(2)}</span>
-                    ${precioOrigHTML}
-                </div>
-            </div>
-            <button
-                class="btn-eliminar-admin"
-                data-index="${index}"
-                title="Eliminar producto"
-                style="position:absolute;top:8px;right:8px;
-                       background:#fff;border:1.5px solid #dc3545;
-                       color:#dc3545;border-radius:50%;width:28px;height:28px;
-                       font-size:13px;cursor:pointer;display:flex;
-                       align-items:center;justify-content:center;line-height:1;"
-            >✕</button>
-        `;
- 
-        contenedor.appendChild(card);
-    });
- 
-    // Eventos de eliminar
-    contenedor.querySelectorAll('.btn-eliminar-admin').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.index);
-            const lista = obtenerProductosAdmin();
-            lista.splice(idx, 1);
-            guardarProductosAdmin(lista);
-            renderizarTarjetasAdmin();
-            actualizarContadorAdmin();
-        });
-    });
-}
- 
-function actualizarContadorAdmin() {
-    const badge = $('adminProdCount');
-    if (badge) badge.textContent = obtenerProductosAdmin().length;
-}
- 
-/* ═══════════════════════════════════════════════════════════════
-   INICIALIZACIÓN
-═══════════════════════════════════════════════════════════════ */
- 
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarTarjetasAdmin();
-    actualizarContadorAdmin();
+  if (getAdminSession()) {
+    showDashboard();
+  } else {
+    showLogin();
+  }
+  initLogin();
+  initDashboard();
 });
+
+/* ─── Mostrar / ocultar secciones ──────────────────────────── */
+function showLogin() {
+  document.getElementById('adminLoginSection').style.display  = 'flex';
+  document.getElementById('adminDashboard').style.display     = 'none';
+}
+
+function showDashboard() {
+  document.getElementById('adminLoginSection').style.display  = 'none';
+  document.getElementById('adminDashboard').style.display     = 'block';
+  const sess = getAdminSession();
+  document.getElementById('dashAdminEmail').textContent = sess?.email || 'admin@almiux.com';
+  refreshAll();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGIN
+═══════════════════════════════════════════════════════════════ */
+function initLogin() {
+  const form   = document.getElementById('adminLoginForm');
+  const eyeBtn = document.getElementById('toggleAdminPwd');
+  const pwdIn  = document.getElementById('adminPwd');
+  const pwdIco = document.getElementById('adminPwdIcon');
+
+  eyeBtn?.addEventListener('click', () => {
+    const show = pwdIn.type === 'password';
+    pwdIn.type = show ? 'text' : 'password';
+    pwdIco.className = show ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+  });
+
+  form?.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('adminEmail').value.trim();
+    const pwd   = document.getElementById('adminPwd').value;
+
+    const errEmail = document.getElementById('errAdminEmail');
+    const errPwd   = document.getElementById('errAdminPwd');
+    const alertaEl = document.getElementById('loginAlertaError');
+
+    errEmail.classList.remove('visible');
+    errPwd.classList.remove('visible');
+    alertaEl.style.display = 'none';
+
+    let ok = true;
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEmail.classList.add('visible'); ok = false;
+    }
+    if (!pwd) {
+      errPwd.classList.add('visible'); ok = false;
+    }
+    if (!ok) return;
+
+    if (checkAdminCreds(email, pwd)) {
+      setAdminSession(email);
+      showDashboard();
+    } else {
+      document.getElementById('loginAlertaErrorMsg').textContent = 'Correo o contraseña incorrectos.';
+      alertaEl.style.display = 'flex';
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD — inicialización general
+═══════════════════════════════════════════════════════════════ */
+function initDashboard() {
+  // Navegación sidebar
+  document.querySelectorAll('.dash-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = btn.dataset.panel;
+      switchPanel(panel);
+      // cerrar sidebar en mobile
+      closeSidebarMobile();
+    });
+  });
+
+  // Logout
+  document.getElementById('btnLogout')?.addEventListener('click', () => {
+    clearAdminSession();
+    showLogin();
+  });
+
+  // Toggle sidebar mobile
+  document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+    document.getElementById('dashSidebar').classList.toggle('open');
+    document.getElementById('sidebarBackdrop').classList.toggle('open');
+  });
+  document.getElementById('sidebarBackdrop')?.addEventListener('click', closeSidebarMobile);
+
+  initModalProducto();
+  initModalCategoria();
+  initModalConfirm();
+  initModalPedido();
+  buildColorSwatches();
+}
+
+function closeSidebarMobile() {
+  document.getElementById('dashSidebar')?.classList.remove('open');
+  document.getElementById('sidebarBackdrop')?.classList.remove('open');
+}
+
+function switchPanel(name) {
+  // Nav items
+  document.querySelectorAll('.dash-nav-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.panel === name);
+  });
+  // Panels
+  document.querySelectorAll('.dash-panel').forEach(p => {
+    p.classList.toggle('active', p.id === `panel-${name}`);
+  });
+  // Topbar title
+  const titles = {
+    inicio:     'Inicio',
+    productos:  'Productos',
+    categorias: 'Categorías',
+    usuarios:   'Usuarios',
+    pedidos:    'Pedidos',
+  };
+  document.getElementById('dashPanelTitle').textContent = titles[name] || name;
+
+  // Render el panel activo
+  if (name === 'inicio')     renderInicio();
+  if (name === 'productos')  renderProductos();
+  if (name === 'categorias') renderCategorias();
+  if (name === 'usuarios')   renderUsuarios();
+  if (name === 'pedidos')    renderPedidos();
+}
+
+function refreshAll() {
+  renderInicio();
+  renderProductos();
+  renderCategorias();
+  renderUsuarios();
+  renderPedidos();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL: INICIO
+═══════════════════════════════════════════════════════════════ */
+function renderInicio() {
+  const prods   = getProductos();
+  const cats    = getCategorias();
+  const users   = getUsuarios();
+  const pedidos = getPedidos();
+
+  document.getElementById('statProductos').textContent  = prods.length;
+  document.getElementById('statCategorias').textContent = cats.length;
+  document.getElementById('statUsuarios').textContent   = users.length;
+  document.getElementById('statPedidos').textContent    = pedidos.length;
+
+  const tbody = document.getElementById('inicioProductosTbody');
+  const ultimos = prods.slice(-5).reverse();
+
+  if (ultimos.length === 0) {
+    tbody.innerHTML = `<tr><td class="table-empty" colspan="5">Sin productos aún.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = ultimos.map(p => `
+    <tr>
+      <td>${p.imagen
+        ? `<img class="prod-thumb" src="${p.imagen}" alt="${p.nombre}">`
+        : `<div class="prod-thumb-placeholder">${p.icono || '📦'}</div>`}</td>
+      <td>${esc(p.nombre)}</td>
+      <td>${esc(p.catLabel || p.cat)}</td>
+      <td>$${Number(p.precio).toFixed(2)}</td>
+      <td>${p.creadoEn || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL: PRODUCTOS
+═══════════════════════════════════════════════════════════════ */
+function renderProductos() {
+  const tbody = document.getElementById('productosTableBody');
+  const prods = getProductos();
+
+  if (prods.length === 0) {
+    tbody.innerHTML = `<tr><td class="table-empty" colspan="6">No hay productos. ¡Crea el primero!</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = prods.map((p, i) => `
+    <tr>
+      <td>${p.imagen
+        ? `<img class="prod-thumb" src="${p.imagen}" alt="${p.nombre}">`
+        : `<div class="prod-thumb-placeholder">${p.icono || '📦'}</div>`}</td>
+      <td><strong>${esc(p.nombre)}</strong><br><small style="color:var(--color-muted)">${esc((p.desc||'').slice(0,50))}…</small></td>
+      <td>${esc(p.catLabel || p.cat)}</td>
+      <td>$${Number(p.precio).toFixed(2)}
+        ${p.precioOriginal ? `<br><small style="text-decoration:line-through;color:var(--color-muted)">$${Number(p.precioOriginal).toFixed(2)}</small>` : ''}
+      </td>
+      <td>${p.oferta ? `<span class="tag oferta">${p.badge || 'Oferta'}</span>` : '—'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn-dash secondary sm" onclick="editarProducto(${i})"><i class="fa-solid fa-pen"></i> Editar</button>
+        <button class="btn-dash danger sm" onclick="eliminarProducto(${i})" style="margin-left:.3rem"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+/* ── Modal Producto ─────────────────────────────────────────── */
+let editingProdIndex = -1;
+
+function initModalProducto() {
+  document.getElementById('btnNuevoProducto')?.addEventListener('click', () => abrirModalProducto(-1));
+  document.getElementById('btnCancelarProducto')?.addEventListener('click', cerrarModalProducto);
+  document.getElementById('btnGuardarProducto')?.addEventListener('click', guardarProducto);
+  document.getElementById('mpOferta')?.addEventListener('change', e => {
+    document.getElementById('mpDescuentoGroup').style.display = e.target.checked ? '' : 'none';
+  });
+  document.getElementById('mpImagen')?.addEventListener('change', e => {
+    const file = e.target.files?.[0];
+    const wrap = document.getElementById('mpImagenPreviewWrap');
+    const img  = document.getElementById('mpImagenPreview');
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = ev => { img.src = ev.target.result; wrap.style.display = ''; };
+      reader.readAsDataURL(file);
+    } else {
+      wrap.style.display = 'none';
+    }
+  });
+  document.getElementById('modalProducto')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('modalProducto')) cerrarModalProducto();
+  });
+}
+
+function abrirModalProducto(index) {
+  editingProdIndex = index;
+  const modal = document.getElementById('modalProducto');
+  document.getElementById('modalProdError').style.display = 'none';
+  document.getElementById('mpDescuentoGroup').style.display = 'none';
+  document.getElementById('mpImagenPreviewWrap').style.display = 'none';
+
+  // Poblar select de categorías
+  const cats = getCategorias();
+  const sel  = document.getElementById('mpCategoria');
+  sel.innerHTML = `<option value="">Selecciona una categoría</option>` +
+    cats.map(c => `<option value="${esc(c.slug)}">${esc(c.nombre)}</option>`).join('');
+
+  if (index === -1) {
+    document.getElementById('modalProductoTitle').textContent = 'Nuevo producto';
+    document.getElementById('mpNombre').value = '';
+    document.getElementById('mpDescripcion').value = '';
+    document.getElementById('mpCategoria').value = '';
+    document.getElementById('mpPrecio').value = '';
+    document.getElementById('mpOferta').checked = false;
+    document.getElementById('mpDescuento').value = '';
+    document.getElementById('mpImagen').value = '';
+  } else {
+    const p = getProductos()[index];
+    document.getElementById('modalProductoTitle').textContent = 'Editar producto';
+    document.getElementById('mpNombre').value       = p.nombre;
+    document.getElementById('mpDescripcion').value  = p.desc;
+    document.getElementById('mpCategoria').value    = p.cat;
+    document.getElementById('mpPrecio').value       = p.precioOriginal || p.precio;
+    document.getElementById('mpOferta').checked     = !!p.oferta;
+    if (p.oferta) {
+      document.getElementById('mpDescuentoGroup').style.display = '';
+      const badge = p.badge || '';
+      const pct   = parseInt(badge.replace(/[^0-9]/g, '')) || 0;
+      document.getElementById('mpDescuento').value = pct;
+    }
+    if (p.imagen) {
+      document.getElementById('mpImagenPreview').src = p.imagen;
+      document.getElementById('mpImagenPreviewWrap').style.display = '';
+    }
+  }
+
+  modal.classList.add('open');
+}
+
+function cerrarModalProducto() {
+  document.getElementById('modalProducto').classList.remove('open');
+}
+
+async function guardarProducto() {
+  const nombre      = document.getElementById('mpNombre').value.trim();
+  const desc        = document.getElementById('mpDescripcion').value.trim();
+  const cat         = document.getElementById('mpCategoria').value;
+  const precioRaw   = parseFloat(document.getElementById('mpPrecio').value);
+  const enOferta    = document.getElementById('mpOferta').checked;
+  const descuentoPct = parseInt(document.getElementById('mpDescuento').value) || 0;
+  const imagenInput = document.getElementById('mpImagen');
+
+  const errEl = document.getElementById('modalProdError');
+  const msgs  = [];
+  if (!nombre)         msgs.push('Nombre obligatorio');
+  if (!desc)           msgs.push('Descripción obligatoria');
+  if (!cat)            msgs.push('Categoría obligatoria');
+  if (isNaN(precioRaw) || precioRaw <= 0) msgs.push('Precio inválido');
+  if (enOferta && (descuentoPct < 1 || descuentoPct > 99)) msgs.push('Descuento debe ser 1-99%');
+
+  if (msgs.length) {
+    document.getElementById('modalProdErrorMsg').textContent = msgs.join(' · ');
+    errEl.style.display = 'flex';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  // Leer imagen nueva si hay
+  let imagenBase64 = null;
+  if (imagenInput.files?.[0]) {
+    imagenBase64 = await new Promise(res => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.readAsDataURL(imagenInput.files[0]);
+    });
+  } else if (editingProdIndex >= 0) {
+    imagenBase64 = getProductos()[editingProdIndex].imagen;
+  }
+
+  const cats         = getCategorias();
+  const catObj       = cats.find(c => c.slug === cat) || {};
+  const precioFinal  = enOferta && descuentoPct > 0
+    ? parseFloat((precioRaw * (1 - descuentoPct / 100)).toFixed(2))
+    : precioRaw;
+  const precioOriginal = enOferta && descuentoPct > 0 ? precioRaw : null;
+
+  const etiquetas = Object.fromEntries(cats.map(c => [c.slug, c.nombre]));
+
+  const producto = {
+    id:            editingProdIndex >= 0 ? getProductos()[editingProdIndex].id : `prod_${Date.now()}`,
+    nombre,
+    desc,
+    cat,
+    catLabel:      catObj.nombre || etiquetas[cat] || cat,
+    precio:        precioFinal,
+    precioOriginal,
+    oferta:        enOferta,
+    badge:         enOferta && descuentoPct > 0 ? `-${descuentoPct}%` : (enOferta ? 'Oferta' : null),
+    icono:         catObj.icono || '📦',
+    imagen:        imagenBase64,
+    creadoEn:      editingProdIndex >= 0
+      ? getProductos()[editingProdIndex].creadoEn
+      : new Date().toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+  };
+
+  const lista = getProductos();
+  if (editingProdIndex >= 0) lista[editingProdIndex] = producto;
+  else lista.push(producto);
+  saveProductos(lista);
+
+  cerrarModalProducto();
+  renderProductos();
+  renderInicio();
+}
+
+function editarProducto(index) { abrirModalProducto(index); }
+
+function eliminarProducto(index) {
+  openConfirm(
+    '¿Eliminar producto?',
+    'El producto se eliminará permanentemente del catálogo.',
+    () => {
+      const lista = getProductos();
+      lista.splice(index, 1);
+      saveProductos(lista);
+      renderProductos();
+      renderInicio();
+    }
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL: CATEGORÍAS
+═══════════════════════════════════════════════════════════════ */
+function renderCategorias() {
+  const grid = document.getElementById('categoriasGrid');
+  const cats = getCategorias();
+  const prods = getProductos();
+
+  if (cats.length === 0) {
+    grid.innerHTML = `<p style="color:var(--color-muted);font-size:.875rem;">No hay categorías.</p>`;
+    return;
+  }
+
+  grid.innerHTML = cats.map((c, i) => {
+    const count = prods.filter(p => p.cat === c.slug).length;
+    return `
+      <div class="cat-card">
+        <div style="display:flex;align-items:center;gap:.4rem;">
+          <span style="font-size:1.2rem;">${c.icono || '📦'}</span>
+          <span class="cat-name">${esc(c.nombre)}</span>
+        </div>
+        <div class="cat-count">${count} producto${count !== 1 ? 's' : ''}</div>
+        <div style="font-size:.75rem;color:var(--color-muted)">
+          <span class="cat-color-dot" style="background:${c.color}"></span>${esc(c.slug)}
+        </div>
+        <div class="cat-actions">
+          <button class="btn-dash secondary sm" onclick="editarCategoria(${i})"><i class="fa-solid fa-pen"></i> Editar</button>
+          <button class="btn-dash danger sm" onclick="eliminarCategoria(${i})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ── Modal Categoría ────────────────────────────────────────── */
+let editingCatIndex = -1;
+let selectedColor   = '#D45F1A';
+
+function buildColorSwatches() {
+  const wrap = document.getElementById('colorSwatches');
+  if (!wrap) return;
+  wrap.innerHTML = COLORS_PALETTE.map(c => `
+    <div class="color-swatch ${c === selectedColor ? 'selected' : ''}"
+         style="background:${c}"
+         data-color="${c}"
+         title="${c}"
+         onclick="selectColor('${c}')"></div>
+  `).join('');
+}
+
+function selectColor(color) {
+  selectedColor = color;
+  document.getElementById('mcColor').value = color;
+  document.querySelectorAll('.color-swatch').forEach(el => {
+    el.classList.toggle('selected', el.dataset.color === color);
+  });
+}
+
+function initModalCategoria() {
+  document.getElementById('btnNuevaCategoria')?.addEventListener('click', () => abrirModalCategoria(-1));
+  document.getElementById('btnCancelarCategoria')?.addEventListener('click', cerrarModalCategoria);
+  document.getElementById('btnGuardarCategoria')?.addEventListener('click', guardarCategoria);
+  document.getElementById('mcNombre')?.addEventListener('input', e => {
+    const slug = document.getElementById('mcSlug');
+    if (editingCatIndex === -1) {
+      slug.value = e.target.value.toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    }
+  });
+  document.getElementById('modalCategoria')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('modalCategoria')) cerrarModalCategoria();
+  });
+}
+
+function abrirModalCategoria(index) {
+  editingCatIndex = index;
+  buildColorSwatches();
+  if (index === -1) {
+    document.getElementById('modalCategoriaTitle').textContent = 'Nueva categoría';
+    document.getElementById('mcNombre').value = '';
+    document.getElementById('mcSlug').value   = '';
+    document.getElementById('mcIcono').value  = '';
+    selectColor('#D45F1A');
+  } else {
+    const c = getCategorias()[index];
+    document.getElementById('modalCategoriaTitle').textContent = 'Editar categoría';
+    document.getElementById('mcNombre').value = c.nombre;
+    document.getElementById('mcSlug').value   = c.slug;
+    document.getElementById('mcIcono').value  = c.icono || '';
+    selectColor(c.color || '#D45F1A');
+  }
+  document.getElementById('modalCategoria').classList.add('open');
+}
+
+function cerrarModalCategoria() {
+  document.getElementById('modalCategoria').classList.remove('open');
+}
+
+function guardarCategoria() {
+  const nombre = document.getElementById('mcNombre').value.trim();
+  const slug   = document.getElementById('mcSlug').value.trim().toLowerCase();
+  const icono  = document.getElementById('mcIcono').value.trim() || '📦';
+  const color  = document.getElementById('mcColor').value;
+
+  if (!nombre || !slug) {
+    alert('Nombre y clave son obligatorios.');
+    return;
+  }
+
+  const lista = getCategorias();
+
+  // Verificar slug duplicado (excepto la misma)
+  const dup = lista.findIndex((c, i) => c.slug === slug && i !== editingCatIndex);
+  if (dup !== -1) { alert('La clave ya existe. Usa una diferente.'); return; }
+
+  const cat = { slug, nombre, icono, color };
+  if (editingCatIndex >= 0) lista[editingCatIndex] = cat;
+  else lista.push(cat);
+  saveCategorias(lista);
+
+  cerrarModalCategoria();
+  renderCategorias();
+}
+
+function editarCategoria(index) { abrirModalCategoria(index); }
+
+function eliminarCategoria(index) {
+  const cat   = getCategorias()[index];
+  const prods = getProductos().filter(p => p.cat === cat.slug).length;
+  const msg   = prods > 0
+    ? `La categoría tiene ${prods} producto(s). Al eliminarla, los productos quedarán sin categoría.`
+    : 'Esta acción no se puede deshacer.';
+
+  openConfirm('¿Eliminar categoría?', msg, () => {
+    const lista = getCategorias();
+    lista.splice(index, 1);
+    saveCategorias(lista);
+    renderCategorias();
+    renderInicio();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL: USUARIOS
+═══════════════════════════════════════════════════════════════ */
+function renderUsuarios() {
+  const tbody   = document.getElementById('usuariosTableBody');
+  const usuarios = getUsuarios();
+
+  if (usuarios.length === 0) {
+    tbody.innerHTML = `<tr><td class="table-empty" colspan="5">No hay usuarios registrados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = usuarios.map((u, i) => {
+    const inicial = ((u.nombres || u.email || '?')[0]).toUpperCase();
+    const estado  = u.bloqueado ? 'inactivo' : 'activo';
+    const textoEstado = u.bloqueado ? 'Bloqueado' : 'Activo';
+    return `
+      <tr>
+        <td>
+          <span class="user-avatar">${inicial}</span>
+          ${esc((u.nombres || '') + ' ' + (u.apellidos || ''))}
+        </td>
+        <td>${esc(u.email)}</td>
+        <td>${esc(u.telefono || '—')}</td>
+        <td><span class="tag ${estado}">${textoEstado}</span></td>
+        <td style="white-space:nowrap">
+          <button class="btn-dash ${u.bloqueado ? 'secondary' : 'danger'} sm"
+                  onclick="toggleBloquearUsuario(${i})">
+            <i class="fa-solid fa-${u.bloqueado ? 'unlock' : 'ban'}"></i>
+            ${u.bloqueado ? 'Desbloquear' : 'Bloquear'}
+          </button>
+          <button class="btn-dash danger sm" onclick="eliminarUsuario(${i})" style="margin-left:.3rem">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function toggleBloquearUsuario(index) {
+  const lista = getUsuarios();
+  lista[index].bloqueado = !lista[index].bloqueado;
+  localStorage.setItem('almiux_usuarios', JSON.stringify(lista));
+  renderUsuarios();
+  renderInicio();
+}
+
+function eliminarUsuario(index) {
+  const u = getUsuarios()[index];
+  openConfirm(
+    '¿Eliminar usuario?',
+    `Se eliminará la cuenta de ${esc(u.email)}. Esta acción no se puede deshacer.`,
+    () => {
+      const lista = getUsuarios();
+      lista.splice(index, 1);
+      localStorage.setItem('almiux_usuarios', JSON.stringify(lista));
+      renderUsuarios();
+      renderInicio();
+    }
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PANEL: PEDIDOS
+═══════════════════════════════════════════════════════════════ */
+function renderPedidos() {
+  const tbody   = document.getElementById('pedidosTableBody');
+  const pedidos = getPedidos();
+
+  if (pedidos.length === 0) {
+    tbody.innerHTML = `<tr><td class="table-empty" colspan="6">No hay pedidos registrados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = pedidos.slice().reverse().map((p, idx) => {
+    const realIdx = pedidos.length - 1 - idx;
+    const total = Array.isArray(p.items)
+      ? p.items.reduce((s, it) => s + (it.precio || 0) * (it.cantidad || 1), 0)
+      : (p.total || 0);
+    const estado = p.estado || 'pendiente';
+    const nItems = Array.isArray(p.items) ? p.items.length : '—';
+    return `
+      <tr>
+        <td><code style="font-size:.75rem">${esc(p.id || `#${realIdx + 1}`)}</code></td>
+        <td>${esc(p.cliente || p.email || '—')}</td>
+        <td>${nItems} artículo${nItems !== 1 ? 's' : ''}</td>
+        <td>$${Number(total).toFixed(2)}</td>
+        <td>
+          <select class="btn-dash secondary sm" style="padding:.25rem .4rem;border-radius:6px;"
+                  onchange="cambiarEstadoPedido(${realIdx}, this.value)">
+            ${['pendiente','en proceso','enviado','completado','cancelado'].map(s =>
+              `<option value="${s}" ${estado === s ? 'selected' : ''}>${capitalizar(s)}</option>`
+            ).join('')}
+          </select>
+        </td>
+        <td>
+          <button class="btn-dash secondary sm" onclick="verDetallePedido(${realIdx})">
+            <i class="fa-solid fa-eye"></i> Ver
+          </button>
+          <button class="btn-dash danger sm" onclick="eliminarPedido(${realIdx})" style="margin-left:.3rem">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function cambiarEstadoPedido(index, estado) {
+  const lista = getPedidos();
+  if (!lista[index]) return;
+  lista[index].estado = estado;
+  savePedidos(lista);
+}
+
+function eliminarPedido(index) {
+  openConfirm('¿Eliminar pedido?', 'El pedido se eliminará del registro.', () => {
+    const lista = getPedidos();
+    lista.splice(index, 1);
+    savePedidos(lista);
+    renderPedidos();
+    renderInicio();
+  });
+}
+
+function verDetallePedido(index) {
+  const p   = getPedidos()[index];
+  if (!p) return;
+  const total = Array.isArray(p.items)
+    ? p.items.reduce((s, it) => s + (it.precio || 0) * (it.cantidad || 1), 0)
+    : (p.total || 0);
+
+  const itemsHTML = Array.isArray(p.items) && p.items.length
+    ? `<table style="width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.5rem;">
+        <thead><tr>
+          <th style="text-align:left;padding:.35rem .5rem;border-bottom:1px solid var(--color-border);color:var(--color-muted)">Producto</th>
+          <th style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid var(--color-border);color:var(--color-muted)">Cant.</th>
+          <th style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid var(--color-border);color:var(--color-muted)">Precio</th>
+          <th style="text-align:right;padding:.35rem .5rem;border-bottom:1px solid var(--color-border);color:var(--color-muted)">Subtotal</th>
+        </tr></thead>
+        <tbody>${p.items.map(it => `
+          <tr>
+            <td style="padding:.35rem .5rem;">${esc(it.nombre || it.name || '—')}</td>
+            <td style="padding:.35rem .5rem;text-align:right;">${it.cantidad || 1}</td>
+            <td style="padding:.35rem .5rem;text-align:right;">$${Number(it.precio || 0).toFixed(2)}</td>
+            <td style="padding:.35rem .5rem;text-align:right;">$${(Number(it.precio || 0) * (it.cantidad || 1)).toFixed(2)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`
+    : '<p style="color:var(--color-muted);font-size:.82rem;">Sin detalle de artículos.</p>';
+
+  document.getElementById('modalPedidoContent').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem;margin-bottom:.75rem;font-size:.82rem;">
+      <div><strong>ID:</strong> ${esc(p.id || '—')}</div>
+      <div><strong>Estado:</strong> ${capitalizar(p.estado || 'pendiente')}</div>
+      <div><strong>Cliente:</strong> ${esc(p.cliente || p.email || '—')}</div>
+      <div><strong>Fecha:</strong> ${p.fecha || '—'}</div>
+    </div>
+    <strong style="font-size:.85rem;">Artículos</strong>
+    ${itemsHTML}
+    <div style="text-align:right;margin-top:.75rem;font-weight:600;font-size:.95rem;">
+      Total: $${Number(total).toFixed(2)}
+    </div>
+  `;
+  document.getElementById('modalPedido').classList.add('open');
+}
+
+function initModalPedido() {
+  document.getElementById('btnCerrarPedido')?.addEventListener('click', () => {
+    document.getElementById('modalPedido').classList.remove('open');
+  });
+  document.getElementById('modalPedido')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('modalPedido'))
+      document.getElementById('modalPedido').classList.remove('open');
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL: CONFIRMAR ELIMINACIÓN
+═══════════════════════════════════════════════════════════════ */
+let confirmCallback = null;
+
+function initModalConfirm() {
+  document.getElementById('btnConfirmCancel')?.addEventListener('click', () => {
+    document.getElementById('modalConfirm').classList.remove('open');
+    confirmCallback = null;
+  });
+  document.getElementById('btnConfirmOk')?.addEventListener('click', () => {
+    document.getElementById('modalConfirm').classList.remove('open');
+    if (typeof confirmCallback === 'function') confirmCallback();
+    confirmCallback = null;
+  });
+}
+
+function openConfirm(title, msg, cb) {
+  document.getElementById('modalConfirmTitle').textContent = title;
+  document.getElementById('modalConfirmMsg').textContent   = msg;
+  confirmCallback = cb;
+  document.getElementById('modalConfirm').classList.add('open');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════════════════ */
+function esc(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function capitalizar(str) {
+  return String(str).charAt(0).toUpperCase() + String(str).slice(1);
+}
+
+/* Compatibilidad: funciones globales usadas desde HTML onclick */
+window.editarProducto    = editarProducto;
+window.eliminarProducto  = eliminarProducto;
+window.editarCategoria   = editarCategoria;
+window.eliminarCategoria = eliminarCategoria;
+window.toggleBloquearUsuario = toggleBloquearUsuario;
+window.eliminarUsuario   = eliminarUsuario;
+window.verDetallePedido  = verDetallePedido;
+window.eliminarPedido    = eliminarPedido;
+window.cambiarEstadoPedido = cambiarEstadoPedido;
+window.selectColor       = selectColor;
