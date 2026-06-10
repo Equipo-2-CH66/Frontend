@@ -11,14 +11,21 @@ function iniciarNavbar() {
 
   if (!navbar) return;
 
-  let ultimoScroll = 0;
-  window.addEventListener('scroll', () => {
+let ultimoScroll = window.scrollY;
+window.addEventListener('scroll', () => {
     const scrollActual = window.scrollY;
-    navbar.style.transform = (scrollActual > ultimoScroll && scrollActual > 80)
-      ? 'translateY(-100%)'
-      : 'translateY(0)';
+    // Ocultar al bajar
+    if (scrollActual > ultimoScroll && scrollActual > 100) {
+        navbar.classList.add('navbar-hidden');
+    }
+    // Mostrar al subir aunque sea unos píxeles
+    else {
+
+        navbar.classList.remove('navbar-hidden');
+    }
+
     ultimoScroll = scrollActual;
-  });
+});
 
   if (!hamburger || !navLinks) return;
 
