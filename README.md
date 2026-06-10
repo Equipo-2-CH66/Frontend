@@ -42,7 +42,7 @@ La plataforma permite administrar productos, usuarios y operaciones relacionadas
 * Manejo de excepciones.
 * Endpoints REST para operaciones CRUD.
 
-![Backend](./images/readme/spring.png)
+![Backend](./images/readme/spring.jpeg)
 
 ---
 
