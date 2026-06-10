@@ -269,15 +269,15 @@ o utilizar la extensión **Live Server** de VS Code.
 
 ## 404 Team Not Found
 
-| Integrante        | Rol                      |
-| ----------------- | ------------------------ |
-| Kaleb Torres      | Scrum Master · Developer |
-| Arturo Ramírez    | Developer                |
-| Danna Remigio     | Developer                |
-| Yarilis Hernández | Developer                |
-| Zared Ortiz       | Developer                |
-| Noé Hernández     | Developer                |
-| Diego Quiñónez    | Developer                |
+| Integrante        | Rol                       |
+| ----------------- | ------------------------  |
+| Kaleb Torres      | Scrum Master · Developer  |
+| Arturo Ramírez    | Frontend Developer        |
+| Danna Remigio     | Frontend Developer        |
+| Yarilis Hernández | Frontend Developer        |
+| Zared Ortiz       | Backend Developer         |
+| Noé Hernández     | QA Tester                 |
+| Diego Quiñónez    | Backend Developer         |
 
 ---
 
