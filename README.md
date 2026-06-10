@@ -169,7 +169,7 @@ ALMIUX/
 
 El sistema utiliza MySQL para almacenar la información relacionada con usuarios, productos y demás recursos del sistema.
 
-> Aquí podrás agregar posteriormente el diagrama entidad-relación.
+![Entidad-Relacion](./images/readme/Entidad.jpeg)
 
 ---
 
