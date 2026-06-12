@@ -1,13 +1,5 @@
-/* ══════════════════════════════════════════════════════════════════
-   ABARROTES ALMIUX — carrito.js
-   Gestión completa del carrito de compras:
-   · Drawer lateral (abre/cierra al pulsar el ícono del navbar)
-   · Persistencia en localStorage (clave: almiux_carrito)
-   · Toast de notificación al agregar productos
-   · Contador en el badge del navbar
-   · Controles +/- y quitar ítem
-   · Overlay de fondo al abrir el drawer
-══════════════════════════════════════════════════════════════════ */
+/*  carrito.js
+   */
 
 /* ── Estado global del carrito ─────────────────────────────────── */
 const CARRITO_KEY = 'almiux_carrito';

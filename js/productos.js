@@ -1,9 +1,6 @@
-/* ══════════════════════════════════════════════════════════════════
-   ABARROTES ALMIUX — productos.js
-   Catálogo dinámico, filtros, búsqueda, carrito persistente y
-   accesibilidad de categorías en el home.
+/*productos.js
    Requiere: utils.js
-══════════════════════════════════════════════════════════════════ */
+ */
 
 /* Array global que alimenta renderizarProductos(); se llena desde el backend */
 const PRODUCTOS = [];

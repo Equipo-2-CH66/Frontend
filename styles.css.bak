@@ -87,14 +87,13 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 32px; /* Base aumentada +6px (3 rondas); escala todos los valores en rem */
+  /* Scroll suave para links con ancla (#) */
 }
 
 body {
   font-family: var(--font-body);
   background: var(--color-bg);
   color: var(--color-dark);
-  font-size: 32px;
   line-height: 1.6;
   overflow-x: hidden;
   padding-top: 150px;
@@ -162,7 +161,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 16px;
   flex-shrink: 0;
   pointer-events: auto;
 }
@@ -305,7 +304,7 @@ nav {
   color: var(--color-bg);
   padding: 14px 28px;
   border-radius: var(--radius-pill);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 500;
   font-family: var(--font-body);
   text-decoration: none;
@@ -323,7 +322,7 @@ nav {
 /* Botón secundario — solo texto con flecha */
 .btn-secondary {
   color: var(--color-muted);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 500;
   font-family: var(--font-body);
   text-decoration: none;
@@ -346,7 +345,7 @@ nav {
   color: var(--color-primary);
   padding: 12px 28px;
   border-radius: var(--radius-pill);
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 500;
   font-family: var(--font-body);
   text-decoration: none;
@@ -404,7 +403,7 @@ nav {
 }
 
 .hero-sub {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-muted);
   line-height: 1.7;
   max-width: 460px;
@@ -643,7 +642,7 @@ nav {
 }
 
 .page-sub {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-muted);
   line-height: 1.6;
   max-width: 480px;
@@ -688,7 +687,7 @@ nav {
 
 /* Texto descriptivo bajo el número */
 .stat-label {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-footer-text);
   margin-top: 4px;
 }
@@ -704,7 +703,7 @@ nav {
 
 /* Etiqueta pequeña sobre el título de sección */
 .section-label {
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -754,11 +753,11 @@ nav {
 .cat-name {
   font-weight: 500;
   color: var(--color-dark-mid);
-  font-size: 33px;
+  font-size: 17px;
 }
 
 .cat-count {
-  font-size: 31px;
+  font-size: 15px;
   color: var(--color-footer-text);
   margin-top: 4px;
 }
@@ -805,7 +804,7 @@ nav {
 
 .promo-text p {
   color: var(--color-accent);
-  font-size: 33px;
+  font-size: 17px;
 }
 
 
@@ -819,7 +818,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 32px;
+  font-size: 16px;
   flex-wrap: wrap;
   gap: 16px;
 }
@@ -880,14 +879,14 @@ footer {
 }
 
 .search-icon {
-  font-size: 32px;
+  font-size: 16px;
   flex-shrink: 0;
 }
 
 .search-bar input {
   border: none;
   outline: none;
-  font-size: 31px;
+  font-size: 15px;
   font-family: var(--font-body);
   color: var(--color-dark);
   background: transparent;
@@ -921,7 +920,7 @@ footer {
   border: 1.5px solid transparent;
   border-radius: var(--radius-pill);
   padding: 7px 16px;
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 500;
   font-family: var(--font-body);
   cursor: pointer;
@@ -954,7 +953,7 @@ footer {
 
 /* Contador de resultados */
 .results-count {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-footer-text);
   white-space: nowrap;
 }
@@ -1017,7 +1016,7 @@ footer {
   right: 8px;
   background: var(--color-primary);
   color: #fff;
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 500;
   padding: 3px 8px;
   border-radius: var(--radius-pill);
@@ -1034,7 +1033,7 @@ footer {
 
 /* Tag de categoría */
 .prod-cat-tag {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-footer-text);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -1044,7 +1043,7 @@ footer {
 /* Nombre del producto */
 .prod-name {
   font-family: var(--font-display);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--color-dark);
   line-height: 1.3;
@@ -1052,7 +1051,7 @@ footer {
 
 /* Descripción corta */
 .prod-desc {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-muted);
   line-height: 1.5;
 }
@@ -1075,7 +1074,7 @@ footer {
 
 /* Precio original tachado (cuando hay oferta) */
 .prod-original {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-footer-text);
   text-decoration: line-through;
 }
@@ -1088,7 +1087,7 @@ footer {
   border: none;
   border-radius: var(--radius-sm);
   padding: 10px;
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 500;
   font-family: var(--font-body);
   cursor: pointer;
@@ -1122,7 +1121,7 @@ footer {
 }
 
 .no-results p {
-  font-size: 32px;
+  font-size: 16px;
   margin-bottom: 24px;
 }
 
@@ -1138,7 +1137,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 500;
   box-shadow: 0 4px 20px rgba(44, 26, 14, 0.3);
   z-index: 500;
@@ -1154,7 +1153,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -1163,7 +1162,7 @@ footer {
   border: none;
   color: var(--color-footer-text);
   cursor: pointer;
-  font-size: 33px;
+  font-size: 17px;
   margin-left: 4px;
   padding: 0;
   line-height: 1;
@@ -1201,7 +1200,7 @@ footer {
 }
 
 .historia-texto p {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-muted);
   line-height: 1.7;
 }
@@ -1231,7 +1230,7 @@ footer {
 }
 
 .dato-label {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-muted);
   margin-top: 8px;
   line-height: 1.4;
@@ -1287,7 +1286,7 @@ footer {
 }
 
 .valor-desc {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-muted);
   line-height: 1.6;
 }
@@ -1345,14 +1344,14 @@ footer {
 
 .miembro-nombre {
   font-family: var(--font-display);
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-dark);
   margin-bottom: 4px;
 }
 
 .miembro-rol {
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-primary);
   font-weight: 500;
   text-transform: uppercase;
@@ -1361,7 +1360,7 @@ footer {
 }
 
 .miembro-desc {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-muted);
   line-height: 1.6;
 }
@@ -1409,7 +1408,7 @@ footer {
 .contacto-item strong {
   display: block;
   color: var(--color-accent);
-  font-size: 32px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin-bottom: 4px;
@@ -1417,7 +1416,7 @@ footer {
 
 .contacto-item p {
   color: var(--color-footer-text);
-  font-size: 31px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -1457,13 +1456,13 @@ footer {
 
 .mapa-placeholder p {
   color: var(--color-accent);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 500;
 }
 
 .mapa-placeholder small {
   color: var(--color-footer-text);
-  font-size: 32px;
+  font-size: 16px;
 }
 
 
@@ -1641,7 +1640,7 @@ footer {
   }
 
   .promo-text h2 {
-    font-size: 32px;
+    font-size: 22px;
   }
 
   /* Footer: centrado y apilado */
@@ -1698,7 +1697,7 @@ footer {
     bottom: 16px;
     right: 16px;
     padding: 10px 14px;
-    font-size: 32px;
+    font-size: 16px;
   }
 }
 
@@ -1822,7 +1821,7 @@ footer {
 
 /* ── SUBTÍTULO ───────────────────────────────────── */
 .admin-layout .form-card-sub {
-  font-size: 33px;
+  font-size: 17px;
   color: #777;
   margin-bottom: 28px;
 }
@@ -1841,7 +1840,7 @@ footer {
    Texto que aparece arriba de los inputs.
 */
 #formProducto label {
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 600;
   color: #333;
 }
@@ -1856,7 +1855,7 @@ footer {
   padding: 12px 14px;
   border: 1.5px solid #DADADA;
   border-radius: 10px;
-  font-size: 33px;
+  font-size: 17px;
   font-family: inherit;
   outline: none;
   /* elimina borde azul por defecto */
@@ -1910,7 +1909,7 @@ footer {
   border-radius: 999px;
   /* forma tipo píldora */
   cursor: pointer;
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 600;
   transition: .2s;
 }
@@ -1947,7 +1946,7 @@ footer {
   padding: 14px;
   border-radius: 10px;
   margin-bottom: 18px;
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 500;
 }
 
@@ -1984,14 +1983,14 @@ footer {
 
 /* ── TÍTULO DEL PANEL ────────────────────────────── */
 .resultado-card-title {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 /* ── SUBTÍTULO ───────────────────────────────────── */
 .resultado-card-sub {
-  font-size: 32px;
+  font-size: 16px;
   color: #CFCFCF;
   margin-bottom: 22px;
 }
@@ -2013,7 +2012,7 @@ footer {
 /* Texto placeholder */
 .preview-placeholder {
   color: #B9B9B9;
-  font-size: 33px;
+  font-size: 17px;
   text-align: center;
 }
 
@@ -2025,7 +2024,7 @@ footer {
   border-radius: 12px;
   padding: 16px;
   font-family: monospace;
-  font-size: 31px;
+  font-size: 15px;
   line-height: 1.6;
   overflow-x: auto;
   /* scroll horizontal si el texto es largo */
@@ -2132,7 +2131,7 @@ footer {
 /* Subtítulo de fecha de actualización */
 .legal-card .subtitle {
   text-align: center;
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-footer-text);
   /* Café claro de tus tokens */
   margin-bottom: 40px;
@@ -2142,7 +2141,7 @@ footer {
 /* Subtítulos de secciones legales (1, 2, 3...) */
 .legal-card h2 {
   font-family: var(--font-display);
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--color-dark);
   margin-top: 32px;
@@ -2157,7 +2156,7 @@ footer {
 .legal-card ul {
   font-family: var(--font-body);
   /* Fuente DM Sans */
-  font-size: 31px;
+  font-size: 15px;
   color: var(--color-dark);
   line-height: 1.7;
   text-align: justify;
@@ -2212,7 +2211,7 @@ footer {
   color: var(--color-muted);
   text-decoration: none;
   font-weight: 500;
-  font-size: 33px;
+  font-size: 17px;
   transition: color 0.2s;
 }
 
@@ -2236,7 +2235,7 @@ footer {
 
   .legal-card p,
   .legal-card ul {
-    font-size: 33px;
+    font-size: 17px;
     text-align: left;
     /* En móviles pequeños la lectura izquierda es más cómoda */
   }
@@ -2288,7 +2287,7 @@ footer {
 /* subtítulo */
 .promo-page-sub {
   max-width: 620px;
-  font-size: 32px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--color-muted);
   position: relative;
@@ -2338,7 +2337,7 @@ footer {
 
 /* descripción */
 .promo-info p {
-  font-size: 31px;
+  font-size: 15px;
   line-height: 1.7;
   color: var(--color-muted);
   max-width: 700px;
@@ -2358,7 +2357,7 @@ footer {
 
 /* textos fechas */
 .promo-dates span {
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--color-dark-mid);
 }
@@ -2400,11 +2399,11 @@ footer {
   }
 
   .promo-info h2 {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   .promo-info p {
-    font-size: 33px;
+    font-size: 17px;
   }
 }
 
@@ -2473,7 +2472,7 @@ footer {
 }
 
 .auth-hero p {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-muted);
   max-width: 520px;
   margin: 0 auto;
@@ -2513,7 +2512,7 @@ footer {
 }
 
 .form-card-sub {
-  font-size: 33px;
+  font-size: 17px;
   color: var(--color-muted);
   margin-bottom: 28px;
 }
@@ -2542,7 +2541,7 @@ footer {
 
 /* Labels */
 .campo-grupo label {
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--color-dark-mid);
 }
@@ -2561,7 +2560,7 @@ footer {
   border-radius: 14px;
   border: 1.5px solid var(--color-border);
   background: #fff;
-  font-size: 33px;
+  font-size: 17px;
   font-family: var(--font-body);
   color: var(--color-dark);
   transition: .2s ease;
@@ -2624,7 +2623,7 @@ footer {
 
 .auth-side-card p {
   color: var(--color-footer-text);
-  font-size: 33px;
+  font-size: 17px;
   line-height: 1.7;
   margin-bottom: 28px;
 }
@@ -2651,7 +2650,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
@@ -2659,12 +2658,12 @@ footer {
   display: block;
   color: var(--color-accent);
   margin-bottom: 4px;
-  font-size: 33px;
+  font-size: 17px;
 }
 
 .auth-side-item span {
   color: var(--color-footer-text);
-  font-size: 32px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -2684,7 +2683,7 @@ footer {
   background: var(--color-primary);
   color: #fff;
   font-weight: 700;
-  font-size: 31px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2708,7 +2707,7 @@ footer {
 .alerta-global.alerta-info {
   border-radius: var(--radius-sm);
   padding: 13px 16px;
-  font-size: 30px;
+  font-size: 14px;
   display: none;
   align-items: center;
   gap: 10px;
@@ -2779,7 +2778,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-muted);
   cursor: pointer;
   user-select: none;
@@ -2792,7 +2791,7 @@ footer {
 }
 
 .link-olvido {
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-primary);
   font-weight: 600;
   text-decoration: none;
@@ -2813,7 +2812,7 @@ footer {
   border-radius: var(--radius-pill);
   padding: 14px 32px;
   font-family: var(--font-body);
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -2835,7 +2834,7 @@ footer {
 }
 
 .btn-login i {
-  font-size: 31px;
+  font-size: 15px;
 }
 
 /* Loading spinner dentro del botón */
@@ -2897,7 +2896,7 @@ footer {
   background: var(--color-border);
   color: var(--color-muted);
   font-weight: 700;
-  font-size: 30px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2986,7 +2985,7 @@ footer {
   border-radius: var(--radius-pill);
   padding: 14px 32px;
   font-family: var(--font-body);
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -3016,7 +3015,7 @@ footer {
   border-radius: var(--radius-pill);
   padding: 12px;
   font-family: var(--font-body);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -3045,7 +3044,7 @@ footer {
   border-radius: 999px;
   background: var(--color-primary);
   color: #fff;
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 700;
   font-family: var(--font-body);
   cursor: pointer;
@@ -3063,7 +3062,7 @@ footer {
   border: 1.5px solid var(--color-border);
   background: #fff;
   color: var(--color-muted);
-  font-size: 33px;
+  font-size: 17px;
   font-weight: 600;
   cursor: pointer;
   transition: .2s ease;
@@ -3116,7 +3115,7 @@ footer {
 
 .exito-final p {
   color: var(--color-muted);
-  font-size: 31px;
+  font-size: 15px;
   line-height: 1.7;
   margin-bottom: 28px;
 }
@@ -3140,7 +3139,7 @@ footer {
   cursor: pointer;
   padding: 0;
   color: var(--color-muted);
-  font-size: 32px;
+  font-size: 16px;
   transition: color .2s;
 }
 
@@ -3193,7 +3192,7 @@ footer {
 }
 
 .checkbox-grupo label {
-  font-size: 33px;
+  font-size: 17px;
   line-height: 1.6;
   color: var(--color-muted);
 }
@@ -4674,7 +4673,7 @@ footer {
   max-width: 580px;
   margin: 0 auto;
   color: var(--color-muted);
-  font-size: 32px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -4704,7 +4703,7 @@ footer {
   margin-bottom: 6px;
 }
 .form-card-sub {
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-muted);
   margin-bottom: 30px;
   line-height: 1.6;
@@ -4732,7 +4731,7 @@ footer {
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-dark);
   background: var(--color-bg);
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -4778,7 +4777,7 @@ footer {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 32px;
+  font-size: 16px;
   color: var(--color-muted);
   padding: 2px;
   line-height: 1;
@@ -4861,7 +4860,7 @@ footer {
   border: none;
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
-  font-size: 31px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
@@ -4882,7 +4881,7 @@ footer {
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-pill);
   font-family: var(--font-body);
-  font-size: 30px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
@@ -4908,7 +4907,7 @@ footer {
   margin-bottom: 10px;
 }
 .beneficios-card > p {
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-footer-text);
   line-height: 1.7;
   margin-bottom: 28px;
@@ -4930,7 +4929,7 @@ footer {
 }
 .beneficio-item strong {
   display: block;
-  font-size: 30px;
+  font-size: 14px;
   color: var(--color-accent);
   margin-bottom: 3px;
 }
