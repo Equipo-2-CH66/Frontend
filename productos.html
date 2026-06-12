@@ -83,13 +83,13 @@
       <button class="filter-btn" data-filter="carnes">🥩 Carnes</button>
       <button class="filter-btn" data-filter="lacteos">🥛 Lácteos</button>
       <button class="filter-btn" data-filter="bebidas">🥤 Bebidas</button>
-      <button class="filter-btn" data-filter="enlatados">🫙 Enlatados</button>
+      <button class="filter-btn" data-filter="enlatados">🥫 Enlatados</button>
       <button class="filter-btn" data-filter="limpieza">🧴 Limpieza</button>
       <button class="filter-btn" data-filter="panaderia">🍞 Panadería</button>
       <button class="filter-btn" data-filter="especias">🌶️ Especias</button>
       <button class="filter-btn" data-filter="botanas">🍬 Botanas</button>
       <button class="filter-btn" data-filter="abarrotes">🏪 Abarrotes</button>
-      <button class="filter-btn" data-filter="higiene_personal">🪥 Higiene personal</button>
+      <button class="filter-btn" data-filter="higiene_personal">🧽 Higiene personal</button>
 
       <!-- Filtro especial: muestra solo productos con data-oferta="true" -->
       <button class="filter-btn filter-oferta" data-filter="ofertas">🏷️ Ofertas</button>
@@ -565,6 +565,112 @@
           + Agregar
         </button>
       </div>
+
+      <!-- Producto: Pasta dental -->
+<div class="product-card" data-cat="higiene_personal" data-oferta="true">
+  <div class="prod-img-wrap">
+    <img src="https://github.com/danna-remigio/Imagenes_productos/blob/main/higiene_personal/dentrifico.jpeg?raw=true" 
+         alt="Pasta dental Colgate 100ml" loading="lazy" class="prod-img">
+    <span class="prod-badge">-15%</span>
+  </div>
+  <div class="prod-info">
+    <h3 class="prod-name">Pasta dental Colgate 100ml</h3>
+    <p class="prod-cat-tag">Higiene personal</p>
+    <p class="prod-desc">Protección anticaries y aliento fresco.</p>
+    <div class="prod-prices">
+      <span class="prod-price">$28.00</span>
+      <span class="prod-original">$33.00</span>
+    </div>
+  </div>
+  <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Pasta dental Colgate 100ml', 28.00)">
+    + Agregar
+  </button>
+</div>
+
+
+<!-- Producto: Shampoo -->
+<div class="product-card" data-cat="higiene_personal" data-oferta="false">
+  <div class="prod-img-wrap">
+    <img src="https://raw.githubusercontent.com/danna-remigio/Imagenes_productos/main/higiene_personal/acondicionador.jpeg" 
+         alt="Shampoo Pantene 400ml" loading="lazy" class="prod-img">
+  </div>
+  <div class="prod-info">
+    <h3 class="prod-name">Shampoo Pantene 400ml</h3>
+    <p class="prod-cat-tag">Higiene personal</p>
+    <p class="prod-desc">Fortalece y da brillo al cabello.</p>
+    <div class="prod-prices">
+      <span class="prod-price">$65.00</span>
+    </div>
+  </div>
+  <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Shampoo Pantene 400ml', 65.00)">
+    + Agregar
+  </button>
+</div>
+
+
+<!-- Producto: Jabón corporal -->
+<div class="product-card" data-cat="higiene_personal" data-oferta="true">
+  <div class="prod-img-wrap">
+    <img src="https://github.com/danna-remigio/Imagenes_productos/blob/main/higiene_personal/jabon_corporal.jpeg?raw=true" 
+         alt="Jabón corporal Dove 250ml" loading="lazy" class="prod-img">
+    <span class="prod-badge">-10%</span>
+  </div>
+  <div class="prod-info">
+    <h3 class="prod-name">Jabón corporal Dove 250ml</h3>
+    <p class="prod-cat-tag">Higiene personal</p>
+    <p class="prod-desc">Hidratación y suavidad para la piel.</p>
+    <div class="prod-prices">
+      <span class="prod-price">$45.00</span>
+      <span class="prod-original">$50.00</span>
+    </div>
+  </div>
+  <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Jabón corporal Dove 250ml', 45.00)">
+    + Agregar
+  </button>
+</div>
+
+<!-- Producto: Desodorante -->
+<div class="product-card" data-cat="higiene_personal" data-oferta="false">
+  <div class="prod-img-wrap">
+    <img src="https://github.com/danna-remigio/Imagenes_productos/blob/main/higiene_personal/desodorante.jpeg?raw=true" 
+         alt="Desodorante Rexona 150ml" loading="lazy" class="prod-img">
+  </div>
+  <div class="prod-info">
+    <h3 class="prod-name">Desodorante Rexona 150ml</h3>
+    <p class="prod-cat-tag">Higiene personal</p>
+    <p class="prod-desc">Protección contra el sudor por 48h.</p>
+    <div class="prod-prices">
+      <span class="prod-price">$55.00</span>
+    </div>
+  </div>
+  <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Desodorante Rexona 150ml', 55.00)">
+    + Agregar
+  </button>
+</div>
+
+
+<!-- Producto: Cepillo dental -->
+<div class="product-card" data-cat="higiene_personal" data-oferta="true">
+  <div class="prod-img-wrap">
+    <img src="https://github.com/danna-remigio/Imagenes_productos/blob/main/higiene_personal/cepillo_dientes.jpeg?raw=true" 
+         alt="Cepillo dental Oral-B" loading="lazy" class="prod-img">
+    <span class="prod-badge">-25%</span>
+  </div>
+  <div class="prod-info">
+    <h3 class="prod-name">Cepillo dental Oral-B</h3>
+    <p class="prod-cat-tag">Higiene personal</p>
+    <p class="prod-desc">Cerdas suaves para limpieza profunda.</p>
+    <div class="prod-prices">
+      <span class="prod-price">$22.00</span>
+      <span class="prod-original">$29.00</span>
+    </div>
+  </div>
+  <button class="btn-agregar" onclick="agregarAlCarrito(this, 'Cepillo dental Oral-B', 22.00)">
+    + Agregar
+  </button>
+</div>
+
+
 
 
     </div><!-- /products-grid -->
