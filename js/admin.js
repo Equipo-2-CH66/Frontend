@@ -279,7 +279,7 @@ function renderProductos() {
   }
 
   tbody.innerHTML = prods.map((p, i) => `
-    <tr>
+    <tr style="cursor:pointer" onclick="editarProducto(${i})">
       <td>${p.imagen
         ? `<img class="prod-thumb" src="${p.imagen}" alt="${p.nombre}">`
         : `<div class="prod-thumb-placeholder">${p.icono || '📦'}</div>`}</td>
@@ -289,7 +289,7 @@ function renderProductos() {
         ${p.precioOriginal ? `<br><small style="text-decoration:line-through;color:var(--color-muted)">$${Number(p.precioOriginal).toFixed(2)}</small>` : ''}
       </td>
       <td>${p.oferta ? `<span class="tag oferta">${p.badge || 'Oferta'}</span>` : '—'}</td>
-      <td style="white-space:nowrap">
+      <td style="white-space:nowrap" onclick="event.stopPropagation()">
         <button class="btn-dash secondary sm" onclick="editarProducto(${i})"><i class="fa-solid fa-pen"></i> Editar</button>
         <button class="btn-dash danger sm" onclick="eliminarProducto(${i})" style="margin-left:.3rem"><i class="fa-solid fa-trash"></i></button>
       </td>
@@ -307,14 +307,13 @@ function initModalProducto() {
   document.getElementById('mpOferta')?.addEventListener('change', e => {
     document.getElementById('mpDescuentoGroup').style.display = e.target.checked ? '' : 'none';
   });
-  document.getElementById('mpImagen')?.addEventListener('change', e => {
-    const file = e.target.files?.[0];
+  document.getElementById('mpImagen')?.addEventListener('input', e => {
+    const url  = e.target.value.trim();
     const wrap = document.getElementById('mpImagenPreviewWrap');
     const img  = document.getElementById('mpImagenPreview');
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = ev => { img.src = ev.target.result; wrap.style.display = ''; };
-      reader.readAsDataURL(file);
+    if (url) {
+      img.src = url;
+      wrap.style.display = '';
     } else {
       wrap.style.display = 'none';
     }
@@ -360,6 +359,7 @@ function abrirModalProducto(index) {
       const pct   = parseInt(badge.replace(/[^0-9]/g, '')) || 0;
       document.getElementById('mpDescuento').value = pct;
     }
+    document.getElementById('mpImagen').value = p.imagen || '';
     if (p.imagen) {
       document.getElementById('mpImagenPreview').src = p.imagen;
       document.getElementById('mpImagenPreviewWrap').style.display = '';
@@ -397,17 +397,9 @@ async function guardarProducto() {
   }
   errEl.style.display = 'none';
 
-  // Leer imagen nueva si hay
-  let imagenBase64 = null;
-  if (imagenInput.files?.[0]) {
-    imagenBase64 = await new Promise(res => {
-      const r = new FileReader();
-      r.onload = () => res(r.result);
-      r.readAsDataURL(imagenInput.files[0]);
-    });
-  } else if (editingProdIndex >= 0) {
-    imagenBase64 = getProductos()[editingProdIndex].imagen;
-  }
+  // Usar URL de imagen directamente
+  const urlNueva = imagenInput.value.trim();
+  const imagenBase64 = urlNueva || (editingProdIndex >= 0 ? getProductos()[editingProdIndex].imagen : null);
 
   const cats         = getCategorias();
   const catObj       = cats.find(c => c.slug === cat) || {};
@@ -621,7 +613,7 @@ function renderUsuarios() {
     const estado  = u.bloqueado ? 'inactivo' : 'activo';
     const textoEstado = u.bloqueado ? 'Bloqueado' : 'Activo';
     return `
-      <tr>
+      <tr style="cursor:pointer" title="Ver detalles">
         <td>
           <span class="user-avatar">${inicial}</span>
           ${esc((u.nombres || '') + ' ' + (u.apellidos || ''))}
@@ -629,7 +621,7 @@ function renderUsuarios() {
         <td>${esc(u.email)}</td>
         <td>${esc(u.telefono || '—')}</td>
         <td><span class="tag ${estado}">${textoEstado}</span></td>
-        <td style="white-space:nowrap">
+        <td style="white-space:nowrap" onclick="event.stopPropagation()">
           <button class="btn-dash ${u.bloqueado ? 'secondary' : 'danger'} sm"
                   onclick="toggleBloquearUsuario(${i})">
             <i class="fa-solid fa-${u.bloqueado ? 'unlock' : 'ban'}"></i>

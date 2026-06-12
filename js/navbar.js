@@ -36,7 +36,7 @@ function iniciarNavbar() {
 }
 
 function marcarLinkActivo() {
-  const paginaActual = window.location.pathname.split('/').pop() || 'index.html';
+  const paginaActual = window.location.pathname.split('/').pop() || 'home.html';
   document.querySelectorAll('.nav-links a').forEach(link => {
     const href = link.getAttribute('href');
     if (href && href.includes(paginaActual) && !link.classList.contains('nav-cta')) {
@@ -47,6 +47,42 @@ function marcarLinkActivo() {
 
 
 
+
+function actualizarMenuUsuario() {
+  const menu = document.getElementById('userMenu');
+  if (!menu) return;
+
+  const sesion = (() => {
+    try { return JSON.parse(sessionStorage.getItem('almiux_sesion')); } catch(e) { return null; }
+  })();
+  const base = obtenerBasePath();
+
+  if (sesion) {
+    const esAdmin = sesion.rol === 'ADMIN';
+    menu.innerHTML = `
+      <button data-go="${esAdmin ? 'admin.html' : 'usuario/index.html'}">
+        ${esAdmin ? '<i class="fa-solid fa-lock"></i> Panel Admin' : '<i class="fa-regular fa-user"></i> Mi cuenta'}
+      </button>
+      <button id="btnCerrarSesion">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </button>`;
+    menu.querySelector('#btnCerrarSesion').addEventListener('click', () => {
+      sessionStorage.removeItem('almiux_sesion');
+      sessionStorage.removeItem('almiux_admin_sesion');
+      window.location.href = base + 'home.html';
+    });
+  } else {
+    menu.innerHTML = `
+      <button data-go="usuario/login.html">Iniciar sesión</button>
+      <button data-go="usuario/registro.html">Crear cuenta</button>`;
+  }
+
+  menu.querySelectorAll('button[data-go]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = base + btn.dataset.go;
+    });
+  });
+}
 
 function actualizarContadorGlobalCarrito(){
  let carrito=[];

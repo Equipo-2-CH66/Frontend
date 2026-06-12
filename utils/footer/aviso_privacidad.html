@@ -90,20 +90,19 @@
             </p>
 
             <!-- CHECKBOX -->
-            <form class="form-aviso">
-
+            <form class="form-aviso" id="formAviso">
                 <label class="check-container">
                     <input type="checkbox" required>
                     He leído y acepto el Aviso de Privacidad
                 </label>
-                <br>
-                <br>
-
-                <button type="submit">
-                    Aceptar y continuar
-                </button>
-
+                <br><br>
+                <button type="submit">Aceptar y continuar</button>
             </form>
+
+            <!-- Toast de confirmación -->
+            <div id="toastAceptar" style="display:none;position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#03543f;color:#fff;padding:1rem 2rem;border-radius:12px;font-size:1.1rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:9999;text-align:center;">
+              ✅ ¡Gracias por aceptar! Redirigiendo…
+            </div>
     </div>
 </div>
 
@@ -116,8 +115,13 @@
   <script src="../../js/navbar.js"></script>
   <script src="../../js/productos.js"></script>
   <script src="../../js/main.js"></script>
-  <script src="../../js/admin.js"></script>
-
-
+<script>
+document.getElementById('formAviso').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const toast = document.getElementById('toastAceptar');
+  toast.style.display = 'block';
+  setTimeout(() => { window.location.href = '../../home.html'; }, 2000);
+});
+</script>
 </body>
 </html>

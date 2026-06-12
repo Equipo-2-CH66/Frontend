@@ -82,48 +82,61 @@
 
   <!-- Validación básica -->
   <script>
-    document.getElementById("pago-form").addEventListener("submit", function (e) {
+    document.getElementById("pago-form").addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const nombre = document.getElementById("nombre").value.trim();
-      const correo = document.getElementById("correo").value.trim();
+      const nombre    = document.getElementById("nombre").value.trim();
+      const correo    = document.getElementById("correo").value.trim();
       const direccion = document.getElementById("direccion").value.trim();
-      const tarjeta = document.getElementById("tarjeta").value.trim();
-      const exp = document.getElementById("exp").value.trim();
-      const cvv = document.getElementById("cvv").value.trim();
+      const tarjeta   = document.getElementById("tarjeta").value.trim();
+      const exp       = document.getElementById("exp").value.trim();
+      const cvv       = document.getElementById("cvv").value.trim();
 
-      // Validaciones
-      if (nombre.length < 3) {
-        alert("El nombre debe tener al menos 3 caracteres.");
-        return;
+      if (nombre.length < 3)                              { alert("El nombre debe tener al menos 3 caracteres."); return; }
+      if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(correo))  { alert("Ingresa un correo electrónico válido."); return; }
+      if (direccion.length < 5)                           { alert("La dirección debe ser más detallada."); return; }
+      if (!/^\d{16}$/.test(tarjeta))                      { alert("El número de tarjeta debe tener 16 dígitos."); return; }
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(exp))         { alert("La fecha de expiración debe estar en formato MM/AA."); return; }
+      if (!/^\d{3}$/.test(cvv))                           { alert("El CVV debe tener 3 dígitos."); return; }
+
+      /* Leer carrito y sesión */
+      let carrito = [];
+      try { carrito = JSON.parse(localStorage.getItem('almiux_carrito')) || []; } catch(_) {}
+      const sesion = (() => { try { return JSON.parse(sessionStorage.getItem('almiux_sesion')); } catch(_) { return null; } })();
+
+      const total = carrito.reduce((s, i) => s + (i.precio * (i.qty ?? i.cantidad ?? 1)), 0);
+
+      /* Intentar guardar el pedido en el backend */
+      try {
+        const usuarioId = sesion?.id;
+        if (!usuarioId) throw new Error('Sin sesión');
+
+        const pedido = await PedidosAPI.create({
+          estatus:          'PENDIENTE',
+          total:            parseFloat(total.toFixed(2)),
+          direccionEntrega: direccion,
+          notas:            `Nombre: ${nombre} | Email: ${correo}`,
+          fechaPedido:      new Date().toISOString(),
+          user:             { id: usuarioId },
+        });
+
+        /* Crear los detalles del pedido */
+        await Promise.all(carrito.map(item =>
+          DetallesAPI.create(pedido.idPedido ?? pedido.id, {
+            nombreProducto: item.nombre,
+            cantidad:       item.qty ?? item.cantidad ?? 1,
+            precioUnitario: item.precio,
+          })
+        ));
+      } catch(_) {
+        /* Backend no disponible — solo limpia carrito localmente */
       }
 
-      if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(correo)) {
-        alert("Ingresa un correo electrónico válido.");
-        return;
-      }
+      /* Limpiar carrito */
+      localStorage.removeItem('almiux_carrito');
 
-      if (direccion.length < 5) {
-        alert("La dirección debe ser más detallada.");
-        return;
-      }
-
-      if (!/^\d{16}$/.test(tarjeta)) {
-        alert("El número de tarjeta debe tener 16 dígitos.");
-        return;
-      }
-
-      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(exp)) {
-        alert("La fecha de expiración debe estar en formato MM/AA.");
-        return;
-      }
-
-      if (!/^\d{3}$/.test(cvv)) {
-        alert("El CVV debe tener 3 dígitos.");
-        return;
-      }
-
-      alert("Pago procesado correctamente. ¡Gracias por tu compra!");
+      alert("¡Pedido realizado correctamente! Gracias por tu compra.");
+      window.location.href = obtenerBasePath() + 'home.html';
     });
   </script>
 </body>

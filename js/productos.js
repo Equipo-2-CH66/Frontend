@@ -18,6 +18,8 @@ async function cargarProductosDesdeAPI() {
     const catMap = {};
     categorias.forEach(c => { catMap[c.id] = c; });
 
+    renderizarFiltrosCategorias(categorias);
+
     productos.forEach(p => {
       /* Omite productos marcados como inactivos en el backend */
       if (p.activo === false) return;
@@ -96,8 +98,8 @@ function renderizarProductos() {
         ${badgeHTML}
       </div>
       <div class="prod-info">
-        <p class="prod-cat-tag">${catLabel}</p>
         <h3 class="prod-name">${nombre}</h3>
+        <p class="prod-cat-tag">${catLabel}</p>
         <p class="prod-desc">${desc}</p>
         <div class="prod-prices">
           <span class="prod-price">$${precio.toFixed(2)}</span>
@@ -122,6 +124,34 @@ function renderizarProductos() {
 /* ══════════════════════════════════════════════════════════════════
    FILTROS DE CATEGORÍA
 ══════════════════════════════════════════════════════════════════ */
+
+function renderizarFiltrosCategorias(categorias) {
+  const contenedor = document.getElementById('filters');
+  if (!contenedor || !categorias?.length) return;
+
+  const emojiMap = {
+    carnes: '🥩', lacteos: '🥛', bebidas: '🥤', enlatados: '🫙',
+    limpieza: '🧴', panaderia: '🍞', especias: '🌶️', botanas: '🍬',
+    abarrotes: '🏪', higiene_personal: '🪥',
+  };
+
+  const botonesDinamicos = categorias.map(cat => {
+    const emoji = emojiMap[cat.slug] || '🏷️';
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = cat.slug || cat.id;
+    btn.textContent = `${emoji} ${cat.nombre}`;
+    return btn;
+  });
+
+  const btnOferta = contenedor.querySelector('[data-filter="ofertas"]');
+  contenedor.querySelectorAll('.filter-btn:not([data-filter="all"]):not([data-filter="ofertas"])').forEach(b => b.remove());
+
+  botonesDinamicos.forEach(btn => {
+    if (btnOferta) contenedor.insertBefore(btn, btnOferta);
+    else contenedor.appendChild(btn);
+  });
+}
 
 function iniciarFiltros() {
   const botonesFiltro = document.querySelectorAll('.filter-btn');
