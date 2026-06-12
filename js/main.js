@@ -131,26 +131,25 @@ document.addEventListener('DOMContentLoaded', () => {
     iniciarContadores();
     iniciarAnimacionesScroll();
     if (typeof iniciarCarrito === 'function') iniciarCarrito();
-    
-      const userBtn  = document.getElementById('userBtn');
-      const userMenu = document.getElementById('userMenu');
+    if (typeof actualizarMenuUsuario === 'function') actualizarMenuUsuario();
 
-      if (userBtn && userMenu) {
-        userBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const abierto = userMenu.style.display === 'block';
-          userMenu.style.display = abierto ? 'none' : 'block';
-          userMenu.setAttribute('aria-hidden', String(abierto));
-        });
-
-        document.addEventListener('click', (e) => {
-          if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
-            userMenu.style.display = 'none';
-            userMenu.setAttribute('aria-hidden', 'true');
-          }
-        });
-      }
+    const userBtn  = document.getElementById('userBtn');
+    const userMenu = document.getElementById('userMenu');
+    if (userBtn && userMenu) {
+      userBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const abierto = userMenu.style.display === 'block';
+        userMenu.style.display = abierto ? 'none' : 'block';
+        userMenu.setAttribute('aria-hidden', String(abierto));
+      });
+      document.addEventListener('click', (e) => {
+        if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
+          userMenu.style.display = 'none';
+          userMenu.setAttribute('aria-hidden', 'true');
+        }
+      });
     }
+  }
   );
 
   // ── Cargar Footer ────────────────────────────────────────────────

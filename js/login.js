@@ -72,25 +72,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let usuario = null;
 
-    /* 2a. Intentar autenticación contra el backend */
+    /* 2a. Intentar autenticación contra el backend (BCrypt) */
     try {
-      /* Busca el usuario por email; si no existe el backend devuelve 404 */
-      const userBackend = await UsuariosAPI.getByEmail(email);
-      /* El backend no expone endpoint de login; comparamos la contraseña en cliente */
-      if (userBackend && userBackend.password === password) {
-        /* Contraseña correcta: usa el objeto del backend como usuario autenticado */
-        usuario = userBackend;
-      } else if (userBackend) {
-        /* El email existe pero la contraseña no coincide: error definitivo */
+      const BASE = 'http://localhost:8080/api/v1.0';
+      const res = await fetch(`${BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      if (res.ok) {
+        usuario = await res.json();
+      } else if (res.status === 401) {
+        /* Credenciales incorrectas según el backend — no probar localStorage */
         setSpinner(false);
         alerta.error('Nombre de usuario o contraseña inválidos.');
         fEmail.error('Verifica tu correo electrónico.');
         fPassword.error('Verifica tu contraseña.');
         return;
       }
-      /* Si userBackend es null, el email no existe en el backend → probar localStorage */
+      /* Cualquier otro error de red/servidor → caer en localStorage */
     } catch (_) {
-      /* Backend no disponible (red caída, servidor apagado) → caer en localStorage */
+      /* Backend no disponible → caer en localStorage */
     }
 
     /* 2b. Fallback localStorage: autentica con los datos guardados al registrarse */
@@ -135,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sesionData.rol === 'ADMIN') {
         window.location.href = obtenerBasePath() + 'admin/index.html';
       } else {
-        window.location.href = obtenerBasePath() + 'index.html';
+        window.location.href = obtenerBasePath() + 'home.html';
       }
     }, 1500);
   });

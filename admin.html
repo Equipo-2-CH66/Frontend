@@ -76,7 +76,7 @@
     </div>
 
     <nav class="dash-nav">
-      <button class="dash-nav-item active" data-panel="inicio" onclick="window.location.href='../index.html'">
+      <button class="dash-nav-item active" data-panel="inicio" onclick="mostrarPanel('inicio')">
         <i class="fa-solid fa-house"></i> Inicio
       </button>
       <button class="dash-nav-item" data-panel="productos">
@@ -84,6 +84,10 @@
       </button>
       <button class="dash-nav-item" data-panel="categorias">
         <i class="fa-solid fa-tags"></i> Categorías
+      </button>
+      <div class="dash-nav-sep"></div>
+      <button class="dash-nav-item" onclick="window.location.href='../home.html'" style="color:var(--color-primary)">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Ir al sitio
       </button>
       <div class="dash-nav-sep"></div>
       <button class="dash-nav-item" data-panel="usuarios">
@@ -296,8 +300,8 @@
     </div>
 
     <div class="field-group">
-      <label>Imagen del producto</label>
-      <input type="file" id="mpImagen" accept="image/*">
+      <label>URL de imagen del producto</label>
+      <input type="url" id="mpImagen" placeholder="https://ejemplo.com/imagen.png">
       <div id="mpImagenPreviewWrap" style="margin-top:.5rem;display:none;">
         <img id="mpImagenPreview" src="" alt="preview" style="height:80px;border-radius:6px;object-fit:cover;">
       </div>
